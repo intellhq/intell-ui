@@ -6,7 +6,6 @@ import { toast } from "sonner";
 import { useAuthStore } from "@/stores/auth-store";
 import { AuthService } from "@/services/auth-service";
 import {
-  persistTokensToSession,
   resetAuthForOAuthCallback,
 } from "@/lib/auth-session";
 
@@ -50,7 +49,7 @@ function cleanOAuthParamsFromUrl() {
 function GoogleAuthSyncInner() {
   const searchParams = useSearchParams();
   const router = useRouter();
-  const { setAuthLocal, setTokensLocal, logout } = useAuthStore();
+  const { setAuth, setTokensLocal, logout } = useAuthStore();
 
   useEffect(() => {
     if (typeof window === "undefined") return;
@@ -79,20 +78,24 @@ function GoogleAuthSyncInner() {
       searchParams.get("token") ||
       hashParams.get("accessToken") ||
       hashParams.get("token");
+    const sessionId =
+      searchParams.get("sessionId") || hashParams.get("sessionId") || "";
 
-    const refreshToken =
-      searchParams.get("refreshToken") || hashParams.get("refreshToken") || "";
-
-    if (token) {
+    if (token && sessionId) {
       cleanOAuthParamsFromUrl();
       void (async () => {
         try {
           resetAuthForOAuthCallback();
-          setTokensLocal(token, refreshToken);
-          await persistTokensToSession(token, refreshToken);
+          setTokensLocal(token);
           const realUser = await AuthService.me();
-          if (realUser?.id) {
-            setAuthLocal(realUser, token, refreshToken, true);
+          if (realUser?.user?.id) {
+            await setAuth({
+              user: realUser.user,
+              accessToken: token,
+              sessionId,
+              inverterAccess: realUser.inverterAccess ?? [],
+              rememberMe: true,
+            });
           } else {
             logout();
           }
@@ -104,7 +107,7 @@ function GoogleAuthSyncInner() {
     }
   }, [
     searchParams,
-    setAuthLocal,
+    setAuth,
     setTokensLocal,
     logout,
     router,

@@ -5,7 +5,8 @@ import { useAuthStore } from "@/stores/auth-store";
 import { toast } from "sonner";
 
 export const useInverterQueries = () => {
-  const { isAuthenticated, user } = useAuthStore();
+  const { isAuthenticated, token, user } = useAuthStore();
+  const canFetchProtected = isAuthenticated && !!token;
 
   const queryClient = useQueryClient();
 
@@ -13,7 +14,7 @@ export const useInverterQueries = () => {
     useQuery({
       queryKey: ["supported-brands"],
       queryFn: InverterService.getSupportedBrands,
-      enabled: isAuthenticated,
+      enabled: canFetchProtected,
       retry: false,
     });
 
@@ -45,8 +46,9 @@ export const useInverterQueries = () => {
     useQuery({
       queryKey: ["onboarding-status", user?.id],
       queryFn: InverterService.getOnboardingStatus,
-      enabled: isAuthenticated && !!user?.id,
-      retry: false,
+      enabled: canFetchProtected && !!user?.id,
+      retry: 2,
+      refetchOnWindowFocus: false,
       staleTime: 0,
     });
 
@@ -54,7 +56,7 @@ export const useInverterQueries = () => {
     useQuery({
       queryKey: ["user-inverters", user?.id],
       queryFn: () => InverterService.getUserInverters(user!.id),
-      enabled: isAuthenticated && !!user?.id,
+      enabled: canFetchProtected && !!user?.id,
       staleTime: 1000 * 60 * 5,
     });
 
@@ -62,14 +64,14 @@ export const useInverterQueries = () => {
     useQuery({
       queryKey: ["dashboard-metrics", inverterId],
       queryFn: () => InverterService.getDashboardMetrics(inverterId!),
-      enabled: isAuthenticated && !!inverterId,
+      enabled: canFetchProtected && !!inverterId,
     });
 
   const useEnergyUsage = (inverterId: string | undefined, period: string) =>
     useQuery({
       queryKey: ["energy-usage", inverterId, period],
       queryFn: () => InverterService.getEnergyUsage(inverterId!, period),
-      enabled: isAuthenticated && !!inverterId,
+      enabled: canFetchProtected && !!inverterId,
       placeholderData: keepPreviousData,
     });
 
@@ -77,14 +79,14 @@ export const useInverterQueries = () => {
     useQuery({
       queryKey: ["power-consumption", inverterId],
       queryFn: () => InverterService.getPowerConsumption(inverterId!),
-      enabled: isAuthenticated && !!inverterId,
+      enabled: canFetchProtected && !!inverterId,
     });
 
   const useCumulativeSavings = (inverterId: string | undefined) =>
     useQuery({
       queryKey: ["cumulative-savings", inverterId],
       queryFn: () => InverterService.getCumulativeSavings(inverterId!),
-      enabled: isAuthenticated && !!inverterId,
+      enabled: canFetchProtected && !!inverterId,
     });
 
   return {

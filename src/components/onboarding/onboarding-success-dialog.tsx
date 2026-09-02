@@ -3,8 +3,6 @@
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { trackEvent } from "@/lib/analytics";
-import { onboardingStorage } from "@/lib/onboarding-storage";
-import { useAuthStore } from "@/stores/auth-store";
 import {
   Dialog,
   DialogContent,
@@ -24,15 +22,13 @@ export function OnboardingSuccessDialog({
   onOpenChange,
 }: OnboardingSuccessDialogProps) {
   const router = useRouter();
-  const { user } = useAuthStore();
 
   useEffect(() => {
     if (open) {
-      onboardingStorage.setCompleted(user?.id);
       trackEvent("Screen View", { screen_name: "Onboarding Success" });
       trackEvent("Onboarding Complete", { screen_name: "Onboarding Success" });
     }
-  }, [open, user]);
+  }, [open]);
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>

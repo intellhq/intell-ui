@@ -16,27 +16,43 @@ if (!isServer) {
 }
 
 let refreshingPromise: Promise<RefreshTokenResponse> | null = null;
+let authRedirectInFlight = false;
+
+function redirectToLoginOnce() {
+  if (typeof window === "undefined" || authRedirectInFlight) return;
+  authRedirectInFlight = true;
+  window.location.replace("/login");
+}
 
 function handleSessionRefreshFailure(): never {
   useAuthStore.getState().logout();
-  window.location.replace("/login");
+  redirectToLoginOnce();
   throw new ApiError("Your session has expired. Please sign in again.", 401);
 }
 
 function getRefreshPromise(): Promise<RefreshTokenResponse> {
   if (!refreshingPromise) {
     refreshingPromise = refreshAuthSession()
-      .then((ok) => {
-        if (!ok) {
-          throw new Error("Session refresh failed");
+      .then((result) => {
+        if (!result.ok) {
+          if (result.status === 401) {
+            throw new ApiError(
+              result.message || "Your session has expired. Please sign in again.",
+              401,
+            );
+          }
+
+          throw new ApiError(
+            result.message || "Unable to refresh session right now.",
+            result.status ?? 500,
+          );
         }
-        const { token, refreshToken } = useAuthStore.getState();
+        const { token } = useAuthStore.getState();
         if (!token) {
           throw new Error("Session refresh missing tokens");
         }
         return {
           accessToken: token,
-          refreshToken: refreshToken ?? "",
         } satisfies RefreshTokenResponse;
       })
       .finally(() => {
@@ -122,8 +138,11 @@ export async function apiFetch<TResponse>(
       try {
         const refreshData = await getRefreshPromise();
         headers["Authorization"] = `Bearer ${refreshData.accessToken}`;
-      } catch {
-        handleSessionRefreshFailure();
+      } catch (error) {
+        if (error instanceof ApiError && error.status === 401) {
+          handleSessionRefreshFailure();
+        }
+        throw error;
       }
     }
   }
@@ -142,6 +161,7 @@ export async function apiFetch<TResponse>(
     const res = await axiosInstance.request({
       url,
       ...config,
+      withCredentials: true,
       headers,
     });
 
@@ -182,13 +202,15 @@ export async function apiFetch<TResponse>(
             { ...config, headers: newHeaders },
             proxy,
           );
-        } catch {
-          // Refresh failed, fall through to logout
+        } catch (error) {
+          if (error instanceof ApiError && error.status !== 401) {
+            throw error;
+          }
         }
 
-        // Clear auth tokens via Zustand on 401 if refresh failed.
+        // Clear auth tokens only when refresh definitively says the session is invalid.
         useAuthStore.getState().logout();
-        window.location.replace("/login");
+        redirectToLoginOnce();
       }
 
       const message =

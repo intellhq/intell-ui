@@ -1,6 +1,7 @@
 import { apiFetch } from "@/lib/api/client";
 // import { env } from "@/env/client";
 import {
+  InverterAccess,
   LoginResponse,
   RegisterResponse,
   VerifyEmailResponse,
@@ -16,15 +17,17 @@ import {
 
 export const AuthService = {
   googleLogin: () => {
-    const clientId = process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID;
-    const callbackUrl = process.env.NEXT_PUBLIC_GOOGLE_CALLBACK_URL;
-    const appUrl = process.env.NEXT_PUBLIC_APP_URL;
+    const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
+    const returnUrl = `${window.location.origin}/dashboard`;
 
-    if (!clientId || !callbackUrl) {
-      console.error("Google Auth environment variables are not defined");
+    if (!apiBaseUrl) {
+      console.error("NEXT_PUBLIC_API_BASE_URL is not defined");
       return;
     }
-    window.location.href = `${appUrl}/api/v1/auth/google`;
+
+    const baseUrl = apiBaseUrl.replace(/\/+$/, "");
+    const state = encodeURIComponent(`web:${encodeURIComponent(returnUrl)}`);
+    window.location.href = `${baseUrl}/auth/google?state=${state}`;
   },
 
   login: async (data: LoginFormValues) => {
@@ -97,6 +100,34 @@ export const AuthService = {
       "/auth/me",
       {
         method: "GET",
+      },
+      true,
+    );
+  },
+
+  acceptInvite: async (inviteToken: string) => {
+    return apiFetch<{ inverterId: string; role: InverterAccess["role"] }>(
+      "/auth/accept-invite",
+      {
+        method: "POST",
+        data: { inviteToken },
+      },
+      true,
+    );
+  },
+
+  registerFromInvite: async (data: {
+    inviteToken: string;
+    email: string;
+    firstName: string;
+    lastName: string;
+    password: string;
+  }) => {
+    return apiFetch<LoginResponse>(
+      "/auth/invite-register",
+      {
+        method: "POST",
+        data,
       },
       true,
     );

@@ -1,5 +1,6 @@
 import { create } from "zustand";
 import { persist, createJSONStorage } from "zustand/middleware";
+import { getRoleDashboards, getRolePermissions } from "@/lib/team-access-helpers";
 import type { TeamAccessRole, TeamMember } from "@/types/team-access";
 
 const TEAM_ACCESS_STORAGE_KEY = "energy-iq-team-access";
@@ -7,6 +8,8 @@ const TEAM_ACCESS_STORAGE_KEY = "energy-iq-team-access";
 const initialMembers: TeamMember[] = [
   {
     id: "member-1",
+    inverterId: "inverter-1",
+    userId: "user-1",
     firstName: "Amaka",
     lastName: "Okeke",
     email: "amaka@energyiq.africa",
@@ -18,6 +21,8 @@ const initialMembers: TeamMember[] = [
   },
   {
     id: "member-2",
+    inverterId: "inverter-1",
+    userId: "user-2",
     firstName: "Tunde",
     lastName: "Bakare",
     email: "tunde@energyiq.africa",
@@ -29,6 +34,8 @@ const initialMembers: TeamMember[] = [
   },
   {
     id: "member-3",
+    inverterId: "inverter-1",
+    userId: "user-3",
     firstName: "Chidi",
     lastName: "Obi",
     email: "chidi@energyiq.africa",
@@ -56,16 +63,6 @@ interface TeamAccessState {
   resetMembers: () => void;
 }
 
-function getRolePermissions(role: TeamAccessRole): string {
-  if (role === "admin") return "Full access";
-  if (role === "technician") return "System alerts and metrics only";
-  return "Read-only access";
-}
-
-function getRoleDashboards(role: TeamAccessRole): number {
-  return role === "technician" ? 2 : 1;
-}
-
 export const useTeamAccessStore = create<TeamAccessState>()(
   persist(
     (set) => ({
@@ -78,6 +75,8 @@ export const useTeamAccessStore = create<TeamAccessState>()(
           members: [
             {
               ...member,
+              inverterId: "inverter-1",
+              userId: null,
               status: "pending",
               permissions: getRolePermissions(member.role),
               dashboards: getRoleDashboards(member.role),

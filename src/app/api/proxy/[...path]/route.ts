@@ -1,7 +1,38 @@
 import { NextResponse } from "next/server";
+import { cookies } from "next/headers";
 // import { env } from "@/env/server";
 
 const API_BASE_URL = process.env.API_BASE_URL;
+const REFRESH_TOKEN_COOKIE = "refresh_token";
+
+function getSetCookieHeaders(headers: Headers): string[] {
+  const headersWithSetCookie = headers as Headers & {
+    getSetCookie?: () => string[];
+  };
+
+  if (typeof headersWithSetCookie.getSetCookie === "function") {
+    return headersWithSetCookie.getSetCookie();
+  }
+
+  const setCookieHeader = headers.get("set-cookie");
+  return setCookieHeader ? [setCookieHeader] : [];
+}
+
+function parseRefreshTokenCookie(setCookieHeader: string): {
+  value: string;
+  clear: boolean;
+} | null {
+  const match = setCookieHeader.match(/refresh_token=([^;]*)/i);
+
+  if (!match) {
+    return null;
+  }
+
+  return {
+    value: match[1] ?? "",
+    clear: /max-age=0/i.test(setCookieHeader),
+  };
+}
 
 const buildBackendUrl = (path: string, search: string): string => {
   if (!API_BASE_URL) {
@@ -58,6 +89,25 @@ const buildForwardHeaders = (req: Request): Headers => {
   }
 
   return headers;
+};
+
+const addRefreshTokenCookie = (
+  headers: Headers,
+  refreshToken: string | undefined,
+) => {
+  if (!refreshToken) return;
+
+  const currentCookie = headers.get("cookie");
+  const withoutRefreshToken = currentCookie
+    ?.split(";")
+    .map((cookie) => cookie.trim())
+    .filter((cookie) => cookie && !cookie.startsWith(`${REFRESH_TOKEN_COOKIE}=`));
+  const nextCookies = [
+    ...(withoutRefreshToken ?? []),
+    `${REFRESH_TOKEN_COOKIE}=${refreshToken}`,
+  ];
+
+  headers.set("cookie", nextCookies.join("; "));
 };
 
 export async function GET(
@@ -130,6 +180,13 @@ async function proxyRequest(req: Request, paramSegments?: string[]) {
     const backendUrl = buildBackendUrl(pathname, search);
     const rawBody = await extractBody(req);
     const headers = buildForwardHeaders(req);
+    if (pathname === "auth/refresh") {
+      const cookieStore = await cookies();
+      addRefreshTokenCookie(
+        headers,
+        cookieStore.get(REFRESH_TOKEN_COOKIE)?.value,
+      );
+    }
     const backendRes = await forwardRequest(backendUrl, req, rawBody, headers);
     // If the backend returns a 4xx or 5xx error, we still want to forward the response body
     // so the client can display the specific error message (e.g., "Invalid email or password").
@@ -145,9 +202,25 @@ async function proxyRequest(req: Request, paramSegments?: string[]) {
           "application/json; charset=utf-8",
       },
     });
-    const setCookieHeader = backendRes.headers.get("set-cookie");
-    if (setCookieHeader) {
-      nextRes.headers.set("set-cookie", setCookieHeader);
+    const setCookieHeaders = getSetCookieHeaders(backendRes.headers);
+    if (setCookieHeaders.length > 0) {
+      nextRes.headers.delete("set-cookie");
+      for (const setCookieHeader of setCookieHeaders) {
+        const refreshTokenCookie = parseRefreshTokenCookie(setCookieHeader);
+
+        if (refreshTokenCookie) {
+          nextRes.cookies.set(REFRESH_TOKEN_COOKIE, refreshTokenCookie.value, {
+            path: "/",
+            sameSite: "lax",
+            secure: process.env.NODE_ENV === "production",
+            httpOnly: true,
+            ...(refreshTokenCookie.clear ? { maxAge: 0 } : {}),
+          });
+          continue;
+        }
+
+        nextRes.headers.append("set-cookie", setCookieHeader);
+      }
     }
     return nextRes;
   } catch (error) {

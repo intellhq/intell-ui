@@ -6,12 +6,45 @@ import { useQuery } from "@tanstack/react-query";
 import { AuthService } from "@/services/auth-service";
 import { ProfileService } from "@/services/profile-service";
 import { useAuthStore } from "@/stores/auth-store";
-import { User } from "@/types/auth";
+import { InverterAccess, User } from "@/types/auth";
+
+function normalizeMePayload(payload: unknown): {
+  user: User | null;
+  inverterAccess: InverterAccess[];
+} {
+  if (!payload || typeof payload !== "object") {
+    return { user: null, inverterAccess: [] };
+  }
+
+  const record = payload as Record<string, unknown>;
+  const nestedUser =
+    record.user && typeof record.user === "object"
+      ? (record.user as User)
+      : null;
+
+  if (nestedUser) {
+    return {
+      user: nestedUser,
+      inverterAccess: Array.isArray(record.inverterAccess)
+        ? (record.inverterAccess as InverterAccess[])
+        : [],
+    };
+  }
+
+  return {
+    user: record as unknown as User,
+    inverterAccess: Array.isArray(record.inverterAccess)
+      ? (record.inverterAccess as InverterAccess[])
+      : [],
+  };
+}
 
 export function useCurrentUserSync(options?: { enabled?: boolean }) {
   const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
+  const token = useAuthStore((state) => state.token);
   const setUser = useAuthStore((state) => state.setUser);
-  const enabled = (options?.enabled ?? true) && isAuthenticated;
+  const setInverterAccess = useAuthStore((state) => state.setInverterAccess);
+  const enabled = (options?.enabled ?? true) && isAuthenticated && !!token;
 
   const query = useQuery({
     queryKey: ["auth-me"],
@@ -24,16 +57,19 @@ export function useCurrentUserSync(options?: { enabled?: boolean }) {
   useEffect(() => {
     if (!query.data) return;
 
-    const me = query.data;
+    const me = normalizeMePayload(query.data);
+    if (!me.user) return;
+
     const currentUser = useAuthStore.getState().user;
+    setInverterAccess(me.inverterAccess ?? []);
 
     if (currentUser) {
       const defined = Object.fromEntries(
-        Object.entries(me).filter(([, v]) => v !== undefined && v !== null),
+        Object.entries(me.user).filter(([, v]) => v !== undefined && v !== null),
       );
       setUser({ ...currentUser, ...defined } as User);
     } else {
-      setUser(me);
+      setUser(me.user);
     }
 
     const latestAtStart = useAuthStore.getState().user;
@@ -63,7 +99,7 @@ export function useCurrentUserSync(options?: { enabled?: boolean }) {
         }
       })();
     }
-  }, [query.data, setUser]);
+  }, [query.data, setInverterAccess, setUser]);
 
   return query;
 }

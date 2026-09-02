@@ -1,65 +1,51 @@
+import { AuthService } from "@/services/auth-service";
+import { ApiError } from "@/lib/api/error";
 import { useAuthStore } from "@/stores/auth-store";
 import type { RefreshTokenResponse } from "@/types/auth";
 
-/** Wipe stale client state before applying a new OAuth callback token. */
+export type RefreshSessionResult =
+  | { ok: true }
+  | { ok: false; status?: number; message?: string };
+
 export function resetAuthForOAuthCallback(): void {
   useAuthStore.getState().clearClientAuth();
 }
 
-export async function persistTokensToSession(
-  token: string,
-  refreshToken: string,
-): Promise<void> {
-  if (typeof window === "undefined") return;
-
-  const response = await fetch("/api/session", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    credentials: "include",
-    body: JSON.stringify({ token, refreshToken }),
-  });
-
-  if (!response.ok) {
-    throw new Error(`Failed to persist auth session cookies (${response.status})`);
-  }
-}
-
 function applyRefreshResponse(data: RefreshTokenResponse) {
-  const { user, setAuthLocal, setTokensLocal } = useAuthStore.getState();
-  const rememberMe =
-    typeof window !== "undefined" &&
-    localStorage.getItem("remember_me") === "1";
-
-  if (user) {
-    setAuthLocal(user, data.accessToken, data.refreshToken, rememberMe);
-  } else {
-    setTokensLocal(data.accessToken, data.refreshToken);
-  }
+  const { setTokensLocal } = useAuthStore.getState();
+  setTokensLocal(data.accessToken);
 }
 
-export async function refreshAuthSession(): Promise<boolean> {
-  if (typeof window === "undefined") return false;
+export async function refreshAuthSession(): Promise<RefreshSessionResult> {
+  if (typeof window === "undefined") {
+    return { ok: false, message: "Refresh is only available in the browser." };
+  }
+
+  const { sessionId, setSessionId } = useAuthStore.getState();
+  if (!sessionId) {
+    return { ok: false, status: 401, message: "Missing sessionId." };
+  }
 
   try {
-    const response = await fetch("/api/session", {
-      method: "PATCH",
-      credentials: "include",
-    });
-
-    if (!response.ok) {
-      return false;
-    }
-
-    const payload = await response.json().catch(() => null);
-    const data = (payload?.data ?? payload) as RefreshTokenResponse | null;
+    const data = await AuthService.refresh({ sessionId });
 
     if (!data?.accessToken) {
-      return false;
+      return {
+        ok: false,
+        status: 502,
+        message: "Refresh response is missing an access token.",
+      };
     }
 
     applyRefreshResponse(data);
-    return true;
-  } catch {
-    return false;
+    setSessionId(sessionId);
+
+    return { ok: true };
+  } catch (error) {
+    return {
+      ok: false,
+      status: error instanceof ApiError ? error.status : 500,
+      message: error instanceof Error ? error.message : "Refresh failed.",
+    };
   }
 }

@@ -3,7 +3,9 @@ export interface User {
   email: string;
   firstName: string;
   lastName: string;
-  isEmailVerified: boolean;
+  onboardingComplete?: boolean;
+  emailVerified?: boolean;
+  isEmailVerified?: boolean;
   createdAt: string;
   updatedAt: string;
   profilePhoto?: string;
@@ -13,23 +15,44 @@ export interface User {
   state?: string;
   city?: string;
   aiLanguage?: string;
+  role?: string;
 }
 
-export interface AuthResponse {
-  user: User;
+export interface InverterAccess {
+  inverterId: string;
+  role: string;
+}
+
+export interface LoginResponse {
   accessToken: string;
-  refreshToken: string;
+  sessionId: string;
+  user: User;
+  inverterAccess: InverterAccess[];
 }
 
-export type LoginResponse = AuthResponse;
+export interface RegisterResponse {
+  id: string;
+  email: string;
+  firstName: string;
+  lastName: string;
+  emailVerified?: boolean;
+  isEmailVerified?: boolean;
+  createdAt: string;
+  updatedAt: string;
+}
 
-export type RegisterResponse = AuthResponse;
-
-export type VerifyEmailResponse = AuthResponse;
+export interface VerifyEmailResponse {
+  accessToken?: string;
+  sessionId?: string;
+  user: User;
+  inverterAccess?: InverterAccess[];
+}
 
 export interface RefreshTokenResponse {
   accessToken: string;
-  refreshToken: string;
 }
 
-export type MeResponse = User;
+export interface MeResponse {
+  user: User;
+  inverterAccess: InverterAccess[];
+}

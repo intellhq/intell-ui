@@ -1,17 +1,23 @@
 "use client";
 
 import { useEffect } from "react";
+import { useRef, useState } from "react";
 import { useRouter, usePathname, useSearchParams } from "next/navigation";
 import { useInverterQueries } from "@/hooks/use-inverter-queries";
+import { refreshAuthSession } from "@/lib/auth-session";
 import { useAuthStore } from "@/stores/auth-store";
-import { onboardingStorage } from "@/lib/onboarding-storage";
 
 export function OnboardingGuard({ children }: { children: React.ReactNode }) {
   const router = useRouter();
   const pathname = usePathname();
-  const { isAuthenticated, _hasHydrated, user } = useAuthStore();
+  const { isAuthenticated, _hasHydrated, user, token, sessionId, logout } =
+    useAuthStore();
+  const [isRestoringSession, setIsRestoringSession] = useState(false);
+  const restoreStartedRef = useRef(false);
   const { useOnboardingStatus } = useInverterQueries();
-  const { data: status, isLoading, isError } = useOnboardingStatus();
+  const {
+    data: status,
+  } = useOnboardingStatus();
   const searchParams = useSearchParams();
   const search = searchParams.toString();
   const currentUrl = `${pathname}${search ? `?${search}` : ""}`;
@@ -25,11 +31,35 @@ export function OnboardingGuard({ children }: { children: React.ReactNode }) {
     hashParams.has("accessToken") ||
     hashParams.has("token");
 
-  const isFullyOnboarded =
-    status?.onboardingComplete === true &&
-    status?.steps?.accountCreated === true &&
-    status?.steps?.emailVerified === true &&
-    status?.steps?.inverterConnected === true;
+  const hasResolvedOnboarding =
+    Boolean(_hasHydrated) &&
+    Boolean(isAuthenticated) &&
+    Boolean(user?.id) &&
+    Boolean(token);
+  const needsSessionRestore =
+    Boolean(_hasHydrated) &&
+    Boolean(isAuthenticated) &&
+    Boolean(sessionId) &&
+    !token &&
+    !hasIncomingOAuthToken;
+
+  useEffect(() => {
+    if (!needsSessionRestore || restoreStartedRef.current) return;
+
+    restoreStartedRef.current = true;
+    setIsRestoringSession(true);
+
+    refreshAuthSession()
+      .then((result) => {
+        if (result.ok) return;
+
+        logout();
+        router.replace(`/login?redirect=${encodeURIComponent(currentUrl)}`);
+      })
+      .finally(() => {
+        setIsRestoringSession(false);
+      });
+  }, [currentUrl, logout, needsSessionRestore, router]);
 
   useEffect(() => {
     if (!_hasHydrated) return;
@@ -40,35 +70,29 @@ export function OnboardingGuard({ children }: { children: React.ReactNode }) {
       return;
     }
 
-    if (!isLoading && !isError) {
-      // Check localStorage flag first before redirecting
-      const isStorageMarkedComplete =
-        user?.id && onboardingStorage.isCompleted(user.id);
-
-      if (!isFullyOnboarded && !isStorageMarkedComplete) {
-        router.replace("/onboarding");
-      }
+    if (status?.onboardingComplete === false && user?.onboardingComplete !== true) {
+      router.replace("/onboarding");
     }
   }, [
     _hasHydrated,
     hasIncomingOAuthToken,
     isAuthenticated,
-    isLoading,
-    isError,
-    isFullyOnboarded,
+    sessionId,
+    status?.onboardingComplete,
+    user?.onboardingComplete,
     user?.id,
     router,
     currentUrl,
   ]);
 
-  useEffect(() => {
-    if (isFullyOnboarded && user?.id) {
-      onboardingStorage.setCompleted(user.id);
-    }
-  }, [isFullyOnboarded, user?.id]);
-
   // IMPORTANT: Wait for hydration before rendering anything or redirecting
-  if (!_hasHydrated || hasIncomingOAuthToken) {
+  if (
+    _hasHydrated === false ||
+    hasIncomingOAuthToken ||
+    needsSessionRestore ||
+    isRestoringSession ||
+    !hasResolvedOnboarding
+  ) {
     return (
       <div className="flex min-h-[60vh] items-center justify-center">
         <div className="border-secondary h-8 w-8 animate-spin rounded-full border-4 border-t-transparent" />
@@ -78,34 +102,6 @@ export function OnboardingGuard({ children }: { children: React.ReactNode }) {
 
   if (!isAuthenticated) {
     return null;
-  }
-
-  if (isLoading) {
-    return (
-      <div className="flex min-h-[60vh] items-center justify-center">
-        <div className="border-secondary h-8 w-8 animate-spin rounded-full border-4 border-t-transparent" />
-      </div>
-    );
-  }
-
-  if (isError) {
-    return (
-      <div
-        role="alert"
-        className="flex min-h-[60vh] items-center justify-center text-sm text-muted-foreground"
-      >
-        Unable to verify onboarding status. Please refresh and try again.
-      </div>
-    );
-  }
-
-  if (!isFullyOnboarded) {
-    // If localStorage says completed but query says otherwise, still allow (avoid redirect loop)
-    const isStorageMarkedComplete =
-      user?.id && onboardingStorage.isCompleted(user.id);
-    if (!isStorageMarkedComplete) {
-      return null;
-    }
   }
 
   return <>{children}</>;

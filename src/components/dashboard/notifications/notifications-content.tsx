@@ -1,17 +1,34 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
-import { Pencil, X, AlertCircle, CheckCircle2, Loader2, type LucideIcon } from "lucide-react";
+import {
+  Pencil,
+  X,
+  AlertCircle,
+  CheckCircle2,
+  Loader2,
+  type LucideIcon,
+} from "lucide-react";
 import { Switch } from "@/components/ui/switch";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
-import { InputOTP, InputOTPGroup, InputOTPSlot } from "@/components/ui/input-otp";
+import {
+  InputOTP,
+  InputOTPGroup,
+  InputOTPSlot,
+} from "@/components/ui/input-otp";
 import { cn } from "@/lib/utils";
 import { ALERT_ROWS, DELIVERY_CHANNELS } from "@/constants/notifications";
 import { useAuthStore } from "@/stores/auth-store";
 
-function SectionHeader({ title, description }: { title: string; description: string }) {
+function SectionHeader({
+  title,
+  description,
+}: {
+  title: string;
+  description: string;
+}) {
   return (
     <div className="flex flex-col gap-2">
       <h2 className="text-[20px] font-semibold leading-none text-(--color-surface-100)">
@@ -51,8 +68,12 @@ function AlertRow({
           />
         </div>
         <div className="flex flex-col gap-1 min-w-0">
-          <span className="text-sm font-semibold text-(--color-surface-100)">{title}</span>
-          <span className="text-sm text-muted-foreground leading-snug">{description}</span>
+          <span className="text-sm font-semibold text-(--color-surface-100)">
+            {title}
+          </span>
+          <span className="text-sm text-muted-foreground leading-snug">
+            {description}
+          </span>
         </div>
       </div>
       <div className="shrink-0 mr-3">
@@ -74,7 +95,13 @@ function SectionCard({ children }: { children: React.ReactNode }) {
   );
 }
 
-function SuccessModal({ open, onClose }: { open: boolean; onClose: () => void }) {
+function SuccessModal({
+  open,
+  onClose,
+}: {
+  open: boolean;
+  onClose: () => void;
+}) {
   const user = useAuthStore((state) => state.user);
   const firstName = user?.firstName || "Amaka";
 
@@ -89,7 +116,13 @@ function SuccessModal({ open, onClose }: { open: boolean; onClose: () => void })
             className="flex items-center justify-center rounded-full mt-10 bg-(--color-success-alt)"
             style={{ width: 86, height: 86, padding: 12 }}
           >
-            <svg width="74" height="74" viewBox="0 0 74 74" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <svg
+              width="74"
+              height="74"
+              viewBox="0 0 74 74"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
               <path
                 d="M18 37L30 50L56 24"
                 stroke="white"
@@ -105,7 +138,8 @@ function SuccessModal({ open, onClose }: { open: boolean; onClose: () => void })
               Phone Verification Successful
             </h2>
             <p className="font-normal text-base text-center leading-none text-(--color-slate-80)">
-              Hello {firstName}, your phone number has been successfully verified.
+              Hello {firstName}, your phone number has been successfully
+              verified.
             </p>
           </div>
 
@@ -118,7 +152,9 @@ function SuccessModal({ open, onClose }: { open: boolean; onClose: () => void })
           </Button>
         </div>
 
-        <DialogTitle className="sr-only">Phone Verification Successful</DialogTitle>
+        <DialogTitle className="sr-only">
+          Phone Verification Successful
+        </DialogTitle>
       </DialogContent>
     </Dialog>
   );
@@ -134,7 +170,9 @@ function VerifyModal({
   onSuccess: () => void;
 }) {
   const [otp, setOtp] = useState("");
-  const [status, setStatus] = useState<"idle" | "error" | "success" | "loading">("idle");
+  const [status, setStatus] = useState<
+    "idle" | "error" | "success" | "loading"
+  >("idle");
   const [seconds, setSeconds] = useState(119);
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
@@ -164,7 +202,9 @@ function VerifyModal({
         return s - 1;
       });
     }, 1000);
-    return () => { if (timerRef.current) clearInterval(timerRef.current); };
+    return () => {
+      if (timerRef.current) clearInterval(timerRef.current);
+    };
   }, [open, status]);
 
   const formatTimer = (s: number) => {
@@ -179,7 +219,10 @@ function VerifyModal({
     setTimeout(() => {
       if (otp === "123456") {
         setStatus("success");
-        setTimeout(() => { onClose(); onSuccess(); }, 800);
+        setTimeout(() => {
+          onClose();
+          onSuccess();
+        }, 800);
       } else {
         setStatus("error");
       }
@@ -231,8 +274,8 @@ function VerifyModal({
                       status === "error"
                         ? "border-destructive"
                         : status === "success"
-                        ? "border-(--color-success-alt)"
-                        : "border-(--color-surface-90)"
+                          ? "border-(--color-success-alt)"
+                          : "border-(--color-surface-90)",
                     )}
                   />
                 ))}
@@ -254,7 +297,9 @@ function VerifyModal({
           ) : (
             <div className="flex items-center gap-2 rounded-[8px] p-2.5 bg-(--color-success-bg) mt-8.5 w-full sm:w-70">
               <CheckCircle2 className="size-4 shrink-0 text-(--color-success-alt)" />
-              <span className="text-sm text-(--color-success-alt)">Successful</span>
+              <span className="text-sm text-(--color-success-alt)">
+                Successful
+              </span>
             </div>
           )}
         </div>
@@ -271,12 +316,14 @@ function VerifyModal({
           <Button
             size="lg"
             onClick={handleVerify}
-            disabled={!isOtpFull || status === "loading" || status === "success"}
+            disabled={
+              !isOtpFull || status === "loading" || status === "success"
+            }
             className={cn(
               "h-10 px-4 py-2 rounded-(--radius) text-sm font-medium transition-colors border",
               isOtpFull
                 ? "bg-(--color-secondary) text-(--color-surface-10) border-transparent"
-                : "bg-(--color-surface-10) text-(--color-dark-bg) border-(--color-border-disabled)"
+                : "bg-(--color-surface-10) text-(--color-dark-bg) border-(--color-border-disabled)",
             )}
             style={{ width: status === "loading" ? 222 : 79 }}
           >
@@ -298,8 +345,6 @@ function VerifyModal({
 }
 
 export function NotificationContent() {
-  const user = useAuthStore((state) => state.user);
-
   const [alertStates, setAlertStates] = useState<Record<string, boolean>>({
     battery_low: true,
     predictive_depletion: false,
@@ -311,7 +356,7 @@ export function NotificationContent() {
   const [successModalOpen, setSuccessModalOpen] = useState(false);
 
   const [selectedChannels, setSelectedChannels] = useState<string[]>(
-    DELIVERY_CHANNELS.filter(c => c.defaultChecked).map(c => c.id)
+    DELIVERY_CHANNELS.filter((c) => c.defaultChecked).map((c) => c.id),
   );
   const [isEditingThreshold, setIsEditingThreshold] = useState(false);
   const [threshold, setThreshold] = useState("20%");
@@ -323,7 +368,7 @@ export function NotificationContent() {
   const hasPhone = phone.trim().length > 0;
 
   return (
-    <div className="flex flex-col gap-8 mt-8">
+    <div className="flex flex-col gap-6">
       <div>
         <h1 className="text-2xl font-bold text-(--color-dark-text)">
           Notification Preferences
@@ -399,7 +444,8 @@ export function NotificationContent() {
                 onClick={() => hasPhone && setVerifyModalOpen(true)}
                 className={cn(
                   "w-full sm:w-38.5 h-10 rounded-(--radius) text-sm font-medium transition-colors",
-                  !hasPhone && "pointer-events-none bg-(--color-border-disabled) text-(--color-slate-60)"
+                  !hasPhone &&
+                    "pointer-events-none bg-(--color-border-disabled) text-(--color-slate-60)",
                 )}
               >
                 Verify Number
@@ -424,10 +470,10 @@ export function NotificationContent() {
                 type="checkbox"
                 checked={selectedChannels.includes(channel.id)}
                 onChange={(e) => {
-                  setSelectedChannels(prev => 
-                    e.target.checked 
+                  setSelectedChannels((prev) =>
+                    e.target.checked
                       ? [...prev, channel.id]
-                      : prev.filter(id => id !== channel.id)
+                      : prev.filter((id) => id !== channel.id),
                   );
                 }}
                 className="mt-0.5 h-4 w-4 shrink-0 rounded-sm border border-(--color-border-active) accent-(--color-secondary) cursor-pointer"
@@ -461,7 +507,7 @@ export function NotificationContent() {
           <Button
             variant="secondary"
             size="lg"
-            onClick={() => setIsEditingThreshold(prev => !prev)}
+            onClick={() => setIsEditingThreshold((prev) => !prev)}
             className="shrink-0 w-full sm:w-38.5 h-10 rounded-(--radius) text-sm font-medium gap-1.5"
           >
             <Pencil className="size-4" />
@@ -479,7 +525,8 @@ export function NotificationContent() {
             disabled={!isEditingThreshold}
             className={cn(
               "h-13 w-full rounded-[8px] border border-(--color-border-active) px-7 py-3.25 text-sm bg-(--color-surface-20) focus-visible:border-(--color-border-active)",
-              !isEditingThreshold && "opacity-75 cursor-not-allowed bg-(--color-surface-30)"
+              !isEditingThreshold &&
+                "opacity-75 cursor-not-allowed bg-(--color-surface-30)",
             )}
           />
         </div>

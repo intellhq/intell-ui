@@ -1,11 +1,6 @@
 import { UsersRound } from "lucide-react";
-import { Button } from "@/components/ui/button";
 
-export function TeamAccessEmptyState({
-  onInvite,
-}: {
-  onInvite: () => void;
-}) {
+export function TeamAccessEmptyState() {
   return (
     <div className="border-border bg-card flex flex-col items-center gap-4 rounded-2xl border px-6 py-14 text-center">
       <div className="bg-muted flex size-14 items-center justify-center rounded-full">
@@ -19,7 +14,6 @@ export function TeamAccessEmptyState({
           Invite your first admin, technician, or viewer to start sharing dashboard access.
         </p>
       </div>
-      <Button onClick={onInvite}>Invite Team Member</Button>
     </div>
   );
 }

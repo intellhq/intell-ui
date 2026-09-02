@@ -89,13 +89,15 @@ export function DashboardHeader() {
           >
             <Bell className="text-secondary h-5 w-5" strokeWidth={1.2} />
           </button>
-          <div
-            className={
-              notificationsOpen ? "fixed inset-x-3 top-16 z-50" : "hidden"
-            }
-          >
-            <NotificationsDropdown />
-          </div>
+          {mounted ? (
+            <div
+              className={
+                notificationsOpen ? "fixed inset-x-3 top-16 z-50" : "hidden"
+              }
+            >
+              {notificationsOpen ? <NotificationsDropdown /> : null}
+            </div>
+          ) : null}
         </div>
 
         <div className="relative mt-4 mr-6 mb-4">
@@ -144,15 +146,17 @@ export function DashboardHeader() {
           >
             <Bell className="text-secondary h-5 w-5" strokeWidth={1.2} />
           </button>
-          <div
-            className={
-              notificationsOpen
-                ? "absolute right-0 top-full z-50 mt-3 w-95"
-                : "hidden"
-            }
-          >
-            <NotificationsDropdown />
-          </div>
+          {mounted ? (
+            <div
+              className={
+                notificationsOpen
+                  ? "absolute right-0 top-full z-50 mt-3 w-95"
+                  : "hidden"
+              }
+            >
+              {notificationsOpen ? <NotificationsDropdown /> : null}
+            </div>
+          ) : null}
         </div>
 
         <div className="relative flex items-center gap-3" ref={dropdownRef}>

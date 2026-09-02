@@ -1,134 +1,140 @@
 "use client";
 
-import { useState } from "react";
 import Link from "next/link";
-import { Check, AlertTriangle, Sun, TrendingUp, Cpu } from "lucide-react";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { Check, AlertTriangle, Bell, Cpu, Sun, TrendingUp } from "lucide-react";
+import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import { notificationsService } from "@/services/notifications-service";
+import type { NotificationItem } from "@/types/notifications";
 
-type NotificationItem = {
-  id: string;
-  icon: React.ElementType;
-  iconClass: string;
-  title: string;
-  time: string;
-  read: boolean;
-};
+function formatRelativeTime(value: string) {
+  const date = new Date(value);
+  const diff = Date.now() - date.getTime();
+  const minutes = Math.max(1, Math.floor(diff / 60000));
 
-const MOCK_NOTIFICATIONS: NotificationItem[] = [
-  {
-    id: "1",
-    icon: AlertTriangle,
-    iconClass: "text-danger",
-    title: "Battery may run flat by 10am",
-    time: "Just now",
-    read: false,
-  },
-  {
-    id: "2",
-    icon: Sun,
-    iconClass: "text-amber-500",
-    title: "Solar output dipped at 11:45 am",
-    time: "2hrs ago",
-    read: false,
-  },
-  {
-    id: "3",
-    icon: TrendingUp,
-    iconClass: "text-success-alt",
-    title: "₦8,430 saved this month",
-    time: "2hr ago",
-    read: true,
-  },
-  {
-    id: "4",
-    icon: Cpu,
-    iconClass: "text-muted-foreground",
-    title: "New AI insight ready",
-    time: "Yesterday",
-    read: true,
-  },
-];
+  if (minutes < 60) return `${minutes}m ago`;
+  const hours = Math.floor(minutes / 60);
+  if (hours < 24) return `${hours}h ago`;
+  const days = Math.floor(hours / 24);
+  return `${days}d ago`;
+}
+
+function getNotificationIcon(notification: NotificationItem) {
+  const text = `${notification.title} ${notification.subtitle}`.toLowerCase();
+  if (text.includes("battery") || text.includes("alert")) return AlertTriangle;
+  if (text.includes("solar")) return Sun;
+  if (text.includes("save")) return TrendingUp;
+  if (/\bai\b/.test(text)) return Cpu;
+  return Bell;
+}
 
 export function NotificationsDropdown() {
-  const [notifications, setNotifications] = useState(MOCK_NOTIFICATIONS);
+  const queryClient = useQueryClient();
+  const query = useQuery({
+    queryKey: ["notifications-dropdown"],
+    queryFn: () => notificationsService.getNotifications(1, 5),
+    retry: false,
+  });
 
-  const unreadCount = notifications.filter((n) => !n.read).length;
+  const notifications = query.data?.payload ?? [];
+  const unreadPreviewCount = notifications.filter((item) => !item.isRead).length;
+  const hasUnreadPreview = unreadPreviewCount > 0;
 
-  const markAllRead = () =>
-    setNotifications((prev) => prev.map((n) => ({ ...n, read: true })));
+  const markReadMutation = useMutation({
+    mutationFn: (notificationId: string) => notificationsService.markAsRead(notificationId),
+    onSuccess: () => {
+      void queryClient.invalidateQueries({ queryKey: ["notifications-dropdown"] });
+      void queryClient.invalidateQueries({ queryKey: ["notifications-page"] });
+    },
+  });
+
+  const markAllRead = async () => {
+    const unread = notifications.filter((item) => !item.isRead);
+    await Promise.all(unread.map((item) => markReadMutation.mutateAsync(item.id)));
+  };
 
   return (
-    <div className="border-[#E5E5E5] bg-white w-full md:w-104.5 overflow-hidden rounded-2xl border shadow-xl">
-      {/* Header */}
+    <div className="w-full overflow-hidden rounded-2xl border border-[#E5E5E5] bg-white shadow-xl md:w-104.5">
       <div className="flex items-center justify-between px-5 py-4">
-        <h3 className="text-foreground text-base font-semibold flex items-center gap-2">
+        <h3 className="flex items-center gap-2 text-base font-semibold text-foreground">
           Notifications
-          {unreadCount > 0 && (
-            <span className="bg-danger inline-flex size-5 items-center justify-center rounded-full text-[10px] font-bold text-white">
-              {unreadCount}
-            </span>
+          {hasUnreadPreview && (
+            <span className="inline-flex size-2.5 rounded-full bg-danger" aria-label="Unread notifications in preview" />
           )}
         </h3>
-        <button
+        <Button
           type="button"
-          onClick={markAllRead}
-          disabled={unreadCount === 0}
-          className={cn(
-            "flex items-center gap-1 text-xs transition-colors",
-            unreadCount > 0
-              ? "text-muted-foreground hover:text-foreground cursor-pointer"
-              : "text-muted-foreground/40 cursor-default",
-          )}
+          variant="ghost"
+          size="sm"
+          onClick={() => void markAllRead()}
+          disabled={!hasUnreadPreview || markReadMutation.isPending}
+          className="h-auto px-0 text-xs text-muted-foreground hover:bg-transparent hover:text-foreground"
         >
           <Check className="h-3.5 w-3.5" />
-          Mark as read
-        </button>
+          Mark preview as read
+        </Button>
       </div>
 
-      {/* List */}
       <div className="divide-border divide-y">
-        {notifications.map((n) => {
-          const Icon = n.icon;
-          return (
-            <div
-              key={n.id}
-              className={cn(
-                "flex items-start gap-3 px-5 py-4 transition-colors",
-                !n.read ? "bg-muted/40" : "bg-card",
-              )}
-            >
-              <span className="border-border flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border bg-white">
-                <Icon className={cn("h-4 w-4", n.iconClass)} />
-              </span>
-              <div className="min-w-0 flex-1">
-                <p
-                  className={cn(
-                    "text-sm leading-snug",
-                    n.read
-                      ? "text-foreground/70"
-                      : "text-foreground font-medium",
-                  )}
-                >
-                  {n.title}
-                </p>
-                <p className="text-muted-foreground mt-0.5 text-xs">{n.time}</p>
-              </div>
-              {!n.read && (
-                <span className="bg-primary mt-1.5 h-2 w-2 shrink-0 rounded-full" />
-              )}
-            </div>
-          );
-        })}
+        {query.isLoading ? (
+          <div className="px-5 py-8 text-sm text-muted-foreground">Loading notifications...</div>
+        ) : query.isError ? (
+          <div className="px-5 py-8 text-sm text-muted-foreground">
+            Notifications are unavailable right now.
+          </div>
+        ) : notifications.length === 0 ? (
+          <div className="px-5 py-8 text-sm text-muted-foreground">No notifications yet.</div>
+        ) : (
+          notifications.map((notification) => {
+            const Icon = getNotificationIcon(notification);
+            return (
+              <button
+                key={notification.id}
+                type="button"
+                onClick={() => {
+                  if (!notification.isRead) {
+                    markReadMutation.mutate(notification.id);
+                  }
+                }}
+                className={cn(
+                  "flex w-full items-start gap-3 px-5 py-4 text-left transition-colors",
+                  !notification.isRead ? "bg-muted/40" : "bg-card",
+                )}
+              >
+                <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-border bg-white">
+                  <Icon className="h-4 w-4 text-muted-foreground" />
+                </span>
+                <div className="min-w-0 flex-1">
+                  <p
+                    className={cn(
+                      "text-sm leading-snug",
+                      notification.isRead
+                        ? "text-foreground/70"
+                        : "font-medium text-foreground",
+                    )}
+                  >
+                    {notification.title}
+                  </p>
+                  <p className="mt-0.5 text-xs text-muted-foreground">
+                    {formatRelativeTime(notification.createdAt)}
+                  </p>
+                </div>
+                {!notification.isRead && (
+                  <span className="mt-1.5 h-2 w-2 shrink-0 rounded-full bg-primary" />
+                )}
+              </button>
+            );
+          })
+        )}
       </div>
 
-      {/* Footer */}
       <Link
-        href="/dashboard/settings/notifications"
-        className="text-muted-foreground hover:text-foreground border-border block border-t py-4 text-center text-sm transition-colors"
+        href="/dashboard/notifications"
+        className="block border-t border-border py-4 text-center text-sm text-muted-foreground transition-colors hover:text-foreground"
       >
         View all notifications
       </Link>
     </div>
   );
 }
-

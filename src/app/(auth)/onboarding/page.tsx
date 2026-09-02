@@ -11,7 +11,6 @@ import { INVERTER_CONFIG } from "@/components/onboarding/inverter-config";
 import { useAuthStore } from "@/stores/auth-store";
 import { AuthService } from "@/services/auth-service";
 import { trackEvent, identifyUser } from "@/lib/analytics";
-import { onboardingStorage } from "@/lib/onboarding-storage";
 import { useOnboardingStore } from "@/stores/onboarding-store";
 import { useInverterQueries } from "@/hooks/use-inverter-queries";
 
@@ -44,17 +43,16 @@ export default function OnboardingPage() {
   const isLoading =
     !_hasHydrated ||
     !userId ||
-    onboardingStorage.isCompleted(userId) ||
     (!status && !isStatusError) ||
     isFullyOnboarded;
 
   useEffect(() => {
     if (isFullyOnboarded && user?.id) {
-      onboardingStorage.setCompleted(user.id);
       isCompleted.current = true;
+      resetOnboarding();
       router.replace("/dashboard");
     }
-  }, [isFullyOnboarded, user?.id, router]);
+  }, [isFullyOnboarded, resetOnboarding, user?.id, router]);
 
   useEffect(() => {
     stepRef.current = step;
@@ -67,12 +65,6 @@ export default function OnboardingPage() {
 
     if (user?.id) {
       identifyUser(user.id);
-      if (onboardingStorage.isCompleted(user.id)) {
-        isCompleted.current = true;
-        resetOnboarding();
-        router.replace("/dashboard");
-        return;
-      }
       return;
     }
 
@@ -92,12 +84,13 @@ export default function OnboardingPage() {
       return;
     }
 
-    const { setUser, logout } = useAuthStore.getState();
+    const { setUser, setInverterAccess, logout } = useAuthStore.getState();
 
     AuthService.me()
       .then((realUser) => {
-        if (realUser?.id) {
-          setUser(realUser);
+        if (realUser?.user?.id) {
+          setUser(realUser.user);
+          setInverterAccess(realUser.inverterAccess ?? []);
           useAuthStore.setState({ isAuthenticated: true });
           return;
         }

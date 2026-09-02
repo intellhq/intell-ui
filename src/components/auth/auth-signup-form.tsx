@@ -3,19 +3,25 @@
 import { AuthInput } from "@/components/auth/auth-input";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useForm, useWatch } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { registerSchema, RegisterFormValues } from "@/lib/schemas/auth";
 import { useAuthQueries } from "@/hooks/use-auth-queries";
 import { AuthService } from "@/services/auth-service";
 import { useAuthStore } from "@/stores/auth-store";
-
+import { useMutation } from "@tanstack/react-query";
+import { toast } from "sonner";
 
 export function AuthSignupForm() {
   const { useRegister } = useAuthQueries();
   const registerMutation = useRegister();
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const inviteToken = searchParams.get("inviteToken") ?? "";
+  const inviteEmail = searchParams.get("email") ?? "";
 
-  const { tempEmail } = useAuthStore();
+  const { tempEmail, setAuth, logout } = useAuthStore();
 
   const {
     register,
@@ -26,10 +32,32 @@ export function AuthSignupForm() {
     resolver: zodResolver(registerSchema),
     mode: "onChange",
     defaultValues: {
-      email: tempEmail ?? "",
+      email: inviteEmail || tempEmail || "",
       password: "",
       firstName: "",
       lastName: "",
+    },
+  });
+
+  const inviteRegisterMutation = useMutation({
+    mutationFn: AuthService.registerFromInvite,
+    onSuccess: async (data) => {
+      try {
+        await setAuth({
+          user: data.user,
+          accessToken: data.accessToken,
+          sessionId: data.sessionId,
+          inverterAccess: data.inverterAccess,
+        });
+        toast.success("Invitation accepted successfully!");
+        router.replace("/dashboard");
+      } catch {
+        logout();
+        toast.error("Account created, but we could not start your session.");
+      }
+    },
+    onError: (error) => {
+      toast.error(error instanceof Error ? error.message : "Failed to accept invite");
     },
   });
 
@@ -72,6 +100,16 @@ export function AuthSignupForm() {
   }
 
   const onSubmit = (data: RegisterFormValues) => {
+    if (inviteToken) {
+      inviteRegisterMutation.mutate({
+        inviteToken,
+        email: inviteEmail || data.email,
+        password: data.password,
+        firstName: data.firstName,
+        lastName: data.lastName,
+      });
+      return;
+    }
     registerMutation.mutate(data);
   };
 
@@ -96,14 +134,15 @@ export function AuthSignupForm() {
             {...register("lastName")}
           />
         </div>
-        <AuthInput
-          label="Email Address"
-          id="email"
-          placeholder="Enter your email address"
-          type="email"
-          error={errors.email?.message}
-          {...register("email")}
-        />
+          <AuthInput
+            label="Email Address"
+            id="email"
+            placeholder="Enter your email address"
+            type="email"
+            error={errors.email?.message}
+            disabled={Boolean(inviteEmail)}
+            {...register("email")}
+          />
         <AuthInput
           label="Password"
           id="password"
@@ -118,10 +157,10 @@ export function AuthSignupForm() {
       <div className="mt-8 flex flex-col gap-4 md:mt-12">
           <Button
             type="submit"
-            disabled={registerMutation.isPending || !isFormFilled}
+            disabled={(registerMutation.isPending || inviteRegisterMutation.isPending) || !isFormFilled}
             className="w-full max-w-[527px] h-[54px] rounded-lg px-16 py-2 text-base font-semibold md:text-lg transition-colors flex items-center justify-center mx-auto shadow-sm bg-secondary text-white hover:bg-secondary/90 disabled:bg-[#E8E8E8] disabled:text-dark-text disabled:opacity-100 disabled:shadow-none disabled:cursor-not-allowed"
           >
-            {registerMutation.isPending ? "Signing Up..." : "Sign Up"}
+            {registerMutation.isPending || inviteRegisterMutation.isPending ? "Signing Up..." : "Sign Up"}
           </Button>
 
         <div className="space-y-4">

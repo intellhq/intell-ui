@@ -92,12 +92,14 @@ export const useAuthQueries = () => {
           password: variables.password,
         }),
       onSuccess: async (data, variables) => {
-        const token = data.accessToken;
-        const user = data.user;
-        const refreshToken = data.refreshToken;
-
         try {
-          await setAuth(user, token, refreshToken, variables.rememberMe ?? false);
+          await setAuth({
+            user: data.user,
+            accessToken: data.accessToken,
+            sessionId: data.sessionId,
+            inverterAccess: data.inverterAccess,
+            rememberMe: variables.rememberMe ?? false,
+          });
         } catch {
           storeLogout();
           toast.error("Signed in, but we could not start your session. Please try again.");
@@ -170,12 +172,19 @@ export const useAuthQueries = () => {
     useMutation({
       mutationFn: AuthService.verifyEmail,
       onSuccess: async (data) => {
-        const token = data.accessToken;
-        const user = data.user;
-        const refreshToken = data.refreshToken;
+        if (!data.sessionId || !data.accessToken) {
+          toast.info("Email is already verified. Please sign in.");
+          router.replace("/login");
+          return;
+        }
 
         try {
-          await setAuth(user, token, refreshToken);
+          await setAuth({
+            user: data.user,
+            accessToken: data.accessToken,
+            sessionId: data.sessionId,
+            inverterAccess: data.inverterAccess ?? [],
+          });
         } catch {
           storeLogout();
           toast.error(
