@@ -576,7 +576,7 @@ function ActionDialog({
       onAddAdmin?.({
         id: `ADM-${Date.now().toString().slice(-4)}`,
         name: name || "New Admin",
-        email: email || "admin@energyiq.africa",
+        email: email || "admin@INTELL.africa",
         role,
         status: "Invited",
         date: "Today",
@@ -588,7 +588,7 @@ function ActionDialog({
       onAddMessage?.({
         id: `COM-${Date.now().toString().slice(-4)}`,
         name: name || "New communication",
-        content: message || "Draft communication for Energy IQ users.",
+        content: message || "Draft communication for INTELL users.",
         status: "Pending",
         priority: "Medium",
         date: "Today",
@@ -643,7 +643,7 @@ function ActionDialog({
                     type="email"
                     value={email}
                     onChange={(event) => setEmail(event.target.value)}
-                    placeholder="admin@energyiq.africa"
+                    placeholder="admin@INTELL.africa"
                   />
                 </div>
                 <div className="space-y-2">

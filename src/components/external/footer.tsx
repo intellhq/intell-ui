@@ -134,7 +134,7 @@ export const Footer = () => {
 
         <div className="mt-16 flex w-full flex-col items-center justify-between border-t border-gray-700 pt-8 md:flex-row">
           <p className="mb-6 text-sm text-[#e6e6e67b] md:mb-0">
-            Copyright © {new Date().getFullYear()} EnergyIQ | All Rights
+            Copyright © {new Date().getFullYear()} INTELL | All Rights
             Reserved
           </p>
           {/* <div className="flex gap-5">

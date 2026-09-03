@@ -191,7 +191,7 @@ export default function NewChatPage() {
           <div className="mb-6 flex h-16 w-16 items-center justify-center">
             <Image
               src="/images/logo.svg"
-              alt="EnergyIQ Logo"
+              alt="INTELL Logo"
               width={64}
               height={64}
               className="h-10 w-10 object-contain"
@@ -200,11 +200,11 @@ export default function NewChatPage() {
           </div>
 
           <h1 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
-            Ask EnergyIQ anything about <br /> your power system
+            Ask INTELL anything about <br /> your power system
           </h1>
 
           <p className="mt-3 max-w-xl text-sm text-muted-foreground">
-            EnergyIQ analyzes your inverter and energy data to explain battery
+            INTELL analyzes your inverter and energy data to explain battery
             drain, generator usage, savings, and solar performance in simple
             language.
           </p>

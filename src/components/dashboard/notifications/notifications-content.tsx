@@ -374,14 +374,14 @@ export function NotificationContent() {
           Notification Preferences
         </h1>
         <p className="mt-1 text-sm text-muted-foreground">
-          Choose how EnergyIQ keeps you updated about your energy system
+          Choose how INTELL keeps you updated about your energy system
         </p>
       </div>
 
       <SectionCard>
         <SectionHeader
           title="Alert Preference"
-          description="Toggle the alerts you want to receive from EnergyIQ"
+          description="Toggle the alerts you want to receive from INTELL"
         />
         <div className="flex flex-col gap-4">
           {ALERT_ROWS.map((row) => (

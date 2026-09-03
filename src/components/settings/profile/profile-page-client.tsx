@@ -285,7 +285,7 @@ export function ProfilePageClient() {
                 {sectionTitle}
               </h2>
               <p className="mt-0.5 text-sm text-[#5D5C5D]">
-                This information is used across your EnergyIQ account.
+                This information is used across your INTELL account.
               </p>
             </div>
             {!isEditing ? (
@@ -481,7 +481,7 @@ export function ProfilePageClient() {
             AI Preferences
           </h2>
           <p className="mt-0.5 text-sm text-[#5D5C5D]">
-            Choose the language EnergyIQ AI responds in.
+            Choose the language INTELL AI responds in.
           </p>
         </div>
 

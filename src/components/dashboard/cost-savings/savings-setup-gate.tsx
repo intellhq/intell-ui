@@ -6,7 +6,7 @@ import { useAuthStore } from "@/stores/auth-store";
 import { SavingsSetupModal } from "./savings-setup-modal";
 import { useSavingsSetup } from "./savings-setup-context";
 
-const SESSION_DISMISS_KEY = "energy_iq_savings_setup_dismissed";
+const SESSION_DISMISS_KEY = "intell_savings_setup_dismissed";
 const autoOpenCheckedForUser = new Set<string>();
 
 function dismissSetupForSession() {

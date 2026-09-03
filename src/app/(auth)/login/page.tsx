@@ -46,7 +46,7 @@ export default function LoginPage() {
       <div className="mt-29 lg:mt-44">
         <AuthHeader
           title="Welcome Back"
-          subtitle="Sign In to your EnergyIQ account. Take Control of your Energy."
+          subtitle="Sign In to your INTELL account. Take Control of your Energy."
         />
         <AuthLoginForm />
       </div>

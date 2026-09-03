@@ -108,8 +108,8 @@ const TermsAndCondition = () => {
             transition={{ duration: 0.8, delay: 0.4, ease: "easeOut" }}
             className="max-w-3xl text-base text-balance text-slate-50 md:text-lg"
           >
-            Welcome to EnergyIQ, an AI-powered energy monitoring and management
-            platform. By using EnergyIQ, you agree to the following Terms &
+            Welcome to INTELL, an AI-powered energy monitoring and management
+            platform. By using INTELL, you agree to the following Terms &
             Conditions.
           </motion.p>
         </div>
@@ -164,7 +164,7 @@ const TermsAndCondition = () => {
                   </h2>
                   <div className="text-md text-slate-80 leading-relaxed md:text-lg">
                     <p>
-                      By accessing or using EnergyIQ, you confirm that you have
+                      By accessing or using INTELL, you confirm that you have
                       read, understood, and agreed to these Terms & Conditions.
                       If you do not agree, you must discontinue use immediately.
                     </p>
@@ -186,16 +186,16 @@ const TermsAndCondition = () => {
                   <div className="text-md text-slate-80 space-y-4 leading-relaxed md:text-lg">
                     <p>
                       <span className="font-semibold text-slate-100">
-                        &apos;EnergyIQ&apos;
+                        &apos;INTELL&apos;
                       </span>{" "}
-                      – The EnergyIQ energy monitoring and management platform.
+                      – The INTELL energy monitoring and management platform.
                     </p>
                     <p>
                       <span className="font-semibold text-slate-100">
                         &apos;Organization&apos;
                       </span>{" "}
                       – The business, household, or solar company using
-                      EnergyIQ.
+                      INTELL.
                     </p>
                     <p>
                       <span className="font-semibold text-slate-100">
@@ -245,7 +245,7 @@ const TermsAndCondition = () => {
                       </h3>
                       <p>
                         Users are responsible for keeping their login
-                        credentials secure. EnergyIQ is not liable for
+                        credentials secure. INTELL is not liable for
                         unauthorized access resulting from weak or shared
                         passwords.
                       </p>
@@ -267,7 +267,7 @@ const TermsAndCondition = () => {
                   </h2>
                   <div className="text-md text-slate-80 space-y-6 leading-relaxed md:text-lg">
                     <p>
-                      Users agree to use EnergyIQ only for legitimate energy
+                      Users agree to use INTELL only for legitimate energy
                       monitoring and management activities. Users must NOT:
                     </p>
                     <ul className="grid grid-cols-1 gap-4 sm:grid-cols-2">
@@ -316,7 +316,7 @@ const TermsAndCondition = () => {
                         Data Usage
                       </h3>
                       <p className="text-slate-80">
-                        EnergyIQ only processes data for the purpose of enabling
+                        INTELL only processes data for the purpose of enabling
                         the platform&apos;s features (energy monitoring, savings
                         calculations, alerts, AI insights, reports, etc.).
                       </p>
@@ -384,7 +384,7 @@ const TermsAndCondition = () => {
                   </h2>
                   <div className="text-md text-slate-80 leading-relaxed md:text-lg">
                     <p className="mb-4">
-                      EnergyIQ displays energy data sourced from connected
+                      INTELL displays energy data sourced from connected
                       inverter systems or user-entered readings. Savings
                       estimates and carbon offset figures are calculated based
                       on standard formulas and user-provided inputs.
@@ -416,13 +416,13 @@ const TermsAndCondition = () => {
                   </h2>
                   <div className="text-md text-slate-80 leading-relaxed md:text-lg">
                     <p className="mb-6 text-balance">
-                      EnergyIQ sends alerts and notifications to users via
+                      INTELL sends alerts and notifications to users via
                       WhatsApp and in-app notifications. It is the user&apos;s
                       responsibility to ensure their contact details and
                       WhatsApp number are correct and up to date.
                     </p>
                     <p className="text-balance">
-                      EnergyIQ is not responsible for undelivered messages
+                      INTELL is not responsible for undelivered messages
                       caused by incorrect user-provided information or external
                       service issues.
                     </p>
@@ -443,7 +443,7 @@ const TermsAndCondition = () => {
                   </h2>
                   <div className="text-md text-slate-80 space-y-6 leading-relaxed md:text-lg">
                     <p>
-                      EnergyIQ aims to provide reliable access; however,
+                      INTELL aims to provide reliable access; however,
                       availability may be affected by:
                     </p>
                     <ul className="space-y-3">
@@ -482,7 +482,7 @@ const TermsAndCondition = () => {
                   </h2>
                   <div className="text-md text-slate-80 leading-relaxed md:text-lg">
                     <p className="mb-4">
-                      All software, designs, content, and features of EnergyIQ
+                      All software, designs, content, and features of INTELL
                       are the property of the platform provider.
                     </p>
                     <p className="">
@@ -506,7 +506,7 @@ const TermsAndCondition = () => {
                   </h2>
                   <div className="text-md text-slate-80 space-y-6 leading-relaxed md:text-lg">
                     <p className="text-balance">
-                      EnergyIQ may suspend access if:
+                      INTELL may suspend access if:
                     </p>
                     <ul className="space-y-4">
                       {[
@@ -523,7 +523,7 @@ const TermsAndCondition = () => {
                       ))}
                     </ul>
                     <p className="text-slate-70">
-                      Users may discontinue use of EnergyIQ at any time.
+                      Users may discontinue use of INTELL at any time.
                     </p>
                   </div>
                 </motion.div>
@@ -542,7 +542,7 @@ const TermsAndCondition = () => {
                   </h2>
                   <div className="text-md text-slate-80 space-y-6 leading-relaxed md:text-lg">
                     <p className="text-balance">
-                      EnergyIQ is provided &apos;as-is.&apos; The platform is
+                      INTELL is provided &apos;as-is.&apos; The platform is
                       not responsible for:
                     </p>
                     <div className="grid grid-cols-1 gap-x-12 gap-y-6 md:grid-cols-2">
@@ -583,7 +583,7 @@ const TermsAndCondition = () => {
                     <p>
                       We may update these Terms & Conditions. The revised
                       version will be effective once posted or communicated to
-                      users. Continued use of EnergyIQ indicates acceptance of
+                      users. Continued use of INTELL indicates acceptance of
                       the updated terms.
                     </p>
                   </div>
@@ -603,7 +603,7 @@ const TermsAndCondition = () => {
                   </h2>
                   <div className="">
                     <p className="text-md mb-6 font-medium opacity-90 md:text-lg">
-                      For support or concerns regarding EnergyIQ, please contact
+                      For support or concerns regarding INTELL, please contact
                       your designated platform representative or support
                       channel.
                     </p>
