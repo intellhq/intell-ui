@@ -1,16 +1,31 @@
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { Metadata } from "next";
+import type { Metadata } from "next";
+import { JsonLd } from "@/components/seo/json-ld";
+import { createBreadcrumbJsonLd, createSeoMetadata } from "@/lib/seo";
 
 export const metadata: Metadata = {
-  title: "Coming Soon | INTELL",
-  description:
-    "We're working hard to bring you something amazing. Stay tuned for updates on our blog, careers, news and more.",
+  ...createSeoMetadata({
+    title: "Coming Soon",
+    description:
+      "INTELL is preparing new solar inverter monitoring and energy optimization experiences.",
+    path: "/coming-soon",
+  }),
+  robots: {
+    index: false,
+    follow: true,
+  },
 };
 
 export default function ComingSoonPage() {
   return (
     <div className="flex min-h-[70vh] flex-col items-center justify-center px-6 py-24 text-center">
+      <JsonLd
+        data={createBreadcrumbJsonLd([
+          { name: "Home", path: "/" },
+          { name: "Coming Soon", path: "/coming-soon" },
+        ])}
+      />
       <div className="mx-auto max-w-2xl">
         <h1 className="font-sans text-[32px] leading-[100%] font-bold tracking-[-1%] text-secondary md:text-[48px] mb-2">
           Coming Soon
