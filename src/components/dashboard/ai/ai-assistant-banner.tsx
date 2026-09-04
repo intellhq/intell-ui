@@ -121,7 +121,7 @@ export function AIAssistantBanner() {
             Have a question about your energy?
           </h3>
           <p className="text-secondary-foreground/60 mt-1 text-sm">
-            Ask EnergyIQ in English or Pidgin
+            Ask INTELL in English or Pidgin
           </p>
         </div>
 

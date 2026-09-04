@@ -2,7 +2,7 @@ import { PricingSection } from "@/components/external/pricing-plan"
 import { Metadata } from "next"
 
 export const metadata: Metadata = {
-  title: "Pricing | EnergyIQ",
+  title: "Pricing | INTELL",
   description:
     "View our pricing plans and choose the right solution for your energy needs.",
 }

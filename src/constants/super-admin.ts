@@ -98,7 +98,7 @@ export const SUPER_ADMIN_ADMIN_ROWS: SuperAdminTableRow[] = [
   {
     id: "ADM-001",
     name: "Richard",
-    email: "richard@energyiq.africa",
+    email: "richard@intell.africa",
     status: "Active",
     role: "Admin",
     date: "May 8, 2026",
@@ -107,7 +107,7 @@ export const SUPER_ADMIN_ADMIN_ROWS: SuperAdminTableRow[] = [
   {
     id: "ADM-002",
     name: "Sarah",
-    email: "sarah@energyiq.africa",
+    email: "sarah@intell.africa",
     status: "Active",
     role: "Super Admin",
     date: "Mar 31, 2026",
@@ -116,7 +116,7 @@ export const SUPER_ADMIN_ADMIN_ROWS: SuperAdminTableRow[] = [
   {
     id: "ADM-003",
     name: "John",
-    email: "john@energyiq.africa",
+    email: "john@intell.africa",
     status: "Active",
     role: "Super Admin",
     date: "May 25, 2026",

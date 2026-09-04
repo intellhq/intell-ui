@@ -2,8 +2,8 @@ import Blog from "@/components/external/blog";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Blog | EnergyIQ",
-  description: "Read the latest news and updates from EnergyIQ.",
+  title: "Blog | INTELL",
+  description: "Read the latest news and updates from INTELL.",
 };
 
 export default function BlogPage() {

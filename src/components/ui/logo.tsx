@@ -45,7 +45,7 @@ export function Logo({
       >
         <Image
           src="/images/logo.svg"
-          alt="EnergyIQ Logo"
+          alt="INTELL Logo"
           fill
           className="object-contain"
           priority
@@ -59,7 +59,7 @@ export function Logo({
             textClassName,
           )}
         >
-          ENERGY<span className="text-primary">IQ</span>
+          INTE<span className="text-primary">LL</span>
         </span>
       )}
     </div>

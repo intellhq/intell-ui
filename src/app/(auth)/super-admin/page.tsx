@@ -11,7 +11,7 @@ export default function SuperAdminLoginPage() {
       <div className="mt-29 lg:mt-44">
         <AuthHeader
           title="Log in as Super Admin"
-          subtitle="Access Energy IQ operations, installer monitoring, feedback, support, and launch communications."
+          subtitle="Access INTELL operations, installer monitoring, feedback, support, and launch communications."
         />
         <Suspense fallback={null}>
           <SuperAdminLoginForm />

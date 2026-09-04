@@ -49,7 +49,7 @@ export function OnboardingSuccessDialog({
             </DialogTitle>
 
             <DialogDescription className="mt-2 text-base text-[#5D5C5D]">
-              Your EnergyIQ account has been successfully created and your
+              Your INTELL account has been successfully created and your
               Energy System is ready to be monitored
             </DialogDescription>
           </div>

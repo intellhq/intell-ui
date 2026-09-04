@@ -23,7 +23,7 @@ interface Testimonial {
 const testimonials: Testimonial[] = [
   {
     id: "1",
-    text: "With EnergyIQ I finally see where my solar underperforms and i get the alert on my WhatsApp before my freezers go off.",
+    text: "With INTELL I finally see where my solar underperforms and i get the alert on my WhatsApp before my freezers go off.",
     rating: 5,
     author: {
       name: "Amaka",
@@ -33,7 +33,7 @@ const testimonials: Testimonial[] = [
   },
   {
     id: "2",
-    text: "My clients used to disturb me every week, now I onboard them on EnergyIQ and i get to have my weekends.",
+    text: "My clients used to disturb me every week, now I onboard them on INTELL and i get to have my weekends.",
     rating: 5,
     author: {
       name: "Tunde",
@@ -43,7 +43,7 @@ const testimonials: Testimonial[] = [
   },
   {
     id: "3",
-    text: "Eight rural sites, 3 states. I cannot dispatch a tech for every flicker. EnergyIQ tells me where the real fault is ahead of time.",
+    text: "Eight rural sites, 3 states. I cannot dispatch a tech for every flicker. INTELL tells me where the real fault is ahead of time.",
     rating: 5,
     author: {
       name: "Emeka",

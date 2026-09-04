@@ -3,7 +3,7 @@ import { persist, createJSONStorage } from "zustand/middleware";
 import { getRoleDashboards, getRolePermissions } from "@/lib/team-access-helpers";
 import type { TeamAccessRole, TeamMember } from "@/types/team-access";
 
-const TEAM_ACCESS_STORAGE_KEY = "energy-iq-team-access";
+const TEAM_ACCESS_STORAGE_KEY = "intell-team-access";
 
 const initialMembers: TeamMember[] = [
   {
@@ -12,7 +12,7 @@ const initialMembers: TeamMember[] = [
     userId: "user-1",
     firstName: "Amaka",
     lastName: "Okeke",
-    email: "amaka@energyiq.africa",
+    email: "amaka@intell.africa",
     role: "admin",
     status: "active",
     permissions: "Full access",
@@ -25,7 +25,7 @@ const initialMembers: TeamMember[] = [
     userId: "user-2",
     firstName: "Tunde",
     lastName: "Bakare",
-    email: "tunde@energyiq.africa",
+    email: "tunde@intell.africa",
     role: "technician",
     status: "active",
     permissions: "System alerts and metrics only",
@@ -38,7 +38,7 @@ const initialMembers: TeamMember[] = [
     userId: "user-3",
     firstName: "Chidi",
     lastName: "Obi",
-    email: "chidi@energyiq.africa",
+    email: "chidi@intell.africa",
     role: "viewer",
     status: "active",
     permissions: "Read-only access",

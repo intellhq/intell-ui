@@ -46,7 +46,7 @@ export default function SettingsPage() {
       <div>
         <h1 className="text-2xl font-bold text-dark-text">Settings Overview</h1>
         <p className="mt-1 text-sm text-[#5D5C5D]">
-          Manage your EnergyIQ environment, team permissions and system health
+          Manage your INTELL environment, team permissions and system health
         </p>
       </div>
 

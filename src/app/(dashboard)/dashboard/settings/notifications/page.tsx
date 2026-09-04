@@ -3,8 +3,8 @@ import { DashboardBreadcrumb } from "@/components/dashboard/dashboard-breadcrumb
 import { NotificationContent } from "@/components/dashboard/notifications/notifications-content";
 
 export const metadata: Metadata = {
-  title: "Notification Settings | EnergyIQ",
-  description: "Manage alert delivery preferences for your EnergyIQ account.",
+  title: "Notification Settings | INTELL",
+  description: "Manage alert delivery preferences for your INTELL account.",
 };
 
 export default function SettingsNotificationPage() {
