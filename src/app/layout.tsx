@@ -5,6 +5,18 @@ import { cn } from "@/lib/utils";
 import QueryProvider from "@/providers/query-provider";
 import { Toaster } from "@/components/ui/sonner";
 import { ServiceWorkerRegister } from "@/components/service-worker-register";
+import { JsonLd } from "@/components/seo/json-ld";
+import {
+  DEFAULT_OG_IMAGE,
+  SEO_KEYWORDS,
+  SITE_DESCRIPTION,
+  SITE_NAME,
+  SITE_URL,
+  absoluteUrl,
+  organizationJsonLd,
+  softwareApplicationJsonLd,
+  websiteJsonLd,
+} from "@/lib/seo";
 
 const figtree = Figtree({
   subsets: ["latin"],
@@ -21,36 +33,28 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-const appUrl = process.env.NEXT_PUBLIC_APP_URL ?? "http://localhost:3000";
-const appName = process.env.NEXT_PUBLIC_APP_NAME ?? "INTELL";
-
-const appDescription =
-  "INTELL is a smart energy monitoring platform for tracking usage, optimizing power consumption, and improving energy efficiency.";
+const appName = SITE_NAME;
+const defaultImage = absoluteUrl(DEFAULT_OG_IMAGE);
 
 export const metadata: Metadata = {
-  metadataBase: new URL(appUrl),
+  metadataBase: new URL(SITE_URL),
 
   title: {
-    default: appName,
-    template: `%s · ${appName}`,
+    default: `${appName} | AI Solar Inverter Monitoring Platform`,
+    template: `%s | ${appName}`,
   },
 
-  description: appDescription,
+  description: SITE_DESCRIPTION,
 
   applicationName: appName,
 
   manifest: "/manifest.json",
 
-  keywords: [
-    "Energy monitoring",
-    "Smart energy",
-    "Power usage analytics",
-    "Energy savings",
-    "Solar monitoring",
-    "INTELL",
-  ],
+  keywords: SEO_KEYWORDS,
 
   authors: [{ name: "INTELL Team" }],
+  creator: "INTELL",
+  publisher: "INTELL",
 
   category: "utilities",
 
@@ -60,29 +64,32 @@ export const metadata: Metadata = {
     title: appName,
   },
 
+  alternates: {
+    canonical: SITE_URL,
+  },
+
   openGraph: {
-    title: appName,
-    description:
-      "Track, analyze, and optimize your energy consumption with INTELL.",
-    url: appUrl,
+    title: `${appName} | AI Solar Inverter Monitoring Platform`,
+    description: SITE_DESCRIPTION,
+    url: SITE_URL,
     siteName: appName,
     locale: "en_US",
     type: "website",
     images: [
       {
-        url: "/og-image.png",
+        url: defaultImage,
         width: 1200,
         height: 630,
-        alt: `${appName} — Smart Energy Monitoring`,
+        alt: "INTELL solar inverter monitoring dashboard preview",
       },
     ],
   },
 
   twitter: {
     card: "summary_large_image",
-    title: appName,
-    description:
-      "Track, analyze, and optimize your energy consumption with INTELL.",
+    title: `${appName} | AI Solar Inverter Monitoring Platform`,
+    description: SITE_DESCRIPTION,
+    images: [defaultImage],
   },
 
   icons: {
@@ -135,6 +142,9 @@ export default function RootLayout({
       )}
     >
       <body className="min-h-full flex flex-col">
+        <JsonLd
+          data={[organizationJsonLd, websiteJsonLd, softwareApplicationJsonLd]}
+        />
         <QueryProvider>
           {children}
 
