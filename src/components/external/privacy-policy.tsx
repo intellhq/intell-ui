@@ -102,7 +102,7 @@ const PrivacyPolicy = () => {
             transition={{ duration: 0.8, delay: 0.4, ease: "easeOut" }}
             className="max-w-3xl text-base text-balance text-slate-50 md:text-lg"
           >
-            This policy applies only to the EnergyIQ global website, where visitors learn
+            This policy applies only to the INTELL global website, where visitors learn
             about <br className="hidden lg:block" /> the product, connect their inverter systems, or access documentation.
           </motion.p>
         </div>
@@ -177,7 +177,7 @@ const PrivacyPolicy = () => {
                     </div>
                     <div>
                       <h3 className="text-slate-80 mb-2">
-                        Automatically Collected Information When you visit the EnergyIQ
+                        Automatically Collected Information When you visit the INTELL
                         landing page, we may automatically collect:
                       </h3>
                       <ul className="list-disc space-y-1 pl-6">
@@ -222,7 +222,7 @@ const PrivacyPolicy = () => {
                   <div className="text-md text-slate-80 space-y-6 leading-relaxed md:text-lg">
                     <div>
                       <h3 className="text-slate-80 mb-2">
-                        We use the information collected on the EnergyIQ landing page to:
+                        We use the information collected on the INTELL landing page to:
                       </h3>
                       <ul className="list-disc space-y-1 pl-6">
                         <li>Provide product information and onboarding guidance</li>
@@ -263,7 +263,7 @@ const PrivacyPolicy = () => {
                         <li>Regular site monitoring and logging</li>
                       </ul>
                       <p className="mt-2">
-                        The EnergyIQ landing page does not store sensitive personal data,
+                        The INTELL landing page does not store sensitive personal data,
                         login credentials, or inverter system data.
                       </p>
                     </div>
@@ -285,22 +285,22 @@ const PrivacyPolicy = () => {
                   <div className="text-md text-slate-80 space-y-6 leading-relaxed md:text-lg">
                     <div>
                       <h3 className="text-slate-80 mb-2">
-                        EnergyIQ connects to third-party inverter brand cloud APIs (such
+                        INTELL connects to third-party inverter brand cloud APIs (such
                         as Victron VRM, Growatt OpenAPI, and Solarman) to retrieve energy
                         data on behalf of the user.
                       </h3>
                       <p className="text-slate-80">This means:</p>
                       <ul className="list-disc space-y-1 pl-6">
                         <li>
-                          Each user authorizes EnergyIQ to access their inverter data
+                          Each user authorizes INTELL to access their inverter data
                           using credentials they provide
                         </li>
                         <li>
-                          EnergyIQ retrieves and stores this data solely to power the
+                          INTELL retrieves and stores this data solely to power the
                           platform&apos;s features
                         </li>
                         <li>
-                          EnergyIQ does not share inverter credentials or energy data with
+                          INTELL does not share inverter credentials or energy data with
                           any third party
                         </li>
                         <li>
@@ -361,8 +361,8 @@ const PrivacyPolicy = () => {
                   </h2>
                   <div className="text-md text-slate-80 leading-relaxed md:text-lg">
                     <p className="mb-4">
-                      For questions regarding this policy, please contact: EnergyIQ -
-                      Privacy Team Email: support@energyiq.com
+                      For questions regarding this policy, please contact: INTELL -
+                      Privacy Team Email: support@INTELL.com
                     </p>
                   </div>
                 </motion.div>

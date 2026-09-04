@@ -155,7 +155,7 @@ export function AuthVerifyEmailForm() {
     <div className="w-full text-center">
       <AuthHeader
         title="Email Verification"
-        subtitle={`Hello, enter the 6-digit code sent to ${email} to verify and activate your EnergyIQ account.`}
+        subtitle={`Hello, enter the 6-digit code sent to ${email} to verify and activate your INTELL account.`}
       />
 
       <div className="mt-10">

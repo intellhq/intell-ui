@@ -140,9 +140,9 @@ export default function AboutPage() {
           </h2>
           <p className="text-muted-foreground max-w-4xl leading-relaxed md:text-xl">
             It started with a blackout. It became a mission. Driven by the need
-            for smarter energy management, Energy IQ was developed to give
+            for smarter energy management, INTELL was developed to give
             organizations clear visibility into their solar energy consumption.
-            By turning data into actionable insights, Energy IQ supports a more
+            By turning data into actionable insights, INTELL supports a more
             sustainable and efficient approach to energy use.
           </p>
         </div>
@@ -166,11 +166,11 @@ export default function AboutPage() {
         className="mx-auto w-full max-w-7xl px-6 py-24"
       >
         <h2 className="mb-8 text-2xl font-bold md:text-5xl">
-          Why We Built <span className="text-amber-50">EnergyIQ</span>
+          Why We Built <span className="text-amber-50">INTELL</span>
         </h2>
         <div className="text-muted-foreground grid gap-12 leading-relaxed md:text-xl">
           <p>
-            We built EnergyIQ because too many Nigerian businesses are losing
+            We built INTELL because too many Nigerian businesses are losing
             money every day without understanding where their energy goes or how
             much unreliable power truly costs them. Business owners operate in
             constant uncertainty with no real visibility, no intelligent alerts,
@@ -180,7 +180,7 @@ export default function AboutPage() {
             We watched SMEs struggle with downtime, rising fuel costs, damaged
             equipment, and operational inefficiencies while larger corporations
             had access to sophisticated energy monitoring tools. That imbalance
-            should not be normal. EnergyIQ exists to give every Nigerian
+            should not be normal. INTELL exists to give every Nigerian
             business the power to monitor, understand, and optimize their energy
             in real time.
           </p>

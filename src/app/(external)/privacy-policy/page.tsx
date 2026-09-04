@@ -2,7 +2,7 @@ import PrivacyPolicy from "@/components/external/privacy-policy"
 import { Metadata } from "next"
 
 export const metadata: Metadata = {
-  title: "Privacy Policy | EnergyIQ",
+  title: "Privacy Policy | INTELL",
   description:
     "Our privacy policy outlines how we collect, use, and protect your personal information.",
 }

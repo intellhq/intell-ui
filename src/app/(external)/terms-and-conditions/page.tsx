@@ -2,8 +2,8 @@ import TermsAndCondition from "@/components/external/terms-and-condition";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Terms and Conditions | EnergyIQ",
-  description: "Terms and conditions for using the EnergyIQ platform.",
+  title: "Terms and Conditions | INTELL",
+  description: "Terms and conditions for using the INTELL platform.",
 };
 
 export default function TermsAndConditionsPage() {

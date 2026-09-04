@@ -14,7 +14,7 @@ export default function ResetPasswordPage() {
         {!isSuccess && (
           <AuthHeader
             title="Change Your Password"
-            subtitle="Create a new password for your EnergyIQ account."
+            subtitle="Create a new password for your INTELL account."
           />
         )}
         <AuthResetPasswordForm onSuccess={() => setIsSuccess(true)} />

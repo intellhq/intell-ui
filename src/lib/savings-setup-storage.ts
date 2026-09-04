@@ -3,7 +3,7 @@ import {
   type SavingsSetupPreferences,
 } from "@/types/savings-setup";
 
-const STORAGE_PREFIX = "energy_iq_savings_setup";
+const STORAGE_PREFIX = "intell_savings_setup";
 
 function getKey(userId?: string) {
   return userId ? `${STORAGE_PREFIX}_${userId}` : STORAGE_PREFIX;

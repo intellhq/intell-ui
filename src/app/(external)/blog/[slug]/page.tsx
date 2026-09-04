@@ -11,9 +11,9 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { slug } = await params;
   const entry = BLOG_POSTS.find((p) => p.slug === slug);
-  if (!entry) return { title: "Post Not Found | EnergyIQ" };
+  if (!entry) return { title: "Post Not Found | INTELL" };
   return {
-    title: `${entry.title} | EnergyIQ`,
+    title: `${entry.title} | INTELL`,
     description: entry.excerpt,
   };
 }

@@ -1,8 +1,8 @@
-const GLOBAL_KEY = "energy_iq_onboarding_completed";
+const GLOBAL_KEY = "intell_onboarding_completed";
 
 export const onboardingStorage = {
   getCompletionKey: (userId?: string) => {
-    return userId ? `energy_iq_onboarding_completed_${userId}` : GLOBAL_KEY;
+    return userId ? `intell_onboarding_completed_${userId}` : GLOBAL_KEY;
   },
 
   isCompleted: (userId?: string): boolean => {

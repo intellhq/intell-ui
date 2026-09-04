@@ -5,7 +5,7 @@ export interface StoredChatActions {
   renamedTitles: Record<string, string>;
 }
 
-const CHAT_ACTIONS_STORAGE_KEY = "energyiq-ai-chat-actions";
+const CHAT_ACTIONS_STORAGE_KEY = "intell-ai-chat-actions";
 
 function createEmptyChatActions(): StoredChatActions {
   return {
