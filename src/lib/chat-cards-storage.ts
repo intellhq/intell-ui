@@ -7,7 +7,7 @@ import {
 } from "@/lib/chat-cards";
 import type { ChatMessage } from "@/types/chat";
 
-const STORAGE_KEY = "energyiq-chat-response-cards:v1";
+const STORAGE_KEY = "intell-chat-response-cards:v1";
 
 interface StoredCardEntry {
   messageId?: string;

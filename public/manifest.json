@@ -1,8 +1,8 @@
 {
   "id": "/",
-  "name": "Energy IQ",
-  "short_name": "EnergyIQ",
-  "description": "Energy IQ is a smart energy monitoring platform for tracking usage, optimizing power consumption, and improving energy efficiency.",
+  "name": "INTELL",
+  "short_name": "INTELL",
+  "description": "INTELL is a smart energy monitoring platform for tracking usage, optimizing power consumption, and improving energy efficiency.",
   "start_url": "/?source=pwa",
   "scope": "/",
   "display": "standalone",

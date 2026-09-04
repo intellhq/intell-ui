@@ -22,10 +22,10 @@ const geistMono = Geist_Mono({
 });
 
 const appUrl = process.env.NEXT_PUBLIC_APP_URL ?? "http://localhost:3000";
-const appName = process.env.NEXT_PUBLIC_APP_NAME ?? "Energy IQ";
+const appName = process.env.NEXT_PUBLIC_APP_NAME ?? "INTELL";
 
 const appDescription =
-  "Energy IQ is a smart energy monitoring platform for tracking usage, optimizing power consumption, and improving energy efficiency.";
+  "INTELL is a smart energy monitoring platform for tracking usage, optimizing power consumption, and improving energy efficiency.";
 
 export const metadata: Metadata = {
   metadataBase: new URL(appUrl),
@@ -47,10 +47,10 @@ export const metadata: Metadata = {
     "Power usage analytics",
     "Energy savings",
     "Solar monitoring",
-    "Energy IQ",
+    "INTELL",
   ],
 
-  authors: [{ name: "Energy IQ Team" }],
+  authors: [{ name: "INTELL Team" }],
 
   category: "utilities",
 
@@ -63,7 +63,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: appName,
     description:
-      "Track, analyze, and optimize your energy consumption with Energy IQ.",
+      "Track, analyze, and optimize your energy consumption with INTELL.",
     url: appUrl,
     siteName: appName,
     locale: "en_US",
@@ -82,7 +82,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: appName,
     description:
-      "Track, analyze, and optimize your energy consumption with Energy IQ.",
+      "Track, analyze, and optimize your energy consumption with INTELL.",
   },
 
   icons: {

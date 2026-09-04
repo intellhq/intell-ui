@@ -1,4 +1,4 @@
-const CACHE_NAME = "energy-iq-v3";
+const CACHE_NAME = "intell-v1";
 const MAX_RUNTIME_CACHE_ITEMS = 40;
 const STATIC_ASSETS = [
   "/offline.html",

@@ -263,7 +263,7 @@ export function SystemDeviceClient() {
                   Connect New Inverter
                 </h2>
                 <p className="text-sm text-[#5D5C5D]">
-                  Link a new device to your EnergyIQ workspace.
+                  Link a new device to your INTELL workspace.
                 </p>
               </div>
               <Button

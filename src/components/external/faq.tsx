@@ -8,12 +8,12 @@ const faqData = [
   {
     question: "Do I need to install new hardware?",
     answer:
-      "No, you don’t need to install any new hardware. EnergyIQ works with your existing inverter and solar setup. You simply connect your system details or integrate with supported inverter platforms to start monitoring your energy in real time.",
+      "No, you don’t need to install any new hardware. INTELL works with your existing inverter and solar setup. You simply connect your system details or integrate with supported inverter platforms to start monitoring your energy in real time.",
   },
   {
     question: "Which inverter brands are supported?",
     answer:
-      "EnergyIQ supports a wide range of popular inverter brands including Victron, Fronius, Growatt, and more. We are constantly adding support for new platforms.",
+      "INTELL supports a wide range of popular inverter brands including Victron, Fronius, Growatt, and more. We are constantly adding support for new platforms.",
   },
   {
     question: "Does the AI agent really speak Pidgin?",
@@ -26,7 +26,7 @@ const faqData = [
       "Absolutely. We use industry-standard encryption and security protocols to ensure your energy data and personal information are protected at all times.",
   },
   {
-    question: "Can solar installers white‑label EnergyIQ?",
+    question: "Can solar installers white‑label INTELL?",
     answer:
       "Yes, we offer white-label solutions for solar installers and distributors. Contact our sales team for more information on our partner programs.",
   },

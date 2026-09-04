@@ -2,7 +2,7 @@ import { create } from "zustand";
 import { persist, createJSONStorage } from "zustand/middleware";
 import type { ReportShareLink } from "@/types/report-share";
 
-const REPORT_SHARE_STORAGE_KEY = "energy-iq-report-share-links";
+const REPORT_SHARE_STORAGE_KEY = "intell-report-share-links";
 
 interface ReportShareState {
   links: Record<string, ReportShareLink>;

@@ -37,7 +37,7 @@ export const useOnboardingStore = create<OnboardingState>()(
       }),
     }),
     {
-      name: "energy-iq-onboarding",
+      name: "intell-onboarding",
       storage: createJSONStorage(() => sessionStorage),
       partialize: (state) => ({
         step: state.step,

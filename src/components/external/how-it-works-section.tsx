@@ -49,7 +49,7 @@ const STEPS: readonly Step[] = [
   {
     title: "Connect your Inverter",
     description:
-      "Securely link your inverter to Energy IQ. It takes less than 5 min.",
+      "Securely link your inverter to INTELL. It takes less than 5 min.",
     image: "/images/how_it_works_2.jpg",
   },
   {

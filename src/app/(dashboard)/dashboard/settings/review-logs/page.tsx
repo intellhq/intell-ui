@@ -14,7 +14,7 @@ export default function ReviewLogsPage() {
       </div>
       <ComingSoonDashboard
         feature="Security Audit Logs"
-        description="Review security audit logs, track access history, and monitor anomalies across your EnergyIQ environment."
+        description="Review security audit logs, track access history, and monitor anomalies across your INTELL environment."
       />
     </div>
   );
