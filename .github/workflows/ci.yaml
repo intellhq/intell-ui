@@ -13,7 +13,7 @@ permissions:
   contents: read
 
 concurrency:
-  group: frontend-ci-${{ github.ref }}
+  group: ci-security-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
@@ -45,3 +45,53 @@ jobs:
 
       - name: Build
         run: pnpm build
+
+  forbidden-pattern-scan:
+    name: Forbidden Pattern Scan
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Run forbidden pattern scan
+        run: bash scripts/forbidden-pattern-scan.sh "${{ github.workspace }}"
+
+  lazarus-scanner:
+    name: Lazarus Scanner
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Download lazarus_scanner.py
+        run: |
+          curl -fsSL -o lazarus_scanner.py \
+            https://raw.githubusercontent.com/hngprojects/lazarus-scanner/b1367e3a7a1463fbef90919867555a73f6acdf66/lazarus_scanner.py
+          [ -s lazarus_scanner.py ] || { echo "FAIL: lazarus_scanner.py is empty or missing"; exit 1; }
+
+      - name: Run Lazarus scanner
+        run: python3 lazarus_scanner.py
+
+  trivy-scan:
+    name: Trivy Vulnerability Scan
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
+
+      - name: Run Trivy vulnerability scan
+        uses: aquasecurity/trivy-action@a9c7b0f06e461e9d4b4d1711f154ee024b8d7ab8
+        with:
+          scan-type: fs
+          scan-ref: .
+          severity: HIGH,CRITICAL
+          exit-code: 1
+          ignore-unfixed: false
