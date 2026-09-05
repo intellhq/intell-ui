@@ -6,6 +6,7 @@ import { type FormEvent, useState } from "react";
 import { Mail, MapPin, MessageSquareText, Phone, Send } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 import { toast } from "sonner";
+import { DashboardBreadcrumb } from "@/components/dashboard/dashboard-breadcrumb";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -38,6 +39,14 @@ export function DashboardFeedbackPage() {
 
   return (
     <div className="space-y-4">
+      <DashboardBreadcrumb
+        items={[
+          { label: "Dashboard", href: "/dashboard" },
+          { label: "Settings", href: "/dashboard/settings" },
+          { label: "Feedback & Support" },
+        ]}
+      />
+
       <div className="mb-6">
         <h1 className="text-2xl font-bold text-dark-text">
           Feedback & Support
