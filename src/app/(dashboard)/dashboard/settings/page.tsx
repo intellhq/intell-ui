@@ -7,6 +7,7 @@ import {
   Users,
   ShieldCheck,
   RefreshCw,
+  MessageSquareText,
 } from "lucide-react";
 
 const SETTING_CARDS = [
@@ -37,6 +38,13 @@ const SETTING_CARDS = [
     description:
       "Control organisational hierarchies by assigning specific user roles, permissions, and administrative access levels.", // Matched to UI screenshot
     href: "/dashboard/settings/notifications",
+  },
+  {
+    icon: MessageSquareText,
+    title: "Feedback & Support",
+    description:
+      "Share product feedback, report inverter monitoring issues, or contact the INTELL support team.",
+    href: "/dashboard/settings/feedback",
   },
 ];
 

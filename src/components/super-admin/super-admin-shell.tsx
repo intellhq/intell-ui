@@ -1,8 +1,10 @@
 "use client";
 
 import Link from "next/link";
+import type { ReactNode } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import { ChevronDown, LogOut } from "lucide-react";
+import { Logo } from "@/components/ui/logo";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -14,7 +16,7 @@ import { SUPER_ADMIN_NAV_ITEMS } from "@/constants/super-admin";
 import { cn } from "@/lib/utils";
 import { useSuperAdminAuthStore } from "@/stores/super-admin-auth-store";
 
-export function SuperAdminShell({ children }: { children: React.ReactNode }) {
+export function SuperAdminShell({ children }: { children: ReactNode }) {
   const pathname = usePathname();
   const router = useRouter();
   const logout = useSuperAdminAuthStore((state) => state.logout);
@@ -29,9 +31,10 @@ export function SuperAdminShell({ children }: { children: React.ReactNode }) {
   return (
     <div className="min-h-screen bg-background text-foreground">
       <header className="sticky top-0 z-30 border-b border-border bg-background/95 backdrop-blur">
-        <div className="mx-auto flex h-16 w-full max-w-[1240px] items-center justify-between gap-6 px-4 lg:px-6">
-          <div className="flex items-center gap-8">
-            <nav className="hidden items-center gap-5 lg:flex">
+        <div className="relative mx-auto grid h-16 w-full max-w-[1240px] grid-cols-[auto_1fr_auto] items-center gap-6 px-4 lg:px-6">
+          <div className="flex min-w-0 items-center justify-self-start">
+            <Logo size="sm" href="/super-admin/dashboard" />
+            <nav className="hidden items-center justify-center gap-4 lg:absolute lg:left-1/2 lg:flex lg:-translate-x-1/2">
               {SUPER_ADMIN_NAV_ITEMS.map((item) => {
                 const isActive =
                   pathname === item.href || pathname.startsWith(`${item.href}/`);
@@ -54,7 +57,7 @@ export function SuperAdminShell({ children }: { children: React.ReactNode }) {
             </nav>
           </div>
 
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-3 justify-self-end">
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Button

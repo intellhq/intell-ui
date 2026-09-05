@@ -1,20 +1,33 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
-// import Image from "next/image";
 import { Logo } from "../ui/logo";
 import { useState } from "react";
 import { toast } from "sonner";
 import { WaitlistService } from "@/services/waitlist-service";
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
+import { COMPANY_CONTACT, SOCIAL_LINKS } from "@/constants/marketing";
 
-const footerLinks = [
+const footerSocials = [
+  SOCIAL_LINKS.find((social) => social.label === "LinkedIn"),
+  SOCIAL_LINKS.find((social) => social.label === "Instagram"),
+  SOCIAL_LINKS.find((social) => social.label === "X"),
+].filter((social): social is (typeof SOCIAL_LINKS)[number] => Boolean(social));
+
+type FooterLink = {
+  name: string;
+  href?: string;
+};
+
+const footerLinks: { title: string; links: FooterLink[] }[] = [
   {
     title: "Product",
     links: [
       { name: "Features", href: "/#features" },
       { name: "Pricing", href: "/pricing" },
+      { name: "Onboard", href: "/onboard" },
       { name: "Contact", href: "/contact" },
     ],
   },
@@ -53,7 +66,7 @@ export const Footer = () => {
     setIsLoading(true);
     try {
       await WaitlistService.joinWaitlist(normalizedEmail);
-      toast.success("Joined waitlist successfully!");
+      toast.success("Thanks for your interest in INTELL.");
       setEmail("");
     } catch (error: unknown) {
       const message =
@@ -61,7 +74,7 @@ export const Footer = () => {
           ? error.message
           : typeof error === "string"
             ? error
-            : "Failed to join waitlist. Please try again.";
+            : "Failed to submit your email. Please try again.";
       toast.error(message, {
         description: "Please try again later.",
       });
@@ -83,11 +96,31 @@ export const Footer = () => {
                 Nigerian SMEs and African businesses. Nigeria has the energy
                 problem. We have the intelligence solution.
               </p>
+              <div className="flex items-center gap-5">
+                {footerSocials.map((social) => (
+                  <Link
+                    key={social.label}
+                    href={social.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label={social.label}
+                    className="transition-opacity hover:opacity-80"
+                  >
+                    <Image
+                      src={social.icon}
+                      alt=""
+                      width={22}
+                      height={22}
+                      className="size-5.5 brightness-0 invert"
+                    />
+                  </Link>
+                ))}
+              </div>
             </div>
 
             <div className="space-y-4">
               <p className="text-base font-medium text-white">
-                Enter your email to get mails concerning us.
+                Enter your email to receive INTELL updates.
               </p>
               <div className="flex max-w-md items-center gap-2 rounded-xl bg-white p-1.5 focus-within:ring-2 focus-within:ring-[#F5A623]">
                 <Input
@@ -111,7 +144,7 @@ export const Footer = () => {
           </div>
 
           {/* Right Section (Links) */}
-          <div className="grid flex-1 grid-cols-2 gap-12 sm:grid-cols-3">
+          <div className="grid flex-1 md:grid-cols-3 gap-6 sm:gap-10">
             {footerLinks.map((section) => (
               <div key={section.title} className="space-y-6">
                 <h3 className="text-lg font-bold">{section.title}</h3>
@@ -119,7 +152,7 @@ export const Footer = () => {
                   {section.links.map((link) => (
                     <li key={link.name}>
                       <Link
-                        href={link.href}
+                        href={link.href ?? "#"}
                         className="transition-colors hover:text-[#F5A623]"
                       >
                         {link.name}
@@ -132,36 +165,25 @@ export const Footer = () => {
           </div>
         </div>
 
-        <div className="mt-16 flex w-full flex-col items-center justify-between border-t border-gray-700 pt-8 md:flex-row">
-          <p className="mb-6 text-sm text-[#e6e6e67b] md:mb-0">
+        <div className="mt-16 flex w-full flex-col items-start md:items-center justify-between gap-4 border-t border-gray-700 pt-8 md:flex-row">
+          <p className="text-sm text-[#e6e6e67b]">
             Copyright © {new Date().getFullYear()} INTELL | All Rights
             Reserved
           </p>
-          {/* <div className="flex gap-5">
-            {[
-              { id: "facebook", url: "https://facebook.com" },
-              { id: "twitter", url: "https://x.com" },
-              { id: "instagram", url: "https://instagram.com" },
-              { id: "linkedin", url: "https://linkedin.com" },
-              { id: "youtube", url: "https://youtube.com" },
-            ].map((social) => (
-              <a
-                key={social.id}
-                href={social.url}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="relative size-5 transition-opacity hover:opacity-80"
-                aria-label={social.id}
-              >
-                <Image
-                  src={`/images/${social.id}.svg`}
-                  alt={social.id}
-                  fill
-                  className="object-contain"
-                />
-              </a>
-            ))}
-          </div> */}
+          <div className="flex flex-col items-start md:items-center gap-2 text-sm text-[#e6e6e67b] sm:flex-row sm:gap-5">
+            <Link
+              href={`mailto:${COMPANY_CONTACT.email}`}
+              className="transition-colors hover:text-[#F5A623]"
+            >
+              {COMPANY_CONTACT.email}
+            </Link>
+            <Link
+              href={`tel:${COMPANY_CONTACT.phone.replace(/\s/g, "")}`}
+              className="transition-colors hover:text-[#F5A623]"
+            >
+              {COMPANY_CONTACT.phone}
+            </Link>
+          </div>
         </div>
       </div>
     </footer>
