@@ -4,8 +4,9 @@ export type SuperAdminRouteKey =
   | "dashboard"
   | "admins"
   | "users"
+  | "installers"
+  | "onboarding-leads"
   | "feedback"
-  | "customer-support"
   | "communications";
 
 export type SuperAdminStatus =
@@ -14,7 +15,13 @@ export type SuperAdminStatus =
   | "Open"
   | "In Progress"
   | "Resolved"
-  | "Invited";
+  | "Invited"
+  | "Qualified"
+  | "Contacted"
+  | "Delivered"
+  | "Draft"
+  | "Scheduled"
+  | "Failed";
 
 export type SuperAdminPriority = "Low" | "Medium" | "High" | "-";
 
@@ -43,6 +50,26 @@ export interface SuperAdminTableRow {
   date: string;
   meta?: string;
   amount?: string;
+  phone?: string;
+  state?: string;
+  inverterType?: string;
+  company?: string;
+  sites?: string;
+  creditsUsed?: string;
+  referrals?: string;
+  source?: string;
+  installerType?: string;
+  usersManaged?: string;
+  region?: string;
+  actionLabel?: string;
+  actionUrl?: string;
+  audience?: string;
+  body?: string;
+  category?: string;
+  submittedBy?: string;
+  invitedMembers?: string;
+  invitedTechnicians?: string;
+  connectedInverters?: string;
 }
 
 export interface SuperAdminActivity {
