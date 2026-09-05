@@ -1,7 +1,6 @@
 "use client";
 
 import Link from "next/link";
-// import Image from "next/image";
 import { Logo } from "../ui/logo";
 import { useState } from "react";
 import { toast } from "sonner";
@@ -9,12 +8,18 @@ import { WaitlistService } from "@/services/waitlist-service";
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
 
-const footerLinks = [
+type FooterLink = {
+  name: string;
+  href?: string;
+};
+
+const footerLinks: { title: string; links: FooterLink[] }[] = [
   {
     title: "Product",
     links: [
       { name: "Features", href: "/#features" },
       { name: "Pricing", href: "/pricing" },
+      { name: "Onboard", href: "/onboard" },
       { name: "Contact", href: "/contact" },
     ],
   },
@@ -53,7 +58,7 @@ export const Footer = () => {
     setIsLoading(true);
     try {
       await WaitlistService.joinWaitlist(normalizedEmail);
-      toast.success("Joined waitlist successfully!");
+      toast.success("Thanks for your interest in INTELL.");
       setEmail("");
     } catch (error: unknown) {
       const message =
@@ -61,7 +66,7 @@ export const Footer = () => {
           ? error.message
           : typeof error === "string"
             ? error
-            : "Failed to join waitlist. Please try again.";
+            : "Failed to submit your email. Please try again.";
       toast.error(message, {
         description: "Please try again later.",
       });
@@ -87,7 +92,7 @@ export const Footer = () => {
 
             <div className="space-y-4">
               <p className="text-base font-medium text-white">
-                Enter your email to get mails concerning us.
+                Enter your email to receive INTELL updates.
               </p>
               <div className="flex max-w-md items-center gap-2 rounded-xl bg-white p-1.5 focus-within:ring-2 focus-within:ring-[#F5A623]">
                 <Input
@@ -111,7 +116,7 @@ export const Footer = () => {
           </div>
 
           {/* Right Section (Links) */}
-          <div className="grid flex-1 grid-cols-2 gap-12 sm:grid-cols-3">
+          <div className="grid flex-1 grid-cols-1 gap-10 sm:grid-cols-3">
             {footerLinks.map((section) => (
               <div key={section.title} className="space-y-6">
                 <h3 className="text-lg font-bold">{section.title}</h3>
@@ -119,7 +124,7 @@ export const Footer = () => {
                   {section.links.map((link) => (
                     <li key={link.name}>
                       <Link
-                        href={link.href}
+                        href={link.href ?? "#"}
                         className="transition-colors hover:text-[#F5A623]"
                       >
                         {link.name}
@@ -137,31 +142,6 @@ export const Footer = () => {
             Copyright © {new Date().getFullYear()} INTELL | All Rights
             Reserved
           </p>
-          {/* <div className="flex gap-5">
-            {[
-              { id: "facebook", url: "https://facebook.com" },
-              { id: "twitter", url: "https://x.com" },
-              { id: "instagram", url: "https://instagram.com" },
-              { id: "linkedin", url: "https://linkedin.com" },
-              { id: "youtube", url: "https://youtube.com" },
-            ].map((social) => (
-              <a
-                key={social.id}
-                href={social.url}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="relative size-5 transition-opacity hover:opacity-80"
-                aria-label={social.id}
-              >
-                <Image
-                  src={`/images/${social.id}.svg`}
-                  alt={social.id}
-                  fill
-                  className="object-contain"
-                />
-              </a>
-            ))}
-          </div> */}
         </div>
       </div>
     </footer>
