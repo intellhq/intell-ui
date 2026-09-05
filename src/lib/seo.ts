@@ -7,7 +7,7 @@ export const SITE_URL = "https://www.intell.ng";
 export const SITE_DESCRIPTION =
   "INTELL is an AI-powered energy monitoring and optimization platform for solar inverter monitoring, smart alerts, savings tracking, and multi-site energy management.";
 
-export const DEFAULT_OG_IMAGE = "/images/hero-img.jpg";
+export const DEFAULT_OG_IMAGE = "/images/request_demo_3.jpg";
 
 export const SEO_KEYWORDS = [
   "solar inverter monitoring",
@@ -50,6 +50,11 @@ export const PUBLIC_ROUTES = [
   {
     path: "/blog",
     priority: 0.8,
+    changeFrequency: "weekly" as const,
+  },
+  {
+    path: "/onboard",
+    priority: 0.95,
     changeFrequency: "weekly" as const,
   },
   {
