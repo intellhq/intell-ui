@@ -82,3 +82,13 @@ export const ONBOARDING_INTEREST_OPTIONS = [
   "Partner as an installer",
   "Request a product demo",
 ];
+
+export const ONBOARDING_SOURCE_OPTIONS = [
+  "LinkedIn",
+  "Instagram",
+  "Twitter (X)",
+  "Google",
+  "WhatsApp",
+  "Friends or colleagues",
+  "Installer referral",
+];
