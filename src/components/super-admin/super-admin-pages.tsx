@@ -32,6 +32,15 @@ import {
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import {
+  Bar,
+  BarChart,
+  CartesianGrid,
+  ResponsiveContainer,
+  Tooltip,
+  XAxis,
+  YAxis,
+} from "recharts";
+import {
   SUPER_ADMIN_ACTIVITY_LOG,
   SUPER_ADMIN_ADMIN_ROWS,
   SUPER_ADMIN_COMMUNICATION_ROWS,
@@ -64,6 +73,7 @@ type FilterState = {
   date: string;
   interest: string;
   installerType: string;
+  source: string;
 };
 
 const DEFAULT_FILTERS: FilterState = {
@@ -75,6 +85,7 @@ const DEFAULT_FILTERS: FilterState = {
   date: "All",
   interest: "All",
   installerType: "All",
+  source: "All",
 };
 
 function PageHeader({
@@ -247,6 +258,12 @@ function SearchAndFilters({
               options={SUPER_ADMIN_FILTER_OPTIONS.interest}
               value={filters.interest}
               onChange={(value) => onFilterChange("interest", value)}
+            />
+            <FilterDropdown
+              label="Source"
+              options={SUPER_ADMIN_FILTER_OPTIONS.source}
+              value={filters.source}
+              onChange={(value) => onFilterChange("source", value)}
             />
             <FilterDropdown
               label="Date"
@@ -627,15 +644,25 @@ function ActivityTable({ rows }: { rows: SuperAdminActivity[] }) {
   );
 }
 
-function ChartCard({
-  title,
-  value,
-  input,
-  output,
-  icon: Icon,
-}: (typeof SUPER_ADMIN_OVERVIEW_CHARTS)[number]) {
-  return (
-    <div className="rounded-xl border border-border bg-card p-5">
+function ChartCard({ 
+  title, 
+  value, 
+  input, 
+  output, 
+  inputLabel = "Input",
+  outputLabel = "Output",
+  icon: Icon, 
+}: (typeof SUPER_ADMIN_OVERVIEW_CHARTS)[number]) { 
+  const chartData = input.map((inputValue, index) => ({
+    month: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep"][
+      index
+    ],
+    input: inputValue,
+    output: output[index] ?? 0,
+  }));
+
+  return ( 
+    <div className="rounded-xl border border-border bg-card p-5"> 
       <div className="mb-4 flex items-start justify-between">
         <div>
           <h2 className="text-base font-semibold text-foreground">{title}</h2>
@@ -643,39 +670,70 @@ function ChartCard({
         </div>
         <Icon className="size-4 text-muted-foreground" />
       </div>
-      <div className="relative h-56 overflow-hidden rounded-lg border border-border bg-muted/20 p-4">
-        <div className="absolute inset-4 grid grid-rows-4">
-          {Array.from({ length: 4 }).map((_, index) => (
-            <span key={index} className="border-t border-dashed border-border" />
-          ))}
-        </div>
-        <div className="absolute inset-x-5 bottom-5 top-8 flex items-end gap-2 sm:gap-3">
-          {input.map((inputValue, index) => (
-            <div key={index} className="flex flex-1 items-end justify-center gap-1">
-              <div
-                className="h-full w-full max-w-4 rounded-t bg-secondary/80"
-                style={{ height: `${Math.max(inputValue, 8)}%` }}
-                title={`input ${inputValue}`}
-              />
-              <div
-                className="h-full w-full max-w-4 rounded-t bg-chart-battery"
-                style={{ height: `${Math.max(output[index] ?? 0, 8)}%` }}
-                title={`output ${output[index] ?? 0}`}
-              />
-            </div>
-          ))}
-        </div>
-      </div>
-      <div className="mt-3 flex justify-end gap-4 text-xs text-muted-foreground">
-        <span className="flex items-center gap-1">
-          <span className="size-2 rounded-full bg-secondary" />
-          input
-        </span>
-        <span className="flex items-center gap-1">
-          <span className="size-2 rounded-full bg-chart-battery" />
-          output
-        </span>
-      </div>
+      <div className="h-56 min-w-0 overflow-hidden rounded-lg border border-border bg-muted/20 p-2 sm:p-4">
+        <ResponsiveContainer width="100%" height="100%" minWidth={0}>
+          <BarChart
+            data={chartData}
+            barGap={4}
+            barCategoryGap="24%"
+            margin={{ top: 8, right: 8, left: -12, bottom: 0 }}
+          >
+            <CartesianGrid
+              stroke="var(--border)"
+              vertical={false}
+              strokeDasharray="3 3"
+            />
+            <XAxis
+              dataKey="month"
+              tickLine={false}
+              axisLine={false}
+              tick={{ fill: "var(--muted-foreground)", fontSize: 11 }}
+            />
+            <YAxis
+              tickLine={false}
+              axisLine={false}
+              tick={{ fill: "var(--muted-foreground)", fontSize: 10 }}
+              width={42}
+              tickFormatter={(tick: number) =>
+                tick >= 1000000 ? `${Math.round(tick / 1000000)}m` : `${tick}`
+              }
+            />
+            <Tooltip
+              cursor={{ fill: "var(--muted)", opacity: 0.4 }}
+              formatter={(tooltipValue, name) => [
+                Number(tooltipValue).toLocaleString(),
+                name === "input" ? inputLabel : outputLabel,
+              ]}
+              contentStyle={{
+                borderRadius: "8px",
+                border: "1px solid var(--border)",
+                background: "var(--card)",
+                fontSize: "12px",
+              }}
+            />
+            <Bar
+              dataKey="input"
+              fill="var(--color-amber-30)"
+              radius={[4, 4, 0, 0]}
+            />
+            <Bar
+              dataKey="output"
+              fill="var(--color-amber-60)"
+              radius={[4, 4, 0, 0]}
+            />
+          </BarChart>
+        </ResponsiveContainer>
+      </div> 
+      <div className="mt-3 flex justify-end gap-4 text-xs text-muted-foreground"> 
+        <span className="flex items-center gap-1"> 
+          <span className="size-2 rounded-full bg-amber-30" /> 
+          {inputLabel}
+        </span> 
+        <span className="flex items-center gap-1"> 
+          <span className="size-2 rounded-full bg-amber-60" /> 
+          {outputLabel}
+        </span> 
+      </div> 
     </div>
   );
 }
@@ -720,8 +778,10 @@ function filterRows(rows: SuperAdminTableRow[], filters: FilterState) {
       filters.priority === "All" || row.priority === filters.priority;
     const matchesRole = filters.role === "All" || row.role === filters.role;
     const matchesPlan = filters.plan === "All" || row.role === filters.plan;
-    const matchesInterest =
-      filters.interest === "All" || row.role === filters.interest;
+    const matchesInterest = 
+      filters.interest === "All" || row.role === filters.interest; 
+    const matchesSource =
+      filters.source === "All" || row.source === filters.source;
     const matchesInstallerType =
       filters.installerType === "All" ||
       row.installerType === filters.installerType;
@@ -733,8 +793,9 @@ function filterRows(rows: SuperAdminTableRow[], filters: FilterState) {
       matchesPriority &&
       matchesRole &&
       matchesPlan &&
-      matchesInterest &&
-      matchesInstallerType &&
+      matchesInterest && 
+      matchesSource &&
+      matchesInstallerType && 
       matchesDate
     );
   });
@@ -996,15 +1057,16 @@ export function SuperAdminUsersPage() {
         }
       />
       <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
-        {SUPER_ADMIN_METRICS.slice(0, 3).map((metric) => (
-          <StatCard key={metric.label} metric={metric} />
+        {SUPER_ADMIN_METRICS.slice(0, 2).map((metric) => ( 
+          <StatCard key={metric.label} metric={metric} /> 
         ))}
-        <StatCard
-          metric={{
-            label: "Free vs Paid Users",
-            value: "10%",
-            helper: "Paid conversion from pilot users",
-            change: "+2.4% vs last month",
+        <StatCard key="Free Users" metric={SUPER_ADMIN_METRICS[2]} />
+        <StatCard 
+          metric={{ 
+            label: "Paid Users", 
+            value: "528", 
+            helper: "Paid conversion from pilot users", 
+            change: "+2.4% vs last month", 
             icon: Users,
           }}
         />
@@ -1096,28 +1158,19 @@ export function SuperAdminOnboardingLeadsPage() {
   return (
     <div className="space-y-7">
       <PageHeader title="Onboarding Leads" />
-      <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
-        <StatCard
-          metric={{
-            label: "New Leads",
-            value: "43",
-            helper: "People who asked to get INTELL connected",
-            change: "+18 from social campaigns",
-            icon: Users,
-          }}
-        />
-        <StatCard
-          metric={{
-            label: "Qualified",
-            value: "17",
-            helper: "Compatible inverter or installer-ready leads",
-            change: "7 require installer follow-up",
-            icon: Users,
-          }}
-        />
-        <StatCard
-          metric={{
-            label: "Top State",
+      <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3"> 
+        <StatCard 
+          metric={{ 
+            label: "Total Leads", 
+            value: "43", 
+            helper: "17 qualified leads need installer or sales follow-up", 
+            change: "+18 from social campaigns", 
+            icon: Users, 
+          }} 
+        /> 
+        <StatCard 
+          metric={{ 
+            label: "Top State", 
             value: "Lagos",
             helper: "Largest demand source for the current campaign",
             change: "52% of new leads",
@@ -1126,10 +1179,10 @@ export function SuperAdminOnboardingLeadsPage() {
         />
         <StatCard
           metric={{
-            label: "Primary Need",
-            value: "Alerts",
-            helper: "Fault detection and battery-drain clarity",
-            change: "From GTM lead notes",
+            label: "Top Interest", 
+            value: "Home monitoring", 
+            helper: "Most leads want INTELL for household inverter visibility", 
+            change: "From onboard form selections", 
             icon: Users,
           }}
         />
