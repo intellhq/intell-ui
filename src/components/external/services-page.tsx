@@ -208,12 +208,12 @@ export function ServicesPage() {
           className="relative z-10 flex max-w-3xl flex-col items-center px-4 text-center"
         >
           <h1 className="mb-6 text-3xl font-bold text-white md:text-5xl">
-            Make your inverter smarter with INTELL
+            Energy services for smarter solar performance
           </h1>
           <p className="text-base leading-relaxed text-gray-300 md:text-lg">
-            Connect your solar system to AI guidance, native alerts, savings
-            tracking, and plug-and-play monitoring support for compatible
-            inverter setups.
+            INTELL helps households, businesses, and installers monitor
+            inverter health, catch faults earlier, understand energy costs, and
+            connect compatible systems without guesswork.
           </p>
         </motion.div>
       </section>
