@@ -11,6 +11,7 @@ import {
 import Image from "next/image";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
+import { MARKETING_FAQS } from "@/constants/faqs";
 
 type BillingPeriod = "monthly" | "yearly";
 
@@ -110,34 +111,6 @@ const comparisonData = [
     free: "Community",
     plus: <CheckIcon />,
     pro: <CheckIcon />,
-  },
-];
-
-const faqData = [
-  {
-    question: "Do I need to install new hardware?",
-    answer:
-      "Some users can connect through an existing smart inverter app or logger. Non-smart and hybrid inverter users may need INTELL's plug-and-play monitoring kit or installer-supported setup.",
-  },
-  {
-    question: "Which inverter brands are supported?",
-    answer:
-      "INTELL supports common inverter ecosystems including Deye, Growatt, SunSynk, Axpert, Luxpower, MUST Power, Voltronic-style systems, and Solarman-compatible loggers.",
-  },
-  {
-    question: "Why would smart inverter owners use INTELL?",
-    answer:
-      "Many smart inverter apps show raw plant data but do not explain faults, compare savings clearly, preserve user-friendly reports, or unify multiple inverter brands in one dashboard. INTELL adds AI explanations, alerts, reporting, and operational context on top.",
-  },
-  {
-    question: "Is my data safe?",
-    answer:
-      "Absolutely. We use industry-standard encryption and security protocols to ensure your energy data and personal information are protected at all times.",
-  },
-  {
-    question: "What do paid plans mainly unlock?",
-    answer:
-      "Paid plans mainly expand AI assistant usage, report generation, report-link retention, connected systems, and support. Monitoring, alerts, and savings tracking remain available on the free plan.",
   },
 ];
 
@@ -471,7 +444,7 @@ export function PricingSection() {
         </div>
 
         <div className="mt-12 flex w-full max-w-320.25 flex-col gap-8">
-          {faqData.map((faq, index) => (
+          {MARKETING_FAQS.map((faq, index) => (
             <div
               key={index}
               className="border-slate-30 flex flex-col justify-center rounded-[10px] border px-5"
