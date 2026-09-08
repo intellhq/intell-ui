@@ -191,46 +191,30 @@ export function ServicesPage() {
         style={{ scaleX }}
       />
 
-      <section className="bg-secondary relative flex min-h-[420px] items-center overflow-hidden">
+      <section className="relative flex h-87.5 w-full items-center justify-center overflow-hidden md:h-112.5">
         <Image
-          src="/images/panels.jpg"
+          src="/images/pages.jpg"
           alt="Solar panels connected to an intelligent energy monitoring platform"
           fill
           priority
           className="object-cover"
           sizes="100vw"
         />
-        <div className="absolute inset-0 bg-slate-950/75" />
+        <div className="absolute inset-0 bg-slate-900/80" />
         <motion.div
           initial={{ opacity: 0, y: 28 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.7, ease: "easeOut" }}
-          className="container-padding relative z-10 mx-auto w-full max-w-7xl py-20 text-center md:py-28"
+          className="relative z-10 flex max-w-3xl flex-col items-center px-4 text-center"
         >
-          <h1 className="mx-auto max-w-4xl text-4xl leading-tight font-bold text-white md:text-6xl">
-            Services
+          <h1 className="mb-6 text-3xl font-bold text-white md:text-5xl">
+            Make your inverter smarter with INTELL
           </h1>
-          <p className="mx-auto mt-6 max-w-3xl text-base leading-relaxed text-slate-100 md:text-xl">
-            Make your inverter smarter with AI monitoring, native alerts, cost
-            visibility, and plug-and-play support for compatible solar systems.
+          <p className="text-base leading-relaxed text-gray-300 md:text-lg">
+            Connect your solar system to AI guidance, native alerts, savings
+            tracking, and plug-and-play monitoring support for compatible
+            inverter setups.
           </p>
-          <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
-            <Button
-              asChild
-              size="lg"
-              className="bg-primary text-secondary hover:bg-primary/90 rounded-xl px-8 font-bold"
-            >
-              <Link href="/onboard">Onboard your inverter</Link>
-            </Button>
-            <Button
-              asChild
-              size="lg"
-              variant="outline"
-              className="rounded-xl border-white/70 bg-white/10 px-8 font-bold text-white hover:bg-white hover:text-secondary"
-            >
-              <Link href="/contact">Talk to us</Link>
-            </Button>
-          </div>
         </motion.div>
       </section>
 
@@ -325,48 +309,62 @@ export function ServicesPage() {
         </div>
       </section>
 
-      <section className="bg-white px-6 py-16 md:py-24">
-        <div className="mx-auto max-w-7xl">
-          <div className="mx-auto mb-12 max-w-3xl text-center">
-            <p className="mb-3 text-sm font-semibold tracking-wider text-primary uppercase">
-              Select your inverter
-            </p>
-            <h2 className="text-3xl font-bold tracking-tight text-foreground md:text-5xl">
-              Multi-brand support for common solar inverter setups.
-            </h2>
-            <p className="text-muted-foreground mt-5 text-base leading-relaxed md:text-lg">
-              INTELL is designed around the brands and monitoring paths used by
-              homes, SMEs, installers, and partner deployments across Nigeria.
-            </p>
-          </div>
+      <section className="bg-white py-16 md:py-24">
+        <div className="mx-auto max-w-7xl px-6 text-center">
+          <h2 className="text-3xl font-bold tracking-tight text-foreground md:text-5xl">
+            Supported <span className="text-primary">inverters</span>
+          </h2>
+          <p className="text-muted-foreground mx-auto mt-5 max-w-3xl text-base leading-relaxed md:text-lg">
+            INTELL is designed around the brands and monitoring paths used by
+            homes, SMEs, installers, and partner deployments across Nigeria.
+          </p>
+        </div>
 
-          <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
-            {featuredInverters.map((brand) => (
+        <div className="mt-12">
+          {Array.from({ length: Math.ceil(featuredInverters.length / 4) }).map(
+            (_, rowIndex) => (
               <div
-                key={brand.name}
-                className="group flex min-h-56 flex-col items-center justify-between rounded-2xl border border-border bg-card p-5 text-center shadow-sm transition hover:-translate-y-1 hover:border-primary/60 hover:shadow-md"
+                key={rowIndex}
+                className={`border-y border-border/60 ${
+                  rowIndex % 2 === 0 ? "bg-white" : "bg-surface-50"
+                }`}
               >
-                <div className="flex h-34 w-full items-center justify-center gap-2">
-                  {brand.images.map((image) => (
-                    <div key={image} className="relative h-30 flex-1">
-                      <Image
-                        src={image}
-                        alt={`${brand.name} inverter`}
-                        fill
-                        className="object-contain"
-                        sizes="(max-width: 768px) 40vw, 14vw"
-                      />
-                    </div>
-                  ))}
+                <div className="mx-auto grid max-w-7xl grid-cols-2 gap-y-10 px-6 py-10 md:grid-cols-4 md:gap-x-8 md:gap-y-14 md:py-12">
+                  {featuredInverters
+                    .slice(rowIndex * 4, rowIndex * 4 + 4)
+                    .map((brand) => (
+                      <div
+                        key={brand.name}
+                        className="flex flex-col items-center justify-end text-center"
+                      >
+                        <div className="flex h-34 items-end justify-center -space-x-2 md:h-40">
+                          {brand.images.map((image) => (
+                            <div
+                              key={image}
+                              className="relative h-32 w-24 md:h-36 md:w-28"
+                            >
+                              <Image
+                                src={image}
+                                alt={`${brand.name} inverter`}
+                                fill
+                                className="object-contain"
+                                sizes="(max-width: 768px) 42vw, 16vw"
+                              />
+                            </div>
+                          ))}
+                        </div>
+                        <span className="mt-5 text-lg font-bold text-primary md:text-xl">
+                          {brand.name}
+                        </span>
+                      </div>
+                    ))}
                 </div>
-                <span className="mt-4 text-lg font-bold text-foreground">
-                  {brand.name}
-                </span>
               </div>
-            ))}
-          </div>
+            ),
+          )}
+        </div>
 
-          <div className="mx-auto mt-12 max-w-3xl rounded-2xl border border-border bg-surface-50 p-6 text-center">
+          <div className="mx-auto mt-12 max-w-3xl px-6 text-center">
             <h3 className="text-2xl font-bold text-foreground">
               Don&apos;t see your inverter?
             </h3>
@@ -377,12 +375,12 @@ export function ServicesPage() {
             </p>
             <Button
               asChild
-              className="mt-5 bg-secondary text-white hover:bg-secondary/90"
+              variant="link"
+              className="mt-2 px-0 text-primary"
             >
               <Link href="/services/inverters">View inverter guide</Link>
             </Button>
           </div>
-        </div>
       </section>
     </main>
   );

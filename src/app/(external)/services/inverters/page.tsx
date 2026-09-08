@@ -1,15 +1,8 @@
 import Link from "next/link";
 import type { Metadata } from "next";
-import { ArrowLeft, CheckCircle2, CircleHelp, XCircle } from "lucide-react";
+import { ArrowLeft, CheckCircle2 } from "lucide-react";
 import { JsonLd } from "@/components/seo/json-ld";
 import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
 import { createBreadcrumbJsonLd, createSeoMetadata } from "@/lib/seo";
 
 export const metadata: Metadata = createSeoMetadata({
@@ -23,9 +16,17 @@ export const metadata: Metadata = createSeoMetadata({
     "Deye inverter monitoring",
     "Growatt inverter monitoring",
     "Voltronic inverter support",
-    "SolarAssistant compatible inverters",
+    "Solarman inverter monitoring",
   ],
 });
+
+const toc = [
+  { href: "#overview", label: "Overview" },
+  { href: "#supported-brands", label: "Supported brands" },
+  { href: "#connection-paths", label: "Connection paths" },
+  { href: "#not-listed", label: "If your inverter is not listed" },
+  { href: "#contact", label: "Confirm support" },
+];
 
 const supportedBrands = [
   "Axpert",
@@ -61,43 +62,21 @@ const supportedBrands = [
   "ICC-compatible Voltronic systems",
 ];
 
-const currentlyExcluded = [
-  "ABB",
-  "Ampinvt",
-  "APEX/MLT",
-  "Atess",
-  "Enphase",
-  "Epever",
-  "Fronius",
-  "Renogy",
-  "Schneider",
-  "SMA",
-  "SolarEdge",
-  "Solax",
-  "FOXESS",
-  "Outback Radian",
-];
-
-const checks = [
+const connectionPaths = [
   {
-    title: "Check the brand list first",
+    title: "Direct cloud or app integration",
     description:
-      "If your inverter brand is listed here or on the services page, INTELL can usually validate a connection path through API, logger, gateway, or installer setup.",
+      "Some inverter ecosystems already expose data through a monitoring app or logger. INTELL can use that path when the user can provide the right plant, logger, or account details.",
   },
   {
-    title: "Check if it is a Voltronic-style inverter",
+    title: "Logger or gateway setup",
     description:
-      "Many Axpert, Kodak, Mecer, MPP Solar, RCT, and InfiniSolar units are Voltronic-style systems. Similar casing, manuals, USB/RS232 ports, and WatchPower or SolarPower support are strong signs.",
+      "Systems with WiFi, GPRS, RS232, RS485, USB, or CAN monitoring hardware can often be connected through a supported logger or gateway workflow.",
   },
   {
-    title: "Check if it is a Deye or Solarman-compatible system",
+    title: "Installer-supported hardware",
     description:
-      "Deye, SunSynk, and many Solarman logger setups can often expose plant data through compatible monitoring paths. A WiFi/RS232 logger, touchscreen settings page, or Solarman app setup helps validation.",
-  },
-  {
-    title: "Ask INTELL to confirm the connection path",
-    description:
-      "If the brand is unclear, send the model name, a photo of the inverter label, and the available ports. The team can confirm whether API, MQTT, logger, or plug-and-play hardware is the right route.",
+      "For non-smart but compatible systems, an installer can confirm ports, wiring, and monitoring hardware before INTELL starts collecting reliable inverter data.",
   },
 ];
 
@@ -112,132 +91,157 @@ export default function SupportedInvertersPage() {
         ])}
       />
 
-      <section className="bg-surface-50 border-b border-border px-6 py-14 md:py-20">
-        <div className="mx-auto max-w-5xl">
+      <section className="border-b border-border bg-surface-50 px-6 py-14 md:py-20">
+        <div className="mx-auto max-w-6xl">
           <Button asChild variant="ghost" className="-ml-3 mb-6">
             <Link href="/services">
               <ArrowLeft className="size-4" />
               Back to Services
             </Link>
           </Button>
-          <h1 className="text-3xl font-bold tracking-tight text-foreground md:text-5xl">
+          <p className="mb-3 text-sm font-semibold tracking-wider text-primary uppercase">
+            INTELL inverter support
+          </p>
+          <h1 className="max-w-4xl text-3xl font-bold tracking-tight text-foreground md:text-5xl">
             Is my inverter supported?
           </h1>
-          <p className="text-muted-foreground mt-5 max-w-3xl text-base leading-relaxed md:text-lg">
+          <p className="mt-5 max-w-3xl text-base leading-relaxed text-muted-foreground md:text-lg">
             INTELL supports common smart, hybrid, and monitoring-capable solar
-            inverter setups. Use this guide to check whether your inverter can
-            connect directly, through an existing logger, or through a
-            plug-and-play monitoring kit.
+            inverter setups. This guide helps users, installers, and partner
+            teams understand whether a system can connect directly, through a
+            logger, or through a plug-and-play monitoring kit.
           </p>
         </div>
       </section>
 
       <section className="px-6 py-12 md:py-16">
-        <div className="mx-auto grid max-w-6xl gap-6 lg:grid-cols-[0.9fr_1.1fr]">
-          <Card>
-            <CardHeader>
-              <div className="mb-2 flex size-11 items-center justify-center rounded-xl bg-primary/15 text-primary">
-                <CheckCircle2 className="size-5" />
-              </div>
-              <CardTitle>Supported and validation-ready brands</CardTitle>
-              <CardDescription>
-                These brands and ecosystems are the primary compatibility
-                targets for INTELL onboarding and installer validation.
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="grid grid-cols-2 gap-2 sm:grid-cols-3">
-                {supportedBrands.map((brand) => (
-                  <span
-                    key={brand}
-                    className="rounded-lg border border-border bg-surface-50 px-3 py-2 text-sm font-medium text-foreground"
-                  >
-                    {brand}
-                  </span>
-                ))}
-              </div>
-            </CardContent>
-          </Card>
+        <div className="mx-auto grid max-w-6xl gap-10 lg:grid-cols-[260px_1fr]">
+          <aside className="h-fit rounded-xl border border-border bg-white p-5 lg:sticky lg:top-24">
+            <p className="mb-4 text-sm font-semibold text-foreground">
+              On this page
+            </p>
+            <nav className="grid gap-3 text-sm">
+              {toc.map((item) => (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  className="text-muted-foreground transition hover:text-primary"
+                >
+                  {item.label}
+                </Link>
+              ))}
+            </nav>
+          </aside>
 
-          <div className="space-y-6">
-            <Card>
-              <CardHeader>
-                <div className="mb-2 flex size-11 items-center justify-center rounded-xl bg-secondary/10 text-secondary">
-                  <CircleHelp className="size-5" />
+          <article className="space-y-12">
+            <section id="overview" className="scroll-mt-28">
+              <h2 className="text-2xl font-bold text-foreground md:text-3xl">
+                Compatibility depends on the brand, model, and data path.
+              </h2>
+              <p className="mt-4 leading-7 text-muted-foreground">
+                A supported inverter is not only about the logo on the unit.
+                The model, firmware, communication ports, logger type, and
+                monitoring account all matter. INTELL treats support as a
+                validation process so the dashboard receives useful data instead
+                of unreliable readings.
+              </p>
+            </section>
+
+            <section id="supported-brands" className="scroll-mt-28">
+              <h2 className="text-2xl font-bold text-foreground md:text-3xl">
+                Supported brands and ecosystems
+              </h2>
+              <p className="mt-4 leading-7 text-muted-foreground">
+                These brands and ecosystems are the main compatibility targets
+                for INTELL onboarding, installer validation, and partner
+                deployments.
+              </p>
+              <div className="mt-6 overflow-hidden rounded-xl border border-border">
+                <div className="grid grid-cols-1 divide-y divide-border sm:grid-cols-2 sm:divide-x sm:divide-y-0 lg:grid-cols-3">
+                  {supportedBrands.map((brand) => (
+                    <div
+                      key={brand}
+                      className="border-b border-border px-4 py-3 text-sm font-medium text-foreground last:border-b-0 sm:last:border-b lg:[&:nth-last-child(-n+3)]:border-b-0"
+                    >
+                      {brand}
+                    </div>
+                  ))}
                 </div>
-                <CardTitle>How to check compatibility</CardTitle>
-                <CardDescription>
-                  A practical checklist for users and installers before an
-                  INTELL setup.
-                </CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                {checks.map((check, index) => (
-                  <div key={check.title} className="flex gap-4">
-                    <span className="mt-0.5 flex size-7 shrink-0 items-center justify-center rounded-full bg-primary text-sm font-bold text-white">
+              </div>
+            </section>
+
+            <section id="connection-paths" className="scroll-mt-28">
+              <h2 className="text-2xl font-bold text-foreground md:text-3xl">
+                How INTELL checks the connection path
+              </h2>
+              <div className="mt-6 grid gap-5">
+                {connectionPaths.map((path, index) => (
+                  <div
+                    key={path.title}
+                    className="flex gap-4 border-b border-border pb-5 last:border-b-0"
+                  >
+                    <span className="flex size-8 shrink-0 items-center justify-center rounded-full bg-primary text-sm font-bold text-white">
                       {index + 1}
                     </span>
                     <div>
-                      <h2 className="font-semibold text-foreground">
-                        {check.title}
-                      </h2>
-                      <p className="text-muted-foreground mt-1 text-sm leading-6">
-                        {check.description}
+                      <h3 className="font-semibold text-foreground">
+                        {path.title}
+                      </h3>
+                      <p className="mt-1 leading-7 text-muted-foreground">
+                        {path.description}
                       </p>
                     </div>
                   </div>
                 ))}
-              </CardContent>
-            </Card>
+              </div>
+            </section>
 
-            <Card>
-              <CardHeader>
-                <div className="mb-2 flex size-11 items-center justify-center rounded-xl bg-destructive/10 text-destructive">
-                  <XCircle className="size-5" />
-                </div>
-                <CardTitle>Brands that need separate validation</CardTitle>
-                <CardDescription>
-                  These systems are not part of the current primary support
-                  path and may require a different integration approach.
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="flex flex-wrap gap-2">
-                  {currentlyExcluded.map((brand) => (
-                    <span
-                      key={brand}
-                      className="rounded-full bg-muted px-3 py-1.5 text-xs font-medium text-muted-foreground"
-                    >
-                      {brand}
-                    </span>
-                  ))}
-                </div>
-              </CardContent>
-            </Card>
-          </div>
-        </div>
-      </section>
+            <section id="not-listed" className="scroll-mt-28">
+              <h2 className="text-2xl font-bold text-foreground md:text-3xl">
+                If your inverter is not listed
+              </h2>
+              <p className="mt-4 leading-7 text-muted-foreground">
+                Many inverter models are rebranded Voltronic, Deye, Growatt, or
+                Solarman-compatible systems. If the brand name is unfamiliar,
+                check the model label, monitoring app, manual, and port layout.
+                Similar hardware can still be supportable even when the exact
+                retail brand is not shown on the services page.
+              </p>
+              <ul className="mt-5 grid gap-3">
+                {[
+                  "Send the inverter brand and full model number.",
+                  "Include a clear photo of the label and communication ports.",
+                  "Mention the monitoring app or logger currently used, if any.",
+                ].map((item) => (
+                  <li key={item} className="flex gap-3 text-muted-foreground">
+                    <CheckCircle2 className="mt-1 size-4 shrink-0 text-primary" />
+                    <span>{item}</span>
+                  </li>
+                ))}
+              </ul>
+            </section>
 
-      <section className="bg-secondary px-6 py-14 text-white">
-        <div className="mx-auto flex max-w-5xl flex-col gap-5 text-center">
-          <h2 className="text-3xl font-bold">Need help confirming support?</h2>
-          <p className="mx-auto max-w-2xl text-sm leading-6 text-slate-200 md:text-base">
-            Send your inverter brand, model number, and a photo of the ports.
-            INTELL can help confirm whether your system should connect through
-            an app API, logger, MQTT gateway, or installer-supported hardware.
-          </p>
-          <div className="flex flex-col items-center justify-center gap-3 sm:flex-row">
-            <Button asChild className="bg-primary text-secondary hover:bg-primary/90">
-              <Link href="/onboard">Submit inverter details</Link>
-            </Button>
-            <Button
-              asChild
-              variant="outline"
-              className="border-white/70 bg-white/10 text-white hover:bg-white hover:text-secondary"
+            <section
+              id="contact"
+              className="scroll-mt-28 rounded-2xl border border-border bg-surface-50 p-6 md:p-8"
             >
-              <Link href="/contact">Contact INTELL</Link>
-            </Button>
-          </div>
+              <h2 className="text-2xl font-bold text-foreground md:text-3xl">
+                Need help confirming support?
+              </h2>
+              <p className="mt-4 max-w-2xl leading-7 text-muted-foreground">
+                Send your inverter brand, model number, and a photo of the
+                ports. INTELL can help confirm whether your system should
+                connect through an app API, logger, MQTT gateway, or
+                installer-supported hardware.
+              </p>
+              <Button
+                asChild
+                className="mt-6 bg-secondary text-white hover:bg-secondary/90"
+              >
+                <Link href="/contact">Contact INTELL</Link>
+              </Button>
+            </section>
+          </article>
         </div>
       </section>
     </main>
