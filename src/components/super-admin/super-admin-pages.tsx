@@ -1037,7 +1037,14 @@ export function SuperAdminUsersPage() {
         {SUPER_ADMIN_METRICS.slice(0, 2).map((metric) => ( 
           <StatCard key={metric.label} metric={metric} /> 
         ))}
-        <StatCard key="Free Users" metric={SUPER_ADMIN_METRICS[2]} />
+        <StatCard 
+          metric={{ 
+            label: "Free Users", 
+            value: "2231", 
+            helper: "Free conversion from pilot users", 
+            change: "+2.4% vs last month", 
+            icon: Users,
+          }} />
         <StatCard 
           metric={{ 
             label: "Paid Users", 

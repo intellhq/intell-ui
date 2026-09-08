@@ -36,7 +36,7 @@ export const SUPER_ADMIN_METRICS: SuperAdminMetric[] = [
     value: "268",
     helper: "Smart inverter users this month",
     change: "+9.0% vs last month",
-    icon: Users,
+    icon: UserPlus,
   },
   {
     label: "Total Users",
@@ -50,7 +50,7 @@ export const SUPER_ADMIN_METRICS: SuperAdminMetric[] = [
     value: "128",
     helper: "Installer and EPC partner accounts",
     change: "+8.2% vs last month",
-    icon: UserPlus,
+    icon: Users,
   },
   {
     label: "Open Feedback",

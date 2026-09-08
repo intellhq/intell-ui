@@ -208,7 +208,7 @@ export function ServicesPage() {
           className="relative z-10 flex max-w-3xl flex-col items-center px-4 text-center"
         >
           <h1 className="mb-6 text-3xl font-bold text-white md:text-5xl">
-            Energy services for smarter solar performance
+            What INTELL offers
           </h1>
           <p className="text-base leading-relaxed text-gray-300 md:text-lg">
             INTELL helps households, businesses, and installers monitor
@@ -221,9 +221,6 @@ export function ServicesPage() {
       <section className="bg-surface-50 px-6 py-16 md:py-24">
         <div className="mx-auto max-w-7xl">
           <div className="mb-12 max-w-3xl">
-            <p className="mb-3 text-sm font-semibold tracking-wider text-primary uppercase">
-              What INTELL does
-            </p>
             <h2 className="text-3xl font-bold tracking-tight text-foreground md:text-5xl">
               Services built around the energy problems users actually face.
             </h2>
