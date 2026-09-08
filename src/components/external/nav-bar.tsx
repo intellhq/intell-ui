@@ -85,6 +85,7 @@ export function Navbar() {
   const activeLabel = useMemo(() => {
     const matchedLink = NAV_LINKS.find((link) => link.href === pathname);
     if (matchedLink) return matchedLink.label;
+    if (pathname.startsWith("/services/")) return "Services";
 
     if (pathname === "/") return selectedLabel === "FAQ" ? "FAQ" : null;
     if (!VALID_PATHS.has(pathname)) return null;

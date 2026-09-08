@@ -1,6 +1,8 @@
 import Link from "next/link";
+import Image from "next/image";
 import type { Metadata } from "next";
 import { ArrowLeft, CheckCircle2 } from "lucide-react";
+import { InverterGuideToc } from "@/components/external/inverter-guide-toc";
 import { JsonLd } from "@/components/seo/json-ld";
 import { Button } from "@/components/ui/button";
 import { createBreadcrumbJsonLd, createSeoMetadata } from "@/lib/seo";
@@ -21,11 +23,11 @@ export const metadata: Metadata = createSeoMetadata({
 });
 
 const toc = [
-  { href: "#overview", label: "Overview" },
-  { href: "#supported-brands", label: "Supported brands" },
-  { href: "#connection-paths", label: "Connection paths" },
-  { href: "#not-listed", label: "If your inverter is not listed" },
-  { href: "#contact", label: "Confirm support" },
+  { id: "overview", title: "1. Overview" },
+  { id: "supported-brands", title: "2. Supported brands" },
+  { id: "connection-paths", title: "3. Connection paths" },
+  { id: "not-listed", title: "4. If your inverter is not listed" },
+  { id: "contact", title: "5. Confirm support" },
 ];
 
 const supportedBrands = [
@@ -91,6 +93,27 @@ export default function SupportedInvertersPage() {
         ])}
       />
 
+      <section className="relative flex h-87.5 w-full items-center justify-center overflow-hidden md:h-112.5">
+        <Image
+          src="/images/pages.jpg"
+          alt="Solar panels connected to an intelligent energy monitoring platform"
+          fill
+          priority
+          className="object-cover"
+          sizes="100vw"
+        />
+        <div className="absolute inset-0 bg-slate-900/80" />
+        <div className="relative z-10 flex max-w-3xl flex-col items-center px-4 text-center">
+          <h1 className="mb-6 text-3xl font-bold text-white md:text-5xl">
+            INTELL support
+          </h1>
+          <p className="text-base leading-relaxed text-gray-300 md:text-lg">
+            Browse through the inverter support paths behind INTELL monitoring,
+            alerts, savings visibility, and installer-backed setup.
+          </p>
+        </div>
+      </section>
+
       <section className="border-b border-border bg-surface-50 px-6 py-14 md:py-20">
         <div className="mx-auto max-w-6xl">
           <Button asChild variant="ghost" className="-ml-3 mb-6">
@@ -115,25 +138,10 @@ export default function SupportedInvertersPage() {
       </section>
 
       <section className="px-6 py-12 md:py-16">
-        <div className="mx-auto grid max-w-6xl gap-10 lg:grid-cols-[260px_1fr]">
-          <aside className="h-fit rounded-xl border border-border bg-white p-5 lg:sticky lg:top-24">
-            <p className="mb-4 text-sm font-semibold text-foreground">
-              On this page
-            </p>
-            <nav className="grid gap-3 text-sm">
-              {toc.map((item) => (
-                <Link
-                  key={item.href}
-                  href={item.href}
-                  className="text-muted-foreground transition hover:text-primary"
-                >
-                  {item.label}
-                </Link>
-              ))}
-            </nav>
-          </aside>
+        <div className="container mx-auto flex max-w-350 flex-col gap-12 md:px-6 lg:flex-row lg:items-start lg:px-8">
+          <InverterGuideToc sections={toc} />
 
-          <article className="space-y-12">
+          <article className="w-full space-y-20 lg:w-3/4 lg:pl-8">
             <section id="overview" className="scroll-mt-28">
               <h2 className="text-2xl font-bold text-foreground md:text-3xl">
                 Compatibility depends on the brand, model, and data path.
