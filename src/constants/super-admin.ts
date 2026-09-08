@@ -46,11 +46,11 @@ export const SUPER_ADMIN_METRICS: SuperAdminMetric[] = [
     icon: Users,
   },
   {
-    label: "Free Users",
-    value: "2,231",
-    helper: "Users currently on the free plan",
-    change: "80.9% of total users",
-    icon: Users,
+    label: "Installers",
+    value: "128",
+    helper: "Installer and EPC partner accounts",
+    change: "+8.2% vs last month",
+    icon: UserPlus,
   },
   {
     label: "Open Feedback",
@@ -427,8 +427,8 @@ export const SUPER_ADMIN_FILTER_OPTIONS = {
 
 export const SUPER_ADMIN_OVERVIEW_CHARTS = [
   {
-    title: "Paid Users",
-    value: "12 paid users",
+    title: "Free/Paid Users",
+    value: "354 free / 12 paid",
     icon: BarChart3,
     input: [260, 284, 318, 354, 402, 438, 475, 512, 548],
     output: [4, 6, 8, 12, 15, 18, 22, 29, 36],

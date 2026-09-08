@@ -63,7 +63,7 @@ import type {
 import { cn } from "@/lib/utils";
 
 type Tab = "list" | "activity";
-type DialogMode = "admin" | "paid-users" | null;
+type DialogMode = "admin" | null;
 type FilterState = {
   search: string;
   status: string;
@@ -888,76 +888,65 @@ function ActionDialog({
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="rounded-xl">
         <DialogHeader>
-          <DialogTitle>
-            {mode === "admin"
-              ? "Add Admin"
-              : "Paid Users"}
-          </DialogTitle>
+          <DialogTitle>Add Admin</DialogTitle>
           <DialogDescription>
-            {mode === "paid-users"
-              ? "Paid users will be connected to backend billing data when the endpoint is available."
-              : "Use this temporary form to keep the super-admin UI flow functional before backend integration."}
+            Use this temporary form to keep the super-admin UI flow functional
+            before backend integration.
           </DialogDescription>
         </DialogHeader>
 
-        {mode === "paid-users" ? (
-          <div className="rounded-lg border border-border bg-muted p-4 text-sm text-muted-foreground">
-            Current dummy conversion is 10%, with 12 paid users from the pilot data.
+        <form onSubmit={handleSubmit} className="space-y-4">
+          <div className="space-y-2">
+            <Label htmlFor="dialog-name">Full name</Label>
+            <Input
+              id="dialog-name"
+              value={name}
+              onChange={(event) => setName(event.target.value)}
+              placeholder="Jane Doe"
+              className="h-11 text-sm placeholder:text-sm"
+            />
           </div>
-        ) : (
-          <form onSubmit={handleSubmit} className="space-y-4">
-            <div className="space-y-2">
-              <Label htmlFor="dialog-name">
-                Full name
-              </Label>
-              <Input
-                id="dialog-name"
-                value={name}
-                onChange={(event) => setName(event.target.value)}
-                placeholder="Jane Doe"
-                className="h-11 text-sm placeholder:text-sm"
-              />
-            </div>
 
-            <>
-              <div className="space-y-2">
-                <Label htmlFor="dialog-email">Email</Label>
-                <Input
-                  id="dialog-email"
-                  type="email"
-                  value={email}
-                  onChange={(event) => setEmail(event.target.value)}
-                  placeholder="admin@INTELL.africa"
-                  className="h-11 text-sm placeholder:text-sm"
-                />
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="dialog-role">Role</Label>
-                <Select value={role} onValueChange={setRole}>
-                  <SelectTrigger
-                    id="dialog-role"
-                    className="h-11 rounded-lg border-border bg-card"
-                  >
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="Admin">Admin</SelectItem>
-                    <SelectItem value="Super Admin">Super Admin</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-            </>
+          <div className="space-y-2">
+            <Label htmlFor="dialog-email">Email</Label>
+            <Input
+              id="dialog-email"
+              type="email"
+              value={email}
+              onChange={(event) => setEmail(event.target.value)}
+              placeholder="admin@INTELL.africa"
+              className="h-11 text-sm placeholder:text-sm"
+            />
+          </div>
 
-            <DialogFooter>
-              <Button type="button" variant="outline" onClick={close}>
-                Cancel
-              </Button>
-              <Button type="submit" className="bg-secondary text-white hover:bg-secondary/90">
-                Save
-              </Button>
-            </DialogFooter>
-          </form>
-        )}
+          <div className="space-y-2">
+            <Label htmlFor="dialog-role">Role</Label>
+            <Select value={role} onValueChange={setRole}>
+              <SelectTrigger
+                id="dialog-role"
+                className="h-11 rounded-lg border-border bg-card"
+              >
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="Admin">Admin</SelectItem>
+                <SelectItem value="Super Admin">Super Admin</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+
+          <DialogFooter>
+            <Button type="button" variant="outline" onClick={close}>
+              Cancel
+            </Button>
+            <Button
+              type="submit"
+              className="bg-secondary text-white hover:bg-secondary/90"
+            >
+              Save
+            </Button>
+          </DialogFooter>
+        </form>
       </DialogContent>
     </Dialog>
   );
@@ -1038,24 +1027,12 @@ export function SuperAdminAdminsPage() {
 }
 
 export function SuperAdminUsersPage() {
-  const [dialog, setDialog] = useState<DialogMode>(null);
   const { filters, updateFilter } = useTableFilters();
   const rows = filterRows(SUPER_ADMIN_USER_ROWS, filters);
 
   return (
     <div className="space-y-7">
-      <PageHeader
-        title="User Management"
-        action={
-          <Button
-            variant="outline"
-            onClick={() => setDialog("paid-users")}
-            className="h-10 rounded-lg border-secondary text-secondary"
-          >
-            View Paid Users
-          </Button>
-        }
-      />
+      <PageHeader title="User Management" />
       <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
         {SUPER_ADMIN_METRICS.slice(0, 2).map((metric) => ( 
           <StatCard key={metric.label} metric={metric} /> 
@@ -1077,11 +1054,6 @@ export function SuperAdminUsersPage() {
         onFilterChange={updateFilter}
       />
       <DataTable rows={rows} kind="users" />
-      <ActionDialog
-        mode={dialog}
-        open={!!dialog}
-        onOpenChange={(open) => setDialog(open ? dialog : null)}
-      />
     </div>
   );
 }
