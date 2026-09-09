@@ -6,11 +6,13 @@ import { createBreadcrumbJsonLd, createSeoMetadata } from "@/lib/seo";
 export const metadata: Metadata = createSeoMetadata({
   title: "INTELL Pricing",
   description:
-    "View our pricing plans and choose the right solution for your energy needs.",
+    "Compare INTELL plans for inverter monitoring, AI assistant prompts, alerts, savings tracking, and energy reports.",
   path: "/pricing",
   keywords: [
     "solar monitoring pricing",
     "inverter monitoring subscription",
+    "AI energy assistant pricing",
+    "solar report pricing",
     "energy dashboard pricing",
   ],
 });

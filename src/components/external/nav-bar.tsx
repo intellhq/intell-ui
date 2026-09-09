@@ -53,7 +53,7 @@ const IconX = ({ className }: { className?: string }) => (
 export function Navbar() {
   const [open, setOpen] = useState(false);
   const [dropdownOpen, setDropdownOpen] = useState(false);
-  const [selectedLabel, setSelectedLabel] = useState("Features");
+  const [selectedLabel, setSelectedLabel] = useState("Services");
   const mounted = useMounted();
   const pathname = usePathname();
   const dropdownRef = useRef<HTMLDivElement>(null);
@@ -85,10 +85,12 @@ export function Navbar() {
   const activeLabel = useMemo(() => {
     const matchedLink = NAV_LINKS.find((link) => link.href === pathname);
     if (matchedLink) return matchedLink.label;
+    if (pathname.startsWith("/services/")) return "Services";
 
+    if (pathname === "/") return selectedLabel === "FAQ" ? "FAQ" : null;
     if (!VALID_PATHS.has(pathname)) return null;
 
-    return selectedLabel;
+    return null;
   }, [pathname, selectedLabel]);
 
   useEffect(() => {
@@ -96,12 +98,11 @@ export function Navbar() {
 
     const handleScroll = () => {
       const sections = [
-        { id: "features", label: "Features" },
-        { id: "faq", label: "Faq" },
+        { id: "faq", label: "FAQ" },
       ];
 
       if (window.scrollY < 200) {
-        setSelectedLabel("Features");
+        setSelectedLabel("");
         return;
       }
 
