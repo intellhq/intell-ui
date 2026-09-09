@@ -65,19 +65,19 @@ const SERVICES = [
     title: "AI Energy Agent",
     description: "Ask questions in plain english",
     image: "/images/services_3.jpg",
-    route: "/dashboard/ai-assistant",
+    route: "/services#ai-energy-agent",
   },
   {
     title: "Naira Savings Tracker",
     description: "Track daily savings vs diesel payback",
     image: "/images/services_2.jpg",
-    route: "/dashboard/cost-and-savings",
+    route: "/services#cost-savings-tracker",
   },
   {
     title: "Native Alerts",
     description: "Get Alerts on battery and panel fault",
     image: "/images/services_1.jpg",
-    route: "/dashboard/alerts",
+    route: "/services#native-alerts",
   },
 ] as const;
 
@@ -87,6 +87,9 @@ export const Services = () => {
   const getLink = useCallback(
     (service: (typeof SERVICES)[number]) => {
       const target = service.route ?? "/coming-soon";
+      if (target.startsWith("/services")) {
+        return target;
+      }
       if (!_hasHydrated || !isAuthenticated) {
         return `/login?redirect=${encodeURIComponent(target)}`;
       }
@@ -115,7 +118,7 @@ export const Services = () => {
             size="lg"
             className="bg-primary text-secondary hover:bg-primary/90 w-fit rounded-xl px-8 font-bold"
           >
-            <Link href="/coming-soon">Services</Link>
+            <Link href="/services">View Services</Link>
           </Button>
         </motion.div>
 

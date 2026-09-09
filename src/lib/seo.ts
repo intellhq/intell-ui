@@ -43,6 +43,16 @@ export const PUBLIC_ROUTES = [
     changeFrequency: "monthly" as const,
   },
   {
+    path: "/services",
+    priority: 0.95,
+    changeFrequency: "weekly" as const,
+  },
+  {
+    path: "/services/inverters",
+    priority: 0.85,
+    changeFrequency: "monthly" as const,
+  },
+  {
     path: "/pricing",
     priority: 0.9,
     changeFrequency: "monthly" as const,
