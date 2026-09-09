@@ -20,6 +20,7 @@ import {
   INVERTER_TYPES,
   NIGERIAN_STATES,
   ONBOARDING_INTEREST_OPTIONS,
+  ONBOARDING_SOURCE_OPTIONS,
 } from "@/constants/marketing";
 import {
   waitlistLeadSchema,
@@ -117,6 +118,7 @@ export function OnboardPageContent() {
       state: "",
       inverterType: "",
       interest: "",
+      source: "",
       message: "",
     },
   });
@@ -250,14 +252,24 @@ export function OnboardPageContent() {
             />
           </div>
 
-          <OnboardSelectField
-            name="interest"
-            label="What do you want to do?"
-            control={control}
-            options={ONBOARDING_INTEREST_OPTIONS}
-            placeholder="Select an option"
-            error={errors.interest?.message}
-          />
+          <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+            <OnboardSelectField
+              name="interest"
+              label="What do you want to do?"
+              control={control}
+              options={ONBOARDING_INTEREST_OPTIONS}
+              placeholder="Select an option"
+              error={errors.interest?.message}
+            />
+            <OnboardSelectField
+              name="source"
+              label="How did you find us?"
+              control={control}
+              options={ONBOARDING_SOURCE_OPTIONS}
+              placeholder="Select source"
+              error={errors.source?.message}
+            />
+          </div>
 
           <OnboardTextareaField
             id="message"
@@ -292,7 +304,7 @@ function OnboardSelectField({
   placeholder,
   error,
 }: {
-  name: "state" | "inverterType" | "interest";
+  name: "state" | "inverterType" | "interest" | "source";
   label: string;
   control: Control<WaitlistLeadValues>;
   options: readonly string[];

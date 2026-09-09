@@ -11,6 +11,7 @@ import {
 import Image from "next/image";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
+import { MARKETING_FAQS } from "@/constants/faqs";
 
 type BillingPeriod = "monthly" | "yearly";
 
@@ -27,10 +28,6 @@ interface PricingTier {
   ctaVariant: "outline" | "primary" | "secondary";
   badge?: string;
   highlighted?: boolean;
-  customMonthlyPrice?: string;
-  customYearlyPrice?: string;
-  customMonthlyPeriod?: string;
-  customYearlyPeriod?: string;
 }
 
 const CheckIcon = () => (
@@ -74,104 +71,46 @@ const cardVariants: Variants = {
 
 const comparisonData = [
   {
-    feature: "Systems connected",
-    free: "1 System",
-    pro: "Up to 3 Systems",
-    enterprise: "Unlimited",
-  },
-  {
     feature: "Live monitoring (Battery, Solar, Load)",
     free: <CheckIcon />,
+    plus: <CheckIcon />,
     pro: <CheckIcon />,
-    enterprise: <CheckIcon />,
   },
   {
     feature: "Energy history",
-    free: "—",
-    pro: <CheckIcon />,
-    enterprise: <CheckIcon />,
-  },
-  {
-    feature: "Daily Savings tracking in Naira",
-    free: "—",
-    pro: <CheckIcon />,
-    enterprise: <CheckIcon />,
-  },
-  {
-    feature: "Whatsapp alert",
     free: "Basic",
-    pro: "Smart",
-    enterprise: "Advanced",
-  },
-  {
-    feature: "AI assistant (English + Pidgin)",
-    free: "—",
+    plus: <CheckIcon />,
     pro: <CheckIcon />,
-    enterprise: <CheckIcon />,
   },
   {
-    feature: "Monthly performance reports",
-    free: "—",
-    pro: "PDF Reports",
-    enterprise: "Custom Reports",
+    feature: "AI assistant prompts",
+    free: "3 per day",
+    plus: "150 per month",
+    pro: "Unlimited with fair use",
   },
   {
-    feature: "Multi-site monitoring",
-    free: "—",
-    pro: "—",
-    enterprise: <CheckIcon />,
+    feature: "Generated reports",
+    free: "3 per month",
+    plus: "20 per month",
+    pro: "Unlimited",
   },
   {
-    feature: "Installer dashboard for clients",
-    free: "—",
-    pro: "—",
-    enterprise: <CheckIcon />,
+    feature: "Shared report links",
+    free: "14-day expiry",
+    plus: "90-day expiry",
+    pro: "Long-lived links",
   },
   {
-    feature: "White-label option",
-    free: "—",
-    pro: "—",
-    enterprise: <CheckIcon />,
+    feature: "WhatsApp alerts",
+    free: "Basic",
+    plus: "Smart",
+    pro: "Advanced",
   },
   {
-    feature: "Api-access",
-    free: "—",
-    pro: "—",
-    enterprise: <CheckIcon />,
-  },
-  {
-    feature: "Team management",
-    free: "—",
-    pro: "—",
-    enterprise: <CheckIcon />,
-  },
-];
-
-const faqData = [
-  {
-    question: "Do I need to install new hardware?",
-    answer:
-      "No, you don't need to install any new hardware. INTELL works with your existing inverter and solar setup. You simply connect your system details or integrate with supported inverter platforms to start monitoring your energy in real time.",
-  },
-  {
-    question: "Which inverter brands are supported?",
-    answer:
-      "INTELL supports a wide range of popular inverter brands including Victron, Fronius, Growatt, and more. We are constantly adding support for new platforms.",
-  },
-  {
-    question: "Does the AI agent really speak Pidgin?",
-    answer:
-      "Yes, our AI agent is trained to understand and respond in Pidgin, making it easier for everyone to interact with their energy data naturally.",
-  },
-  {
-    question: "Is my data safe?",
-    answer:
-      "Absolutely. We use industry-standard encryption and security protocols to ensure your energy data and personal information are protected at all times.",
-  },
-  {
-    question: "Can solar installers white‑label INTELL?",
-    answer:
-      "Yes, we offer white-label solutions for solar installers and distributors. Contact our sales team for more information on our partner programs.",
+    feature: "Priority support",
+    free: "Community",
+    plus: <CheckIcon />,
+    pro: <CheckIcon />,
   },
 ];
 
@@ -183,62 +122,56 @@ const pricingTiers: PricingTier[] = [
     yearlyPrice: "₦0",
     monthlyPeriod: "/ Mo",
     yearlyPeriod: "/ Yr",
-    description: "For one inverter. Get the dashboard and core alerts.",
+    description:
+      "Free for everyone",
     features: [
-      "1 Inverter brand",
-      "Real time dashboard",
-      "Saving tracker",
-      "Basic Whatsapp Alerts",
+      "Real-time dashboard",
+      "Core alerts and savings tracker",
+      "3 AI prompts per day",
+      "3 reports per month",
+      "Report links expire after 14 days",
     ],
     cta: "Get started free",
     ctaVariant: "outline",
   },
   {
-    id: "pro",
-    label: "PRO",
-    monthlyPrice: "₦500",
-    yearlyPrice: "₦5,900",
+    id: "plus",
+    label: "PLUS",
+    monthlyPrice: "₦2,500",
+    yearlyPrice: "₦25,000",
     monthlyPeriod: "/ Mo",
     yearlyPeriod: "/ Yr",
     description:
-      "For Full AI agent + alerts + reports, up to 3 systems per month.",
+      "For everyday performance",
     features: [
-      "Multi - Site/ System Management",
-      "White label dashboard",
-      "Priority Support and SLAs",
-      "Rea/Nerc Compliance Report",
-      "Dedicated Account Manager",
-      "API Access",
-      "Field Technician Mobile Workflow",
+      "Everything in Free",
+      "150 AI prompts per month",
+      "20 reports per month",
+      "90-day report links",
+      "Priority support",
     ],
-    cta: "Start 30-Day Free Trial",
+    cta: "Upgrade to Plus",
     ctaVariant: "primary",
-    badge: "✦ Most Popular",
+    badge: "Most Popular",
     highlighted: true,
   },
   {
-    id: "enterprise",
-    label: "ENTERPRISE",
-    monthlyPrice: "Custom",
-    yearlyPrice: "Custom",
-
-    customMonthlyPrice: "₦1,500",
-    customYearlyPrice: "₦17,000",
-
+    id: "pro",
+    label: "PRO",
+    monthlyPrice: "₦7,500",
+    yearlyPrice: "₦75,000",
     monthlyPeriod: "/ Mo",
     yearlyPeriod: "/ Yr",
-
-    description: "for installers, EPC Contractors and mini-grids",
+    description:
+      "Get the most out of INTELL",
     features: [
-      "Multi - Site/ System Management",
-      "White label dashboard",
-      "Priority Support and SLAs",
-      "Rea/Nerc Compliance Report",
-      "Dedicated Account Manager",
-      "API Access",
-      "Field Technician Mobile Workflow",
+      "Everything in Plus",
+      "Unlimited AI prompts with fair-use limits",
+      "Unlimited reports",
+      "Long-lived report links",
+      "Advanced savings and system insights",
     ],
-    cta: "Get started free",
+    cta: "Go Pro",
     ctaVariant: "outline",
   },
 ];
@@ -276,7 +209,7 @@ export function PricingSection() {
             transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
             className="mb-6 text-3xl font-bold tracking-tight text-white md:text-5xl lg:text-5xl"
           >
-            Simple Plans no Surprises
+            Simple plans for every inverter owner
           </motion.h1>
           <motion.p
             initial={{ opacity: 0, y: 20 }}
@@ -284,8 +217,7 @@ export function PricingSection() {
             transition={{ duration: 0.8, delay: 0.4, ease: "easeOut" }}
             className="max-w-3xl text-base text-balance text-slate-50 md:text-lg"
           >
-            Start free. Upgrade when you are ready. No hidden fees, no
-            contracts, just clear visibility over your solar system.
+            Start with monitoring, alerts, savings and clear visibility over your solar system. 
           </motion.p>
         </div>
       </header>
@@ -363,24 +295,16 @@ export function PricingSection() {
 
               <div className="mb-7 flex items-baseline gap-1">
                 <span className="t text-3xl font-bold tracking-tight lg:text-5xl">
-                  {tier.id === "enterprise"
-                    ? billingPeriod === "monthly"
-                      ? (tier.customMonthlyPrice ?? tier.monthlyPrice)
-                      : (tier.customYearlyPrice ?? tier.yearlyPrice)
-                    : billingPeriod === "monthly"
-                      ? tier.monthlyPrice
-                      : tier.yearlyPrice}
+                  {billingPeriod === "monthly"
+                    ? tier.monthlyPrice
+                    : tier.yearlyPrice}
                 </span>
 
                 {tier.id !== "free" && (
                   <span className="text-base font-medium md:text-2xl">
-                    {tier.id === "enterprise"
-                      ? billingPeriod === "monthly"
-                        ? (tier.customMonthlyPeriod ?? tier.monthlyPeriod)
-                        : (tier.customYearlyPeriod ?? tier.yearlyPeriod)
-                      : billingPeriod === "monthly"
-                        ? tier.monthlyPeriod
-                        : tier.yearlyPeriod}
+                    {billingPeriod === "monthly"
+                      ? tier.monthlyPeriod
+                      : tier.yearlyPeriod}
                   </span>
                 )}
               </div>
@@ -463,7 +387,7 @@ export function PricingSection() {
               Compare Plans
             </h2>
             <p className="mt-4 w-full max-w-94.25 text-center text-lg leading-tight font-normal tracking-[0%] text-slate-600 md:mt-6 md:text-[20px]">
-              Choose the plan perfect for your journey
+              Compare AI usage, report access, and connected systems.
             </p>
           </div>
 
@@ -480,10 +404,10 @@ export function PricingSection() {
                       Free
                     </th>
                     <th className="text-secondary h-23.75 w-64.25 px-4 py-8 text-center text-base font-semibold">
-                      Pro
+                      Plus
                     </th>
                     <th className="text-secondary h-23.75 w-64.25 px-4 py-8 text-center text-base font-semibold">
-                      Enterprise
+                      Pro
                     </th>
                   </tr>
                 </thead>
@@ -497,10 +421,10 @@ export function PricingSection() {
                         {row.free}
                       </td>
                       <td className="h-23.75 px-4 py-8 text-center text-base font-medium text-slate-100">
-                        {row.pro}
+                        {row.plus}
                       </td>
                       <td className="h-23.75 px-4 py-8 text-center text-base font-medium text-slate-100">
-                        {row.enterprise}
+                        {row.pro}
                       </td>
                     </tr>
                   ))}
@@ -520,7 +444,7 @@ export function PricingSection() {
         </div>
 
         <div className="mt-12 flex w-full max-w-320.25 flex-col gap-8">
-          {faqData.map((faq, index) => (
+          {MARKETING_FAQS.map((faq, index) => (
             <div
               key={index}
               className="border-slate-30 flex flex-col justify-center rounded-[10px] border px-5"

@@ -12,6 +12,7 @@ export const waitlistLeadSchema = z.object({
   state: z.string().trim().min(1, "Select your state"),
   inverterType: z.string().trim().min(1, "Select your inverter type"),
   interest: z.string().trim().min(1, "Select how you want to use INTELL"),
+  source: z.string().trim().min(1, "Select how you found INTELL"),
   message: z
     .string()
     .trim()

@@ -30,57 +30,56 @@ const pricingTiers: PricingTier[] = [
     yearlyPrice: "₦0",
     monthlyPeriod: "/ Mo",
     yearlyPeriod: "/ Yr",
-    description: "For one inverter. Get the dashboard and core alerts.",
+    description:
+      "Free for everyone",
     features: [
-      "1 Inverter brand",
-      "Real time dashboard",
-      "Saving tracker",
-      "Basic Whatsapp Alerts",
+      "Real-time dashboard",
+      "Core alerts and savings tracker",
+      "3 AI prompts per day",
+      "3 reports per month",
+      "Report links expire after 14 days",
     ],
     cta: "Get started free",
     ctaVariant: "outline",
   },
   {
-    id: "pro",
-    label: "PRO",
-    monthlyPrice: "₦500",
-    yearlyPrice: "₦5,900",
+    id: "plus",
+    label: "PLUS",
+    monthlyPrice: "₦2,500",
+    yearlyPrice: "₦25,000",
     monthlyPeriod: "/ Mo",
     yearlyPeriod: "/ Yr",
     description:
-      "For Full AI agent + alerts + reports, up to 3 systems per month.",
+      "For everyday performance",
     features: [
-      "Multi - Site/ System Management",
-      "White label dashboard",
-      "Priority Support and SLAs",
-      "Rea/Nerc Compliance Report",
-      "Dedicated Account Manager",
-      "API Access",
-      "Field Technician Mobile Workflow",
+      "Everything in Free",
+      "150 AI prompts per month",
+      "20 reports per month",
+      "90-day report links",
+      "Priority support",
     ],
-    cta: "Start 30-Day Free Trial",
+    cta: "Upgrade to Plus",
     ctaVariant: "primary",
-    badge: "✦ Most Popular",
+    badge: "Most Popular",
     highlighted: true,
   },
   {
-    id: "enterprise",
-    label: "ENTERPRISE",
-    monthlyPrice: "₦1,500",
-    yearlyPrice: "₦17,000",
+    id: "pro",
+    label: "PRO",
+    monthlyPrice: "₦7,500",
+    yearlyPrice: "₦75,000",
     monthlyPeriod: "/ Mo",
     yearlyPeriod: "/ Yr",
-    description: "for installers, EPC Contractors and mini-grids",
+    description:
+      "Get the most out of INTELL",
     features: [
-      "Multi - Site/ System Management",
-      "White label dashboard",
-      "Priority Support and SLAs",
-      "Rea/Nerc Compliance Report",
-      "Dedicated Account Manager",
-      "API Access",
-      "Field Technician Mobile Workflow",
+      "Everything in Plus",
+      "Unlimited AI prompts with fair-use limits",
+      "Unlimited reports",
+      "Long-lived report links",
+      "Advanced savings and system insights",
     ],
-    cta: "Get started free",
+    cta: "Go Pro",
     ctaVariant: "outline",
   },
 ];
@@ -127,9 +126,12 @@ export function PricingSection() {
           className="mb-12 text-center"
         >
           <h2 className="text-title1 mx-auto w-full max-w-180 leading-tight font-semibold lg:text-5xl">
-            Start free. <br /> <span className="text-primary">Upgrade </span>
-            when it pays for itself.
+            Simple pricing for inverter owners.
           </h2>
+          <p className="mx-auto mt-5 max-w-2xl text-base leading-relaxed text-muted-foreground">
+            Monitoring, alerts, and savings tracking stay useful on every plan.
+            Paid plans expand AI assistant usage and reporting capacity.
+          </p>
         </motion.div>
 
         <div className="mb-12 flex justify-center">
