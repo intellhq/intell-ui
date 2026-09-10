@@ -12,12 +12,12 @@ permissions:
   contents: read
 
 concurrency:
-  group: frontend-deploy-prod
+  group: deploy-production
   cancel-in-progress: true
 
 jobs:
   deploy:
-    name: Deploy to Production Server
+    name: Deploy intell-production
     runs-on: ubuntu-latest
     timeout-minutes: 25
     if: |
@@ -25,32 +25,48 @@ jobs:
       (github.event.workflow_run.conclusion == 'success' &&
        github.event.workflow_run.head_branch == 'main')
     environment: production
+    env:
+      VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+      VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PRODUCTION_PROJECT_ID }}
+      VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+      PRODUCTION_URL: https://intell.ng
 
     steps:
-      - name: Deploy via SSH
-        uses: appleboy/ssh-action@0ff4204d59e8e51228ff73bce53f80d53301dee2
+      - name: Checkout code
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
         with:
-          host: ${{ secrets.SERVER_IP }}
-          username: ${{ secrets.SSH_USER }}
-          key: ${{ secrets.SSH_KEY }}
-          script: |
-            set -e
-            cd /home/appuser/frontend/prod
-            git pull origin main
+          ref: ${{ github.event.workflow_run.head_sha || github.sha }}
 
-            export NVM_DIR="$HOME/.nvm"
-            [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+      - name: Setup pnpm
+        uses: pnpm/action-setup@8912a9102ac27614460f54aedde9e1e7f9aec20d
+        with:
+          version: 10
 
-            pnpm install --frozen-lockfile
-            pnpm build
+      - name: Setup Node.js
+        uses: actions/setup-node@53b83947a5a98c8d113130e565377fae1a50d02f
+        with:
+          node-version: 20
+          cache: pnpm
 
-            pm2 reload fe-prod --update-env || pm2 start pnpm --name fe-prod -- start -H 0.0.0.0 -p 3006
-            pm2 save
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Install Vercel CLI
+        run: npm install --global vercel@latest
+
+      - name: Pull Vercel production environment
+        run: vercel pull --yes --environment=production --token="$VERCEL_TOKEN"
+
+      - name: Build production artifact
+        run: vercel build --prod --token="$VERCEL_TOKEN"
+
+      - name: Deploy production artifact
+        run: vercel deploy --prebuilt --prod --token="$VERCEL_TOKEN"
 
       - name: Health check
         run: |
           for i in {1..10}; do
-            curl --fail --max-time 10 "${{ secrets.PROD_HEALTH_URL }}" && exit 0
+            curl --fail --max-time 10 "$PRODUCTION_URL" && exit 0
             sleep 5
           done
           exit 1
