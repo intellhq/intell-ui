@@ -5,6 +5,13 @@ import { cookies } from "next/headers";
 const API_BASE_URL = process.env.API_BASE_URL;
 const REFRESH_TOKEN_COOKIE = "refresh_token";
 
+function getSharedCookieDomain(req: Request): string | undefined {
+  const hostname = new URL(req.url).hostname;
+  return hostname === "intell.ng" || hostname.endsWith(".intell.ng")
+    ? ".intell.ng"
+    : undefined;
+}
+
 function getSetCookieHeaders(headers: Headers): string[] {
   const headersWithSetCookie = headers as Headers & {
     getSetCookie?: () => string[];
@@ -214,6 +221,7 @@ async function proxyRequest(req: Request, paramSegments?: string[]) {
             sameSite: "lax",
             secure: process.env.NODE_ENV === "production",
             httpOnly: true,
+            domain: getSharedCookieDomain(req),
             ...(refreshTokenCookie.clear ? { maxAge: 0 } : {}),
           });
           continue;

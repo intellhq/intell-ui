@@ -362,7 +362,7 @@ const PrivacyPolicy = () => {
                   <div className="text-md text-slate-80 leading-relaxed md:text-lg">
                     <p className="mb-4">
                       For questions regarding this policy, please contact: INTELL -
-                      Privacy Team Email: support@INTELL.com
+                      Privacy Team Email: contact@intell.ng
                     </p>
                   </div>
                 </motion.div>
