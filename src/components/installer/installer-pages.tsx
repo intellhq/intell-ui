@@ -8,7 +8,6 @@ import {
   ChevronLeft,
   ChevronRight,
   Clock,
-  Eye,
   MapPin,
   MessageSquareText,
   RefreshCw,
@@ -181,12 +180,26 @@ function DashboardCard({
             Added by <span className="font-medium text-foreground">{dashboard.addedBy}</span>
           </span>
         </div>
-        <span className="inline-flex items-center gap-2 text-sm font-medium text-secondary">
-          View dashboard
-          <Eye className="h-4 w-4" />
-        </span>
       </div>
     </Link>
+  );
+}
+
+function InstallerEmptyState() {
+  return (
+    <div className="rounded-xl border border-border bg-white p-8 text-center">
+      <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-xl bg-[#F3F4F6] text-gray-700">
+        <ShieldCheck className="h-6 w-6" />
+      </div>
+      <h2 className="mt-4 text-lg font-bold text-dark-text">
+        No assigned systems yet
+      </h2>
+      <p className="mx-auto mt-2 max-w-md text-sm leading-relaxed text-[#5D5C5D]">
+        Customer dashboards will appear here after a customer or business owner
+        adds you as their installer. Once added, you will be able to view their
+        dashboard metrics and alerts from this workspace.
+      </p>
+    </div>
   );
 }
 
@@ -334,21 +347,25 @@ export function InstallerOverviewPage() {
                 setPage(1);
               }}
               placeholder="Search customers, sites, or inverters"
-              className="h-11 rounded-lg border-border bg-white pl-9"
+              className="h-11 rounded-lg border-border bg-white pl-9 text-md"
             />
           </label>
         </div>
-        <div className="grid gap-4 xl:grid-cols-2">
-          {paginatedDashboards.map((dashboard) => (
-            <DashboardCard key={dashboard.id} dashboard={dashboard} />
-          ))}
-        </div>
-        {visibleDashboards.length === 0 ? (
+
+        {connected === 0 ? (
+          <InstallerEmptyState />
+        ) : visibleDashboards.length === 0 ? (
           <div className="rounded-xl border border-border bg-white p-8 text-center text-sm text-muted-foreground">
             No assigned dashboards match your search.
           </div>
-        ) : null}
-        {totalPages > 1 ? (
+        ) : (
+          <div className="grid gap-4 xl:grid-cols-2">
+            {paginatedDashboards.map((dashboard) => (
+              <DashboardCard key={dashboard.id} dashboard={dashboard} />
+            ))}
+          </div>
+        )}
+        {connected > 0 && totalPages > 1 ? (
           <div className="flex items-center justify-end gap-2 pt-2">
             <Button
               variant="ghost"
@@ -497,22 +514,6 @@ export function InstallerSettingsPage() {
         <p className="mt-1 text-sm text-[#5D5C5D]">
           Manage your installer profile, access, and support preferences
         </p>
-      </div>
-
-      <div className="rounded-xl border border-border bg-white p-4 sm:p-6">
-        <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-          <div className="flex items-start gap-4 sm:items-center">
-            <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-[#F3F4F6] text-gray-700">
-              <ShieldCheck className="h-6 w-6" />
-            </div>
-            <div>
-              <h2 className="font-semibold text-dark-text">Access Summary</h2>
-              <p className="mt-0.5 text-sm text-[#5D5C5D]">
-                Installer access is limited to assigned dashboards and alerts.
-              </p>
-            </div>
-          </div>
-        </div>
       </div>
 
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
