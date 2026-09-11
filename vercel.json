@@ -29,6 +29,6 @@
       "source": "/super-admin",
       "destination": "https://admin.intell.ng",
       "permanent": true
-    },
+    }
   ]
-}   
+}
