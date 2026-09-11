@@ -12,6 +12,46 @@ const nextConfig: NextConfig = {
       },
     ],
   },
+  async redirects() {
+    return [
+      {
+        source: "/dashboard/:path*",
+        has: [{ type: "host", value: "intell.ng" }],
+        destination: "https://dashboard.intell.ng/:path*",
+        permanent: true,
+      },
+      {
+        source: "/dashboard",
+        has: [{ type: "host", value: "intell.ng" }],
+        destination: "https://dashboard.intell.ng",
+        permanent: true,
+      },
+      {
+        source: "/installer/:path*",
+        has: [{ type: "host", value: "intell.ng" }],
+        destination: "https://installer.intell.ng/:path*",
+        permanent: true,
+      },
+      {
+        source: "/installer",
+        has: [{ type: "host", value: "intell.ng" }],
+        destination: "https://installer.intell.ng",
+        permanent: true,
+      },
+      {
+        source: "/super-admin/:path*",
+        has: [{ type: "host", value: "intell.ng" }],
+        destination: "https://admin.intell.ng/:path*",
+        permanent: true,
+      },
+      {
+        source: "/super-admin",
+        has: [{ type: "host", value: "intell.ng" }],
+        destination: "https://admin.intell.ng",
+        permanent: true,
+      },
+    ];
+  },
   async headers() {
     return [
       {
