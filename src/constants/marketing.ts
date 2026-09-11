@@ -1,5 +1,5 @@
 export const COMPANY_CONTACT = {
-  email: "intell.inflow@gmail.com",
+  email: "contact@intell.ng",
   phone: "+234 808 468 0861",
   location: "Lagos, Nigeria",
 };

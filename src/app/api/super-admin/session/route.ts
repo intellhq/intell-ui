@@ -6,6 +6,13 @@ import {
 
 const COOKIE_MAX_AGE_SECONDS = 60 * 60 * 8;
 
+function getSharedCookieDomain(request: Request): string | undefined {
+  const hostname = new URL(request.url).hostname;
+  return hostname === "intell.ng" || hostname.endsWith(".intell.ng")
+    ? ".intell.ng"
+    : undefined;
+}
+
 export async function POST(request: Request) {
   const body = (await request.json().catch(() => null)) as {
     email?: string;
@@ -28,14 +35,22 @@ export async function POST(request: Request) {
     secure: process.env.NODE_ENV === "production",
     sameSite: "lax",
     path: "/",
+    domain: getSharedCookieDomain(request),
     maxAge: COOKIE_MAX_AGE_SECONDS,
   });
 
   return response;
 }
 
-export async function DELETE() {
+export async function DELETE(request: Request) {
   const response = NextResponse.json({ success: true });
-  response.cookies.delete(SUPER_ADMIN_SESSION_COOKIE);
+  response.cookies.set(SUPER_ADMIN_SESSION_COOKIE, "", {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === "production",
+    sameSite: "lax",
+    path: "/",
+    domain: getSharedCookieDomain(request),
+    maxAge: 0,
+  });
   return response;
 }

@@ -636,23 +636,23 @@ export function AlertsTable({ initialData = [], isLoading }: AlertsTableProps) {
         </div>
 
         {/* Mobile cards */}
-        <div className="grid gap-4 md:hidden">
+        <div className="grid min-w-0 gap-4 p-4 md:hidden">
           {paginatedAlerts.map((alert) => {
             const Icon = ICON_MAP[alert.iconType] || AlertTriangle;
             const isActionable = alert.status === "unresolved";
             return (
               <article
                 key={alert.id}
-                className="rounded-xl border border-border bg-card p-6"
+                className="min-w-0 max-w-full rounded-xl border border-border bg-card p-4"
               >
                 <div className="mb-7">
                   <SeverityBadge severity={alert.severity} />
                 </div>
-                <div className="flex items-center gap-4">
+                <div className="flex min-w-0 items-center gap-4">
                   <div className="flex size-10 shrink-0 items-center justify-center rounded-full bg-[#E8E8E8]">
                     <Icon className="size-4 text-[#121212]" />
                   </div>
-                  <div className="min-w-0">
+                  <div className="min-w-0 flex-1">
                     <h3 className="truncate text-base font-semibold text-foreground">
                       {alert.title}
                     </h3>
@@ -661,13 +661,15 @@ export function AlertsTable({ initialData = [], isLoading }: AlertsTableProps) {
                     </p>
                   </div>
                 </div>
-                <div className="mt-8 flex items-center justify-between gap-4">
-                  <p className="text-sm text-muted-foreground">{alert.time}</p>
+                <div className="mt-8 flex min-w-0 flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+                  <p className="min-w-0 truncate text-sm text-muted-foreground">
+                    {alert.time}
+                  </p>
                   <Button
                     onClick={() => isActionable && setSelectedAlertId(alert.id)}
                     disabled={!isActionable}
                     className={cn(
-                      "h-10 min-w-24 rounded-lg px-5 text-sm font-medium",
+                      "h-10 w-full rounded-lg px-5 text-sm font-medium sm:w-auto sm:min-w-24",
                       isActionable
                         ? "bg-secondary text-primary-foreground hover:bg-secondary/80"
                         : "bg-muted text-muted-foreground hover:bg-muted",

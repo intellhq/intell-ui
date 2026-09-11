@@ -873,7 +873,7 @@ function ActionDialog({
       onAddAdmin?.({
         id: `ADM-${Date.now().toString().slice(-4)}`,
         name: name || "New Admin",
-        email: email || "admin@INTELL.africa",
+        email: email || "contact@intell.ng",
         role,
         status: "Invited",
         date: "Today",
@@ -914,7 +914,7 @@ function ActionDialog({
               type="email"
               value={email}
               onChange={(event) => setEmail(event.target.value)}
-              placeholder="admin@INTELL.africa"
+              placeholder="contact@intell.ng"
               className="h-11 text-sm placeholder:text-sm"
             />
           </div>
