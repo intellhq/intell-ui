@@ -40,7 +40,7 @@ export const DELIVERY_CHANNELS = [
     id: "email",
     label: "Email",
     get description(): string {
-      return useAuthStore.getState().user?.email || "Amaka@intell.africa";
+      return useAuthStore.getState().user?.email || "contact@intell.ng";
     },
     defaultChecked: true,
     verified: true,

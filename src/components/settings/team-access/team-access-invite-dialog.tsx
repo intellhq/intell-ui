@@ -91,7 +91,7 @@ export function TeamAccessInviteDialog({
 
           <div className="space-y-2">
             <Label htmlFor="email">Email Address</Label>
-            <Input id="email" placeholder="name@company.com" className="h-14" {...form.register("email")} />
+            <Input id="email" placeholder="contact@intell.ng" className="h-14" {...form.register("email")} />
             <FieldError message={form.formState.errors.email?.message} />
           </div>
 

@@ -65,7 +65,7 @@ export const SUPER_ADMIN_DASHBOARD_ROWS: SuperAdminTableRow[] = [
   {
     id: "USR-1029",
     name: "Auzan Nugraha Agustian",
-    email: "auzan@example.com",
+    email: "contact@intell.ng",
     status: "Active",
     role: "Free",
     date: "12 Aug 2026",
@@ -81,7 +81,7 @@ export const SUPER_ADMIN_DASHBOARD_ROWS: SuperAdminTableRow[] = [
   {
     id: "USR-1030",
     name: "Abdallah",
-    email: "abdallah@example.com",
+    email: "contact@intell.ng",
     status: "Active",
     role: "Installer referral",
     date: "12 Aug 2026",
@@ -97,7 +97,7 @@ export const SUPER_ADMIN_DASHBOARD_ROWS: SuperAdminTableRow[] = [
   {
     id: "USR-1031",
     name: "Mishi Chaudhary",
-    email: "mishi@example.com",
+    email: "contact@intell.ng",
     status: "Pending",
     role: "Pilot",
     date: "12 Aug 2026",
@@ -116,7 +116,7 @@ export const SUPER_ADMIN_ADMIN_ROWS: SuperAdminTableRow[] = [
   {
     id: "ADM-001",
     name: "Richard",
-    email: "richard@intell.africa",
+    email: "contact@intell.ng",
     status: "Active",
     role: "Admin",
     date: "May 8, 2026",
@@ -125,7 +125,7 @@ export const SUPER_ADMIN_ADMIN_ROWS: SuperAdminTableRow[] = [
   {
     id: "ADM-002",
     name: "Sarah",
-    email: "sarah@intell.africa",
+    email: "contact@intell.ng",
     status: "Active",
     role: "Super Admin",
     date: "Mar 31, 2026",
@@ -134,7 +134,7 @@ export const SUPER_ADMIN_ADMIN_ROWS: SuperAdminTableRow[] = [
   {
     id: "ADM-003",
     name: "John",
-    email: "john@intell.africa",
+    email: "contact@intell.ng",
     status: "Active",
     role: "Super Admin",
     date: "May 25, 2026",
@@ -164,7 +164,7 @@ export const SUPER_ADMIN_USER_ROWS: SuperAdminTableRow[] = [
   {
     id: "USR-2201",
     name: "Daphne Luna",
-    email: "daphne@example.com",
+    email: "contact@intell.ng",
     status: "Active",
     role: "Free",
     date: "29 Jan 2026 at 15:16",
@@ -181,7 +181,7 @@ export const SUPER_ADMIN_USER_ROWS: SuperAdminTableRow[] = [
   {
     id: "USR-2202",
     name: "Manga Anime",
-    email: "manga@example.com",
+    email: "contact@intell.ng",
     status: "Active",
     role: "Free",
     date: "26 Jun 2026 at 21:45",
@@ -198,7 +198,7 @@ export const SUPER_ADMIN_USER_ROWS: SuperAdminTableRow[] = [
   {
     id: "USR-2203",
     name: "2434 AYATA",
-    email: "ayata@example.com",
+    email: "contact@intell.ng",
     status: "Active",
     role: "Pilot",
     date: "24 Apr 2026 at 13:11",
@@ -218,7 +218,7 @@ export const SUPER_ADMIN_INSTALLER_ROWS: SuperAdminTableRow[] = [
   {
     id: "INS-1101",
     name: "SolarBridge Energy",
-    email: "ops@solarbridge.example",
+    email: "contact@intell.ng",
     phone: "+234 810 771 4401",
     company: "SolarBridge Energy",
     state: "Lagos",
@@ -236,7 +236,7 @@ export const SUPER_ADMIN_INSTALLER_ROWS: SuperAdminTableRow[] = [
   {
     id: "INS-1102",
     name: "Ifeanyi Okoro",
-    email: "ifeanyi.installer@example.com",
+    email: "contact@intell.ng",
     phone: "+234 810 551 0987",
     company: "Freelance",
     state: "Enugu",
@@ -254,7 +254,7 @@ export const SUPER_ADMIN_INSTALLER_ROWS: SuperAdminTableRow[] = [
   {
     id: "INS-1103",
     name: "NorthGrid Solar",
-    email: "partners@northgrid.example",
+    email: "contact@intell.ng",
     phone: "+234 810 321 1120",
     company: "NorthGrid Solar",
     state: "Kano",
@@ -275,7 +275,7 @@ export const SUPER_ADMIN_ONBOARDING_LEAD_ROWS: SuperAdminTableRow[] = [
   {
     id: "LEAD-7001",
     name: "Blessing Adeyemi",
-    email: "blessing@example.com",
+    email: "contact@intell.ng",
     phone: "+234 810 900 1188",
     state: "Lagos",
     inverterType: "Deye hybrid inverter",
@@ -289,7 +289,7 @@ export const SUPER_ADMIN_ONBOARDING_LEAD_ROWS: SuperAdminTableRow[] = [
   {
     id: "LEAD-7002",
     name: "Tunde Balogun",
-    email: "tunde@example.com",
+    email: "contact@intell.ng",
     phone: "+234 810 455 2199",
     state: "Ogun",
     inverterType: "LuxPower hybrid inverter",
@@ -303,7 +303,7 @@ export const SUPER_ADMIN_ONBOARDING_LEAD_ROWS: SuperAdminTableRow[] = [
   {
     id: "LEAD-7003",
     name: "Adaeze Nwosu",
-    email: "adaeze@example.com",
+    email: "contact@intell.ng",
     phone: "+234 810 678 3344",
     state: "Abuja",
     inverterType: "Must PV inverter",
@@ -320,7 +320,7 @@ export const SUPER_ADMIN_FEEDBACK_ROWS: SuperAdminTableRow[] = [
   {
     id: "FDB-3301",
     name: "Savings forecast clarity",
-    email: "daphne@example.com",
+    email: "contact@intell.ng",
     submittedBy: "Daphne Luna",
     category: "Cost and savings report",
     content: "Users want clearer explanations for cost and savings reports.",
@@ -331,7 +331,7 @@ export const SUPER_ADMIN_FEEDBACK_ROWS: SuperAdminTableRow[] = [
   {
     id: "FDB-3302",
     name: "Report sharing",
-    email: "manga@example.com",
+    email: "contact@intell.ng",
     submittedBy: "Manga Anime",
     category: "Reports",
     content: "Make public report links easier to understand before sharing.",
@@ -342,7 +342,7 @@ export const SUPER_ADMIN_FEEDBACK_ROWS: SuperAdminTableRow[] = [
   {
     id: "FDB-3303",
     name: "Installer onboarding",
-    email: "ayata@example.com",
+    email: "contact@intell.ng",
     submittedBy: "2434 AYATA",
     category: "Installer access",
     content: "Installers need a shorter guide for qualifying compatible inverters.",
