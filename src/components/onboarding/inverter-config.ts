@@ -54,7 +54,7 @@ export const INVERTER_CONFIG: Record<InverterType, InverterConfig> = {
       {
         id: "sunsynk-email",
         label: "Enter Solarman Email",
-        placeholder: "you@email.com",
+        placeholder: "contact@intell.ng",
         kind: "email",
       },
       {
@@ -83,7 +83,7 @@ export const INVERTER_CONFIG: Record<InverterType, InverterConfig> = {
       {
         id: "deye-email",
         label: "Enter Solarman Email",
-        placeholder: "you@email.com",
+        placeholder: "contact@intell.ng",
         kind: "email",
       },
       {

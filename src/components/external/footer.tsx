@@ -26,6 +26,7 @@ const footerLinks: { title: string; links: FooterLink[] }[] = [
     title: "Product",
     links: [
       { name: "Features", href: "/#features" },
+      { name: "Services", href: "/services" },
       { name: "Pricing", href: "/pricing" },
       { name: "Onboard", href: "/onboard" },
       { name: "Contact", href: "/contact" },

@@ -11,12 +11,20 @@ function setSessionCookie(persist = false) {
   if (typeof document === "undefined") return;
   const maxAge = persist ? "; Max-Age=2592000" : "";
   const secure = location.protocol === "https:" ? "; Secure" : "";
-  document.cookie = `${SESSION_COOKIE}=1; path=/; SameSite=Lax${maxAge}${secure}`;
+  const domain =
+    location.hostname === "intell.ng" || location.hostname.endsWith(".intell.ng")
+      ? "; Domain=.intell.ng"
+      : "";
+  document.cookie = `${SESSION_COOKIE}=1; path=/; SameSite=Lax${domain}${maxAge}${secure}`;
 }
 
 function clearSessionCookie() {
   if (typeof document === "undefined") return;
-  document.cookie = `${SESSION_COOKIE}=; path=/; Max-Age=0; SameSite=Lax`;
+  const domain =
+    location.hostname === "intell.ng" || location.hostname.endsWith(".intell.ng")
+      ? "; Domain=.intell.ng"
+      : "";
+  document.cookie = `${SESSION_COOKIE}=; path=/; Max-Age=0; SameSite=Lax${domain}`;
 }
 
 function hasIncomingOAuthToken(): boolean {

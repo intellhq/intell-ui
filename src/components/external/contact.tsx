@@ -199,7 +199,7 @@ export default function Contact() {
               id="email"
               type="email"
               label="Email"
-              placeholder="johndoe@gmail.com"
+              placeholder="contact@intell.ng"
               error={errors.email?.message}
               {...register("email")}
             />
