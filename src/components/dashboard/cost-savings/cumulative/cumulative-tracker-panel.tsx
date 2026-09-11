@@ -6,6 +6,43 @@ import type { TrackerCardData } from "./primitives";
 import { CumulativeSavingsChart } from "./cumulative-savings-chart";
 import { SavingsTrendsAnalytics } from "./savings-trends-analytics";
 import { useInverterQueries } from "@/hooks/use-inverter-queries";
+import type { CumulativeSavingsData } from "@/types/inverter";
+
+const toNumber = (value: unknown) => {
+  const numericValue =
+    typeof value === "number"
+      ? value
+      : typeof value === "string"
+        ? Number(value)
+        : 0;
+
+  return Number.isFinite(numericValue) ? numericValue : 0;
+};
+
+function normalizeCumulativeSavingsData(
+  data: CumulativeSavingsData | null | undefined,
+): CumulativeSavingsData {
+  return {
+    lifetimeSavingsNgn: toNumber(data?.lifetimeSavingsNgn),
+    lifetimeEnergyKwh: toNumber(data?.lifetimeEnergyKwh),
+    lifetimeFuelSavedLitres: toNumber(data?.lifetimeFuelSavedLitres),
+    co2AvoidedKg: toNumber(data?.co2AvoidedKg),
+    generatorHoursAvoided: toNumber(data?.generatorHoursAvoided),
+    totalSavingsToDateNgn: toNumber(data?.totalSavingsToDateNgn),
+    averageMonthlySavingsNgn: toNumber(data?.averageMonthlySavingsNgn),
+    chart: (data?.chart ?? []).map((point) => ({
+      ...point,
+      savingsNgn: toNumber(point.savingsNgn),
+    })),
+    meta: data?.meta ?? {
+      fuelType: "",
+      fuelPricePerLitreNgn: 0,
+      fuelPriceLastUpdated: "",
+      assumedGeneratorRatedPowerKw: 0,
+      assumedConsumptionRateLPerHr: 0,
+    },
+  };
+}
 
 function formatCurrency(val: number) {
   if (val >= 1_000_000) {
@@ -85,17 +122,7 @@ export function CumulativeTrackerPanel() {
     return <TrackerPanelSkeleton />;
   }
 
-  // Fallback to empty/placeholder values if API returns no data
-  const data = cumulativeData || {
-    lifetimeSavingsNgn: 0,
-    lifetimeEnergyKwh: 0,
-    lifetimeFuelSavedLitres: 0,
-    co2AvoidedKg: 0,
-    generatorHoursAvoided: 0,
-    totalSavingsToDateNgn: 0,
-    averageMonthlySavingsNgn: 0,
-    chart: [],
-  };
+  const data = normalizeCumulativeSavingsData(cumulativeData);
 
   const chartPoints = data.chart || [];
   let savingsGrowthBadge: string | undefined = undefined;
