@@ -144,9 +144,9 @@ function DashboardCard({
   return (
     <Link
       href={`/installer/${dashboard.id}`}
-      className="group block rounded-xl border border-border bg-white p-5 transition-colors hover:border-border/80"
+      className="group block min-w-0 max-w-full overflow-hidden rounded-xl border border-border bg-white p-4 transition-colors hover:border-border/80 sm:p-5"
     >
-      <div className="flex items-start gap-4">
+      <div className="flex min-w-0 flex-col gap-4 sm:flex-row sm:items-start">
         <div
           className={cn(
             "flex h-12 w-12 shrink-0 items-center justify-center rounded-xl",
@@ -155,29 +155,37 @@ function DashboardCard({
         >
           <StatusIcon className="h-5 w-5" />
         </div>
-        <div className="min-w-0">
-          <h2 className="truncate text-lg font-semibold text-foreground">
+        <div className="min-w-0 flex-1">
+          <h2 className="break-words text-lg font-semibold text-foreground">
             {dashboard.siteName}
           </h2>
-          <p className="mt-1 text-sm text-muted-foreground">
+          <p className="mt-1 break-words text-sm text-muted-foreground">
             {dashboard.ownerName} · {dashboard.inverter}
           </p>
-          <div className="mt-3 flex flex-wrap items-center gap-x-4 gap-y-2 text-sm text-muted-foreground">
-            <span className="flex min-w-0 items-center gap-1.5">
+          <div className="mt-3 flex min-w-0 flex-wrap items-center gap-x-4 gap-y-2 text-sm text-muted-foreground">
+            <span className="flex min-w-0 max-w-full items-center gap-1.5">
               <MapPin className="h-4 w-4 shrink-0" />
-              <span className="truncate">{dashboard.location}</span>
+              <span className="min-w-0 truncate">{dashboard.location}</span>
             </span>
-            <span>Last synced {dashboard.lastUpdated}</span>
-            <span>{dashboard.openAlerts} open alert{dashboard.openAlerts === 1 ? "" : "s"}</span>
+            <span className="whitespace-nowrap">
+              Last synced {dashboard.lastUpdated}
+            </span>
+            <span className="whitespace-nowrap">
+              {dashboard.openAlerts} open alert
+              {dashboard.openAlerts === 1 ? "" : "s"}
+            </span>
           </div>
         </div>
       </div>
 
       <div className="mt-5 flex flex-col gap-3 border-t border-border pt-4 sm:flex-row sm:items-center sm:justify-between">
-        <div className="flex items-center gap-2">
+        <div className="flex min-w-0 flex-wrap items-center gap-2">
           <StatusBadge status={dashboard.status} />
-          <span className="text-sm text-muted-foreground">
-            Added by <span className="font-medium text-foreground">{dashboard.addedBy}</span>
+          <span className="min-w-0 break-words text-sm text-muted-foreground">
+            Added by{" "}
+            <span className="font-medium text-foreground">
+              {dashboard.addedBy}
+            </span>
           </span>
         </div>
       </div>
@@ -347,7 +355,7 @@ export function InstallerOverviewPage() {
                 setPage(1);
               }}
               placeholder="Search customers, sites, or inverters"
-              className="h-11 rounded-lg border-border bg-white pl-9 text-md"
+              className="h-11 rounded-lg border-border bg-white pl-9 text-sm"
             />
           </label>
         </div>
