@@ -63,7 +63,7 @@ export const PUBLIC_ROUTES = [
     changeFrequency: "weekly" as const,
   },
   {
-    path: "/onboard",
+    path: "/waitlist",
     priority: 0.95,
     changeFrequency: "weekly" as const,
   },
@@ -74,6 +74,11 @@ export const PUBLIC_ROUTES = [
   },
   {
     path: "/privacy-policy",
+    priority: 0.3,
+    changeFrequency: "yearly" as const,
+  },
+  {
+    path: "/cookie-policy",
     priority: 0.3,
     changeFrequency: "yearly" as const,
   },
