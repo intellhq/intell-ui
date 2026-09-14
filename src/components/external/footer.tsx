@@ -9,6 +9,7 @@ import { WaitlistService } from "@/services/waitlist-service";
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
 import { COMPANY_CONTACT, SOCIAL_LINKS } from "@/constants/marketing";
+import { trackEvent } from "@/lib/analytics";
 
 const footerSocials = [
   SOCIAL_LINKS.find((social) => social.label === "LinkedIn"),
@@ -28,7 +29,7 @@ const footerLinks: { title: string; links: FooterLink[] }[] = [
       { name: "Features", href: "/#features" },
       { name: "Services", href: "/services" },
       { name: "Pricing", href: "/pricing" },
-      { name: "Onboard", href: "/onboard" },
+      { name: "Waitlist", href: "/waitlist" },
       { name: "Contact", href: "/contact" },
     ],
   },
@@ -44,6 +45,8 @@ const footerLinks: { title: string; links: FooterLink[] }[] = [
     links: [
       { name: "Terms & Conditions", href: "/terms-and-conditions" },
       { name: "Privacy Policy", href: "/privacy-policy" },
+      { name: "Cookie Policy", href: "/cookie-policy" },
+      { name: "Cookie settings" },
     ],
   },
 ];
@@ -66,10 +69,13 @@ export const Footer = () => {
 
     setIsLoading(true);
     try {
+      trackEvent("Footer Waitlist Submitted", { source: "footer" });
       await WaitlistService.joinWaitlist(normalizedEmail);
+      trackEvent("Footer Waitlist Submission Succeeded", { source: "footer" });
       toast.success("Thanks for your interest in INTELL.");
       setEmail("");
     } catch (error: unknown) {
+      trackEvent("Footer Waitlist Submission Failed", { source: "footer" });
       const message =
         error instanceof Error
           ? error.message
@@ -82,6 +88,10 @@ export const Footer = () => {
     } finally {
       setIsLoading(false);
     }
+  };
+
+  const handleOpenCookieSettings = () => {
+    window.dispatchEvent(new Event("intell:open-cookie-settings"));
   };
 
   return (
@@ -132,6 +142,7 @@ export const Footer = () => {
                   disabled={isLoading}
                   className="w-full bg-transparent px-4 py-2 text-[#1A1F2C] outline-none placeholder:text-gray-400 disabled:opacity-50 border-none"
                   onKeyDown={(e) => e.key === "Enter" && handleJoinWaitlist()}
+                  data-analytics-form="Footer waitlist form"
                 />
                 <Button
                   onClick={handleJoinWaitlist}
@@ -152,12 +163,25 @@ export const Footer = () => {
                 <ul className="space-y-4 text-base text-[#E6E6E6]">
                   {section.links.map((link) => (
                     <li key={link.name}>
-                      <Link
-                        href={link.href ?? "#"}
-                        className="transition-colors hover:text-[#F5A623]"
-                      >
-                        {link.name}
-                      </Link>
+                      {link.href ? (
+                        <Link
+                          href={link.href}
+                          className="transition-colors hover:text-[#F5A623]"
+                          data-analytics-location="footer"
+                        >
+                          {link.name}
+                        </Link>
+                      ) : (
+                        <button
+                          type="button"
+                          onClick={handleOpenCookieSettings}
+                          className="text-left transition-colors hover:text-[#F5A623]"
+                          data-analytics-event="Cookie Settings Clicked"
+                          data-analytics-location="footer"
+                        >
+                          {link.name}
+                        </button>
+                      )}
                     </li>
                   ))}
                 </ul>

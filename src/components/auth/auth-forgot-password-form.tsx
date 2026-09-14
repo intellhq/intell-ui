@@ -13,6 +13,7 @@ import { AuthInput } from "@/components/auth/auth-input";
 import { Button } from "@/components/ui/button";
 
 import { useAuthQueries } from "@/hooks/use-auth-queries";
+import { trackEvent } from "@/lib/analytics";
 
 const forgotPasswordSchema = z.object({
   email: z.string().email("Please enter a valid email address"),
@@ -53,10 +54,15 @@ export function AuthForgotPasswordForm({
   const isFormFilled = email.trim().length > 0;
 
   const onSubmit = (data: ForgotPasswordValues) => {
+    trackEvent("Forgot Password Submitted");
     forgotPassword(data, {
       onSuccess: () => {
+        trackEvent("Forgot Password Submission Succeeded");
         sessionStorage.setItem("reset_email", data.email);
         onSuccess?.();
+      },
+      onError: () => {
+        trackEvent("Forgot Password Submission Failed");
       },
     });
   };

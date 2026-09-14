@@ -6,6 +6,9 @@ import QueryProvider from "@/providers/query-provider";
 import { Toaster } from "@/components/ui/sonner";
 import { ServiceWorkerRegister } from "@/components/service-worker-register";
 import { JsonLd } from "@/components/seo/json-ld";
+import { AnalyticsProvider } from "@/components/analytics/analytics-provider";
+import { GoogleTagManager } from "@/components/analytics/google-tag-manager";
+import { CookieConsentBanner } from "@/components/cookies/cookie-consent-banner";
 import {
   DEFAULT_OG_IMAGE,
   SEO_KEYWORDS,
@@ -142,12 +145,15 @@ export default function RootLayout({
       )}
     >
       <body className="min-h-full flex flex-col">
+        <GoogleTagManager />
         <JsonLd
           data={[organizationJsonLd, websiteJsonLd, softwareApplicationJsonLd]}
         />
         <QueryProvider>
+          <AnalyticsProvider />
           {children}
 
+          <CookieConsentBanner />
           <Toaster position="top-right" richColors />
           <ServiceWorkerRegister />
         </QueryProvider>

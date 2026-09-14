@@ -9,6 +9,7 @@ import { loginSchema, LoginFormValues } from "@/lib/schemas/auth";
 import { useAuthQueries } from "@/hooks/use-auth-queries";
 import { AuthService } from "@/services/auth-service";
 import { useEffect, useState } from "react";
+import { trackEvent } from "@/lib/analytics";
 
 export function AuthLoginForm() {
   const { useLogin } = useAuthQueries();
@@ -58,6 +59,7 @@ export function AuthLoginForm() {
   }, [email, password, loginMutation]);
 
   const onSubmit = (data: LoginFormValues) => {
+    trackEvent("Login Submitted", { remember_me: rememberMe });
     loginMutation.mutate({ ...data, rememberMe });
   };
 
@@ -139,7 +141,10 @@ export function AuthLoginForm() {
             type="button"
             variant="google"
             className="w-full py-4 md:py-6"
-            onClick={() => AuthService.googleLogin()}
+            onClick={() => {
+              trackEvent("Google Auth Clicked", { context: "login" });
+              AuthService.googleLogin();
+            }}
           >
             Continue with Google
           </Button>
