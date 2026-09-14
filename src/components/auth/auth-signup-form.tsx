@@ -12,6 +12,7 @@ import { AuthService } from "@/services/auth-service";
 import { useAuthStore } from "@/stores/auth-store";
 import { useMutation } from "@tanstack/react-query";
 import { toast } from "sonner";
+import { trackEvent } from "@/lib/analytics";
 
 export function AuthSignupForm() {
   const { useRegister } = useAuthQueries();
@@ -100,6 +101,10 @@ export function AuthSignupForm() {
   }
 
   const onSubmit = (data: RegisterFormValues) => {
+    trackEvent("Signup Submitted", {
+      signup_type: inviteToken ? "invite" : "standard",
+    });
+
     if (inviteToken) {
       inviteRegisterMutation.mutate({
         inviteToken,
@@ -179,7 +184,10 @@ export function AuthSignupForm() {
             type="button"
             variant="google"
             className="h-10 w-full py-4 md:h-12 md:py-6"
-            onClick={() => AuthService.googleLogin()}
+            onClick={() => {
+              trackEvent("Google Auth Clicked", { context: "signup" });
+              AuthService.googleLogin();
+            }}
           >
             Continue with Google
           </Button>
