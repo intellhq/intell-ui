@@ -39,22 +39,12 @@ const shouldHideBannerForPath = (pathname: string) =>
 
 export function CookieConsentBanner() {
   const pathname = usePathname();
-  const [isVisible, setIsVisible] = useState(false);
+  const [isVisible, setIsVisible] = useState(() => !hasStoredCookieConsent());
   const [isPreferencesOpen, setIsPreferencesOpen] = useState(false);
   const [preferences, setPreferences] = useState<CookieConsentPreferences>(() =>
     getCookieConsentPreferences(),
   );
-
-  useEffect(() => {
-    if (hasStoredCookieConsent()) return;
-
-    if (shouldHideBannerForPath(pathname)) {
-      saveCookieConsentPreferences({ analytics: true, marketing: false });
-      return;
-    }
-
-    setIsVisible(true);
-  }, [pathname]);
+  const shouldShowBanner = isVisible && !shouldHideBannerForPath(pathname);
 
   useEffect(() => {
     const openSettings = () => {
@@ -92,7 +82,7 @@ export function CookieConsentBanner() {
 
   return (
     <>
-      {isVisible ? (
+      {shouldShowBanner ? (
         <div className="fixed right-0 bottom-0 left-0 z-50 rounded-t-3xl border border-slate-200 bg-white p-4 shadow-2xl sm:right-6 sm:bottom-6 sm:left-auto sm:w-[520px] sm:rounded-2xl">
           <div className="space-y-4">
             <div className="space-y-2">

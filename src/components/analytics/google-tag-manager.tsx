@@ -8,7 +8,7 @@ export function GoogleTagManager() {
 
   return (
     <>
-      <Script id="intell-gtm-consent-default" strategy="beforeInteractive">
+      <Script id="intell-gtm-consent-default" strategy="afterInteractive">
         {`
           window.dataLayer = window.dataLayer || [];
           function gtag(){dataLayer.push(arguments);}
