@@ -39,12 +39,16 @@ const shouldHideBannerForPath = (pathname: string) =>
 
 export function CookieConsentBanner() {
   const pathname = usePathname();
-  const [isVisible, setIsVisible] = useState(() => !hasStoredCookieConsent());
+  const [isVisible, setIsVisible] = useState(true);
   const [isPreferencesOpen, setIsPreferencesOpen] = useState(false);
   const [preferences, setPreferences] = useState<CookieConsentPreferences>(() =>
     getCookieConsentPreferences(),
   );
-  const shouldShowBanner = isVisible && !shouldHideBannerForPath(pathname);
+  const shouldShowBanner =
+    typeof window !== "undefined" &&
+    isVisible &&
+    !hasStoredCookieConsent() &&
+    !shouldHideBannerForPath(pathname);
 
   useEffect(() => {
     const openSettings = () => {
