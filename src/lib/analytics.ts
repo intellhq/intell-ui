@@ -1,6 +1,8 @@
 import mixpanel from "mixpanel-browser";
 
 const MIXPANEL_TOKEN = process.env.NEXT_PUBLIC_MIXPANEL_TOKEN;
+const MIXPANEL_API_HOST =
+  process.env.NEXT_PUBLIC_MIXPANEL_API_HOST || "https://api-eu.mixpanel.com";
 
 export const COOKIE_CONSENT_NAME = "intell_cookie_preferences";
 export const COOKIE_CONSENT_VERSION = "2026-03-25";
@@ -150,6 +152,7 @@ const ensureMixpanel = () => {
   if (!isBrowser() || !MIXPANEL_TOKEN || mixpanelInitialized) return;
 
   mixpanel.init(MIXPANEL_TOKEN, {
+    api_host: MIXPANEL_API_HOST,
     debug: process.env.NODE_ENV === "development",
     track_pageview: false,
     persistence: "cookie",
