@@ -27,13 +27,14 @@ import {
   type WaitlistLeadValues,
 } from "@/lib/schemas/waitlist";
 import { WaitlistService } from "@/services/waitlist-service";
+import { trackEvent } from "@/lib/analytics";
 
-type OnboardInputFieldProps = ComponentPropsWithoutRef<typeof Input> & {
+type WaitlistInputFieldProps = ComponentPropsWithoutRef<typeof Input> & {
   label: string;
   error?: string;
 };
 
-type OnboardTextareaFieldProps = ComponentPropsWithoutRef<"textarea"> & {
+type WaitlistTextareaFieldProps = ComponentPropsWithoutRef<"textarea"> & {
   label: string;
   error?: string;
 };
@@ -42,7 +43,7 @@ const labelClassName = "text-base font-medium text-[#2A2F3C] md:text-lg";
 const inputClassName =
   "h-12.5 rounded-[8px] border border-[#D8DBE2] bg-[#FCFCFC] px-7 py-3.5 text-base font-light placeholder:text-[#9CA3AF] md:text-lg";
 
-const OnboardInputField = forwardRef<HTMLInputElement, OnboardInputFieldProps>(
+const WaitlistInputField = forwardRef<HTMLInputElement, WaitlistInputFieldProps>(
   ({ id, label, error, ...props }, ref) => {
     const errorId = id ? `${id}-error` : undefined;
 
@@ -69,11 +70,11 @@ const OnboardInputField = forwardRef<HTMLInputElement, OnboardInputFieldProps>(
   },
 );
 
-OnboardInputField.displayName = "OnboardInputField";
+WaitlistInputField.displayName = "WaitlistInputField";
 
-const OnboardTextareaField = forwardRef<
+const WaitlistTextareaField = forwardRef<
   HTMLTextAreaElement,
-  OnboardTextareaFieldProps
+  WaitlistTextareaFieldProps
 >(({ id, label, error, ...props }, ref) => {
   const errorId = id ? `${id}-error` : undefined;
 
@@ -99,9 +100,9 @@ const OnboardTextareaField = forwardRef<
   );
 });
 
-OnboardTextareaField.displayName = "OnboardTextareaField";
+WaitlistTextareaField.displayName = "WaitlistTextareaField";
 
-export function OnboardPageContent() {
+export function WaitlistPageContent() {
   const {
     control,
     register,
@@ -132,12 +133,25 @@ export function OnboardPageContent() {
 
   async function onSubmit(data: WaitlistLeadValues) {
     try {
+      trackEvent("Waitlist Form Submitted", {
+        state: data.state,
+        inverter_type: data.inverterType,
+        interest: data.interest,
+        source: data.source,
+      });
       await WaitlistService.joinWaitlist(data);
+      trackEvent("Waitlist Form Submission Succeeded", {
+        state: data.state,
+        inverter_type: data.inverterType,
+        interest: data.interest,
+        source: data.source,
+      });
       toast.success("Your details have been submitted.", {
         description: "The INTELL team will contact you with next steps.",
       });
       reset();
     } catch (error) {
+      trackEvent("Waitlist Form Submission Failed");
       toast.error(
         error instanceof Error
           ? error.message
@@ -159,7 +173,7 @@ export function OnboardPageContent() {
       <div className="relative flex h-87.5 w-full items-center justify-center overflow-hidden md:h-112.5">
         <Image
           src="/images/pages.jpg"
-          alt="INTELL onboarding hero background"
+          alt="INTELL waitlist hero background"
           fill
           className="object-cover object-center"
           priority
@@ -194,18 +208,19 @@ export function OnboardPageContent() {
         <form
           onSubmit={handleSubmit(onSubmit)}
           className="flex flex-col gap-8"
-          aria-label="INTELL onboarding interest form"
+          aria-label="INTELL waitlist interest form"
+          data-analytics-form="Waitlist interest form"
           noValidate
         >
           <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
-            <OnboardInputField
+            <WaitlistInputField
               id="firstName"
               label="First name"
               placeholder="Enter your first name"
               error={errors.firstName?.message}
               {...register("firstName")}
             />
-            <OnboardInputField
+            <WaitlistInputField
               id="lastName"
               label="Last name"
               placeholder="Enter your last name"
@@ -215,7 +230,7 @@ export function OnboardPageContent() {
           </div>
 
           <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
-            <OnboardInputField
+            <WaitlistInputField
               id="email"
               type="email"
               label="Email"
@@ -223,7 +238,7 @@ export function OnboardPageContent() {
               error={errors.email?.message}
               {...register("email")}
             />
-            <OnboardInputField
+            <WaitlistInputField
               id="phoneNumber"
               type="tel"
               label="Phone number"
@@ -234,7 +249,7 @@ export function OnboardPageContent() {
           </div>
 
           <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
-            <OnboardSelectField
+            <WaitlistSelectField
               name="state"
               label="State"
               control={control}
@@ -242,7 +257,7 @@ export function OnboardPageContent() {
               placeholder="Select state"
               error={errors.state?.message}
             />
-            <OnboardSelectField
+            <WaitlistSelectField
               name="inverterType"
               label="Inverter type"
               control={control}
@@ -253,7 +268,7 @@ export function OnboardPageContent() {
           </div>
 
           <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
-            <OnboardSelectField
+            <WaitlistSelectField
               name="interest"
               label="What do you want to do?"
               control={control}
@@ -261,7 +276,7 @@ export function OnboardPageContent() {
               placeholder="Select an option"
               error={errors.interest?.message}
             />
-            <OnboardSelectField
+            <WaitlistSelectField
               name="source"
               label="How did you find us?"
               control={control}
@@ -271,7 +286,7 @@ export function OnboardPageContent() {
             />
           </div>
 
-          <OnboardTextareaField
+          <WaitlistTextareaField
             id="message"
             label="Message"
             rows={6}
@@ -296,7 +311,7 @@ export function OnboardPageContent() {
   );
 }
 
-function OnboardSelectField({
+function WaitlistSelectField({
   name,
   label,
   control,
@@ -320,7 +335,16 @@ function OnboardSelectField({
         name={name}
         control={control}
         render={({ field }) => (
-          <Select value={field.value ?? ""} onValueChange={field.onChange}>
+          <Select
+            value={field.value ?? ""}
+            onValueChange={(value) => {
+              field.onChange(value);
+              trackEvent("Waitlist Field Selected", {
+                field: name,
+                value,
+              });
+            }}
+          >
             <SelectTrigger
               className="h-12.5 rounded-[8px] border-[#D8DBE2] bg-[#FCFCFC] px-7 text-base font-light md:text-lg"
               aria-describedby={error ? errorId : undefined}

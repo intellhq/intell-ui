@@ -1161,7 +1161,7 @@ export function SuperAdminOnboardingLeadsPage() {
             label: "Top Interest", 
             value: "Home monitoring", 
             helper: "Most leads want INTELL for household inverter visibility", 
-            change: "From onboard form selections", 
+            change: "From waitlist form selections",
             icon: Users,
           }}
         />
@@ -1408,7 +1408,7 @@ export function SuperAdminLeadDetailPage({
           Lead Details
         </h1>
         <p className="mt-2 text-sm text-muted-foreground">
-          Details submitted from the public INTELL onboard form.
+          Details submitted from the public INTELL waitlist form.
         </p>
       </div>
 
@@ -1691,7 +1691,7 @@ export function SuperAdminNewCommunicationPage() {
               value={ctaType}
               options={[
                 "Open dashboard",
-                "Onboard now",
+                "Join waitlist",
                 "Follow social media",
                 "Read update",
               ]}
@@ -1702,7 +1702,7 @@ export function SuperAdminNewCommunicationPage() {
             <Label htmlFor="broadcast-url">Action URL</Label>
             <Input
               id="broadcast-url"
-              placeholder="https://intell.ng/onboard"
+              placeholder="https://intell.ng/waitlist"
               className="h-11 text-sm placeholder:text-sm"
             />
           </div>

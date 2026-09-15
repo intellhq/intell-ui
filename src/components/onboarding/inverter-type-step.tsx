@@ -77,7 +77,12 @@ export function InverterTypeStep({
             }
             subtitle={getSubTitle(brandName)}
             selected={selected === brandName}
-            onSelect={() => onSelect(brandName)}
+            onSelect={() => {
+              onSelect(brandName);
+              trackEvent("Inverter Type Selected", {
+                inverter_type: brandName,
+              });
+            }}
           />
         ))}
       </div>

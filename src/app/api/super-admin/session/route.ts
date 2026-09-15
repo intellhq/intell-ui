@@ -34,7 +34,7 @@ export async function POST(request: Request) {
   return response;
 }
 
-export async function DELETE(request: Request) {
+export async function DELETE() {
   const response = NextResponse.json({ success: true });
   response.cookies.set(SUPER_ADMIN_SESSION_COOKIE, "", {
     httpOnly: true,

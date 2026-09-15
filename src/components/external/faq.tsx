@@ -4,12 +4,21 @@ import { useState } from "react";
 import Image from "next/image";
 import { motion, AnimatePresence } from "motion/react";
 import { MARKETING_FAQS } from "@/constants/faqs";
+import { trackEvent } from "@/lib/analytics";
 
 export const Faq = () => {
   const [openIndex, setOpenIndex] = useState<number | null>(0);
 
   const toggleFaq = (index: number) => {
-    setOpenIndex(openIndex === index ? null : index);
+    const nextIndex = openIndex === index ? null : index;
+    setOpenIndex(nextIndex);
+
+    if (nextIndex !== null) {
+      trackEvent("FAQ Opened", {
+        question: MARKETING_FAQS[index]?.question,
+        index,
+      });
+    }
   };
 
   return (
