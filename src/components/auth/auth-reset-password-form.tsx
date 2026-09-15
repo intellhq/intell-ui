@@ -13,6 +13,7 @@ import { useAuthQueries } from "@/hooks/use-auth-queries";
 import { useSearchParams } from "next/navigation";
 
 import { passwordValidation } from "@/lib/schemas/auth";
+import { trackEvent } from "@/lib/analytics";
 
 // Validation schema for the UI
 const resetPasswordSchema = z
@@ -87,6 +88,8 @@ function ResetPasswordFormContent({ onSuccess }: { onSuccess?: () => void }) {
   }
 
   const onSubmit = (data: ResetPasswordValues) => {
+    trackEvent("Reset Password Submitted", { has_token: Boolean(token) });
+
     if (!token) {
       toast.error(
         "Reset token is missing. Please use the link sent to your email.",
@@ -105,11 +108,13 @@ function ResetPasswordFormContent({ onSuccess }: { onSuccess?: () => void }) {
 
     resetPassword(payload, {
       onSuccess: () => {
+        trackEvent("Reset Password Submission Succeeded");
         setIsSuccess(true);
         sessionStorage.removeItem("reset_email");
         onSuccess?.();
       },
       onError: (err: unknown) => {
+        trackEvent("Reset Password Submission Failed");
         const message =
           err instanceof Error
             ? err.message

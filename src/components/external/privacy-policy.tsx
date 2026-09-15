@@ -195,14 +195,18 @@ const PrivacyPolicy = () => {
                     </div>
                     <div>
                       <h3 className="text-slate-80 mb-2">
-                        Cookies &amp; Tracking Technologies We may use minimal cookies
-                        for:
+                        Cookies &amp; Tracking Technologies We use cookies and similar
+                        technologies for:
                       </h3>
                       <ul className="list-disc space-y-1 pl-6">
-                        <li>Session management</li>
-                        <li>Basic website analytics</li>
-                        <li>Improving site loading performance</li>
+                        <li>Session management and core app security</li>
+                        <li>Website and product analytics through Mixpanel, Google Tag Manager, and GA4</li>
+                        <li>Remembering browser preferences and cookie choices</li>
+                        <li>Improving site loading performance and product experience</li>
                       </ul>
+                      <p className="mt-2">
+                        You can learn more or update your choices in our Cookie Policy.
+                      </p>
                     </div>
                   </div>
                 </motion.div>
@@ -228,12 +232,14 @@ const PrivacyPolicy = () => {
                         <li>Provide product information and onboarding guidance</li>
                         <li>Display documentation and support content</li>
                         <li>Improve website experience and performance</li>
+                        <li>Understand sanitized product usage and feature engagement</li>
                         <li>Respond to inquiries or support requests</li>
                         <li>Prevent abuse, spam, and security threats</li>
                       </ul>
                       <p className="mt-2">
-                        We do not sell or share visitor data with third parties for
-                        marketing or advertising.
+                        We do not sell visitor data. Analytics events are designed to
+                        avoid raw passwords, emails, phone numbers, names, addresses,
+                        inverter credentials, and user messages.
                       </p>
                     </div>
                   </div>

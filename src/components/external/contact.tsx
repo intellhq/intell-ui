@@ -11,6 +11,7 @@ import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { ContactService } from "@/services/contact-service";
 import { contactSchema, ContactFormValues } from "@/lib/schemas/contact";
+import { trackEvent } from "@/lib/analytics";
 
 type ContactInputFieldProps = ComponentPropsWithoutRef<typeof Input> & {
   label: string;
@@ -106,12 +107,15 @@ export default function Contact() {
 
   async function onSubmit(data: ContactFormValues) {
     try {
+      trackEvent("Contact Form Submitted", { source: "contact_page" });
       await ContactService.submitMessage(data);
+      trackEvent("Contact Form Submission Succeeded", { source: "contact_page" });
       toast.success("Message sent!", {
         description: "We'll get back to you as soon as possible.",
       });
       reset();
     } catch (error: unknown) {
+      trackEvent("Contact Form Submission Failed", { source: "contact_page" });
       const message =
         error instanceof Error
           ? error.message
@@ -173,6 +177,7 @@ export default function Contact() {
           onSubmit={handleSubmit(onSubmit)}
           className="flex flex-col gap-8"
           aria-label="Contact support form"
+          data-analytics-form="Contact support form"
           noValidate
         >
           {/* First Name & Last Name */}

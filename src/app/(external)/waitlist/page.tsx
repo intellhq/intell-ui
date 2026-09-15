@@ -1,32 +1,32 @@
 import type { Metadata } from "next";
-import { OnboardPageContent } from "@/components/external/onboard";
+import { WaitlistPageContent } from "@/components/external/waitlist";
 import { JsonLd } from "@/components/seo/json-ld";
 import { createBreadcrumbJsonLd, createSeoMetadata } from "@/lib/seo";
 
 export const metadata: Metadata = createSeoMetadata({
-  title: "Onboard",
+  title: "Waitlist",
   description:
-    "Tell INTELL about your solar inverter setup and get contacted for compatibility checks, smart monitoring, alerts, savings tracking, and AI energy guidance.",
-  path: "/onboard",
+    "Join the INTELL waitlist and tell us about your solar inverter setup for compatibility checks, smart monitoring, alerts, savings tracking, and AI energy guidance.",
+  path: "/waitlist",
   keywords: [
-    "solar inverter onboarding Nigeria",
+    "solar inverter monitoring waitlist",
     "connect solar inverter monitoring",
     "get solar monitoring dashboard",
-    "INTELL onboarding",
+    "INTELL waitlist",
   ],
   image: "/images/request_demo_3.jpg",
 });
 
-export default function OnboardPage() {
+export default function WaitlistPage() {
   return (
     <>
       <JsonLd
         data={createBreadcrumbJsonLd([
           { name: "Home", path: "/" },
-          { name: "Onboard", path: "/onboard" },
+          { name: "Waitlist", path: "/waitlist" },
         ])}
       />
-      <OnboardPageContent />
+      <WaitlistPageContent />
     </>
   );
 }
