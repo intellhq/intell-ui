@@ -14,9 +14,12 @@ import {
   SEO_KEYWORDS,
   SITE_DESCRIPTION,
   SITE_NAME,
+  SITE_TAGLINE,
   SITE_URL,
   absoluteUrl,
+  energyMonitoringServiceJsonLd,
   organizationJsonLd,
+  siteNavigationJsonLd,
   softwareApplicationJsonLd,
   websiteJsonLd,
 } from "@/lib/seo";
@@ -43,7 +46,7 @@ export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
 
   title: {
-    default: `${appName} | AI Solar Inverter Monitoring Platform`,
+    default: `${appName} | ${SITE_TAGLINE}`,
     template: `%s | ${appName}`,
   },
 
@@ -72,7 +75,7 @@ export const metadata: Metadata = {
   },
 
   openGraph: {
-    title: `${appName} | AI Solar Inverter Monitoring Platform`,
+    title: `${appName} | ${SITE_TAGLINE}`,
     description: SITE_DESCRIPTION,
     url: SITE_URL,
     siteName: appName,
@@ -83,14 +86,14 @@ export const metadata: Metadata = {
         url: defaultImage,
         width: 1200,
         height: 630,
-        alt: "INTELL solar inverter monitoring dashboard preview",
+        alt: "INTELL one dashboard for your energy system preview",
       },
     ],
   },
 
   twitter: {
     card: "summary_large_image",
-    title: `${appName} | AI Solar Inverter Monitoring Platform`,
+    title: `${appName} | ${SITE_TAGLINE}`,
     description: SITE_DESCRIPTION,
     images: [defaultImage],
   },
@@ -147,7 +150,13 @@ export default function RootLayout({
       <body className="min-h-full flex flex-col">
         <GoogleTagManager />
         <JsonLd
-          data={[organizationJsonLd, websiteJsonLd, softwareApplicationJsonLd]}
+          data={[
+            organizationJsonLd,
+            websiteJsonLd,
+            softwareApplicationJsonLd,
+            energyMonitoringServiceJsonLd,
+            siteNavigationJsonLd,
+          ]}
         />
         <QueryProvider>
           <AnalyticsProvider />
