@@ -4,8 +4,10 @@ export const SITE_NAME = "INTELL";
 
 export const SITE_URL = "https://www.intell.ng";
 
+export const SITE_TAGLINE = "One Dashboard For Your Energy System";
+
 export const SITE_DESCRIPTION =
-  "INTELL is an AI-powered energy monitoring and optimization platform for solar inverter monitoring, smart alerts, savings tracking, and multi-site energy management.";
+  "INTELL gives homes, businesses, and installers one dashboard to monitor solar and inverter systems, receive smart alerts, track savings, and understand energy performance.";
 
 export const DEFAULT_OG_IMAGE = "/images/request_demo_3.jpg";
 
@@ -93,6 +95,17 @@ export function absoluteUrl(path = "/") {
   return new URL(path, SITE_URL).toString();
 }
 
+const siteNavigation = [
+  { name: "Home", path: "/" },
+  { name: "Services", path: "/services" },
+  { name: "Supported Inverters", path: "/services/inverters" },
+  { name: "How It Works", path: "/how-it-works" },
+  { name: "Pricing", path: "/pricing" },
+  { name: "Blog", path: "/blog" },
+  { name: "Waitlist", path: "/waitlist" },
+  { name: "Contact", path: "/contact" },
+];
+
 export function createSeoMetadata({
   title,
   description,
@@ -115,7 +128,7 @@ export function createSeoMetadata({
       url: imageUrl,
       width: 1200,
       height: 630,
-      alt: `${SITE_NAME} solar inverter monitoring dashboard preview`,
+      alt: `${SITE_NAME} one dashboard for your energy system preview`,
     },
   ];
 
@@ -177,12 +190,22 @@ export const organizationJsonLd = {
   url: SITE_URL,
   logo: absoluteUrl("/images/logo.svg"),
   description: SITE_DESCRIPTION,
+  slogan: SITE_TAGLINE,
+  contactPoint: [
+    {
+      "@type": "ContactPoint",
+      contactType: "customer support",
+      email: "contact@intell.ng",
+      availableLanguage: ["English"],
+    },
+  ],
 };
 
 export const websiteJsonLd = {
   "@context": "https://schema.org",
   "@type": "WebSite",
   name: SITE_NAME,
+  alternateName: SITE_TAGLINE,
   url: SITE_URL,
   description: SITE_DESCRIPTION,
   inLanguage: "en",
@@ -196,6 +219,7 @@ export const softwareApplicationJsonLd = {
   "@context": "https://schema.org",
   "@type": "SoftwareApplication",
   name: SITE_NAME,
+  alternateName: SITE_TAGLINE,
   applicationCategory: "BusinessApplication",
   operatingSystem: "Web",
   url: SITE_URL,
@@ -208,4 +232,43 @@ export const softwareApplicationJsonLd = {
     "Multi-site energy management",
     "Energy reporting and analytics",
   ],
+};
+
+export const energyMonitoringServiceJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Service",
+  name: `${SITE_NAME} energy monitoring`,
+  serviceType: "Solar and inverter energy monitoring",
+  provider: {
+    "@type": "Organization",
+    name: SITE_NAME,
+    url: SITE_URL,
+  },
+  areaServed: {
+    "@type": "Country",
+    name: "Nigeria",
+  },
+  audience: [
+    { "@type": "Audience", audienceType: "Households" },
+    { "@type": "Audience", audienceType: "Businesses" },
+    { "@type": "Audience", audienceType: "Solar installers" },
+  ],
+  description: SITE_DESCRIPTION,
+  offers: {
+    "@type": "Offer",
+    url: absoluteUrl("/pricing"),
+    availability: "https://schema.org/OnlineOnly",
+  },
+};
+
+export const siteNavigationJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "ItemList",
+  name: `${SITE_NAME} key site links`,
+  itemListElement: siteNavigation.map((item, index) => ({
+    "@type": "SiteNavigationElement",
+    position: index + 1,
+    name: item.name,
+    url: absoluteUrl(item.path),
+  })),
 };

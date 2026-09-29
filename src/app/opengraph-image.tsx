@@ -4,10 +4,11 @@ import {
   DEFAULT_OG_IMAGE,
   SITE_DESCRIPTION,
   SITE_NAME,
+  SITE_TAGLINE,
   absoluteUrl,
 } from "@/lib/seo";
 
-export const alt = "INTELL solar inverter monitoring dashboard preview";
+export const alt = "INTELL one dashboard for your energy system preview";
 export const size = {
   width: 1200,
   height: 630,
@@ -83,7 +84,7 @@ export default function Image() {
               letterSpacing: "-2px",
             }}
           >
-            AI Solar Inverter Monitoring Platform
+            {SITE_TAGLINE}
           </div>
           <p
             style={{
