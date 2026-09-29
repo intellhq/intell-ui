@@ -11,12 +11,12 @@ import { JsonLd } from "@/components/seo/json-ld";
 import { createBreadcrumbJsonLd, createSeoMetadata } from "@/lib/seo";
 
 export const metadata: Metadata = createSeoMetadata({
-  title: "AI Solar Inverter Monitoring Platform",
+  title: "One Dashboard For Your Energy System",
   description:
-    "Monitor solar inverter performance, track battery health, receive intelligent fault alerts, measure savings, and manage energy systems from one INTELL dashboard.",
+    "Monitor solar and inverter performance, track battery health, receive intelligent fault alerts, measure savings, and manage energy systems from one INTELL dashboard.",
   path: "/",
   keywords: [
-    "AI solar inverter monitoring platform",
+    "one dashboard for energy systems",
     "solar battery health dashboard",
     "energy monitoring for businesses",
   ],
