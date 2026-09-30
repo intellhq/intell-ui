@@ -45,6 +45,7 @@ import {
   useSuperAdminUsers,
   useSuperAdminUsersChart,
 } from "@/hooks/use-super-admin-queries";
+import { PaginationBar } from "@/components/dashboard/shared/pagination-bar";
 import { cn } from "@/lib/utils";
 import type { ApiPaginationMeta } from "@/lib/api/client";
 import type {
@@ -299,28 +300,17 @@ function PaginationControls({
 }) {
   if (!pagination || (pagination.total ?? 0) <= (pagination.limit ?? LIMIT)) return null;
   return (
-    <div className="mt-4 flex items-center justify-end gap-3 text-sm text-muted-foreground">
-      <Button
-        variant="outline"
-        size="sm"
-        disabled={!pagination.hasPrev}
-        onClick={() => onPageChange(Math.max(1, page - 1))}
-      >
-        Previous
-      </Button>
-      <span>
-        Page {pagination.page ?? page} of{" "}
-        {Math.max(1, Math.ceil((pagination.total ?? 0) / (pagination.limit ?? LIMIT)))}
-      </span>
-      <Button
-        variant="outline"
-        size="sm"
-        disabled={!pagination.hasNext}
-        onClick={() => onPageChange(page + 1)}
-      >
-        Next
-      </Button>
-    </div>
+    <PaginationBar
+      className="mt-4 rounded-xl border border-border bg-card"
+      currentPage={pagination.page ?? page}
+      totalPages={
+        pagination.totalPages ??
+        Math.max(1, Math.ceil((pagination.total ?? 0) / (pagination.limit ?? LIMIT)))
+      }
+      totalItems={pagination.total ?? 0}
+      itemsPerPage={pagination.limit ?? LIMIT}
+      onPageChange={onPageChange}
+    />
   );
 }
 

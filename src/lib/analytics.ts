@@ -1,4 +1,5 @@
 import mixpanel from "mixpanel-browser";
+import type { User } from "@/types/auth";
 
 const MIXPANEL_TOKEN = process.env.NEXT_PUBLIC_MIXPANEL_TOKEN;
 const MIXPANEL_API_HOST =
@@ -215,11 +216,29 @@ export const canTrackAnalytics = () => {
   return getCookieConsentPreferences().analytics;
 };
 
-export const identifyUser = (userId: string) => {
+type AnalyticsIdentity = Pick<
+  User,
+  "id" | "email" | "firstName" | "lastName" | "role"
+>;
+
+export const identifyUser = (user: string | AnalyticsIdentity) => {
   if (!canTrackAnalytics() || !MIXPANEL_TOKEN) return;
 
   ensureMixpanel();
-  if (mixpanelInitialized) mixpanel.identify(userId);
+  if (!mixpanelInitialized) return;
+
+  const userId = typeof user === "string" ? user : user.id;
+  mixpanel.identify(userId);
+
+  if (typeof user === "string") return;
+
+  mixpanel.people.set({
+    $email: user.email,
+    $name: `${user.firstName ?? ""} ${user.lastName ?? ""}`.trim() || undefined,
+    $first_name: user.firstName,
+    $last_name: user.lastName,
+    role: user.role,
+  });
 };
 
 export const trackEvent = (

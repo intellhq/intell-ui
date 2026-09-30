@@ -231,11 +231,28 @@ export interface ApiPaginationMeta {
   total?: number;
   page?: number;
   limit?: number;
+  totalPages?: number;
   hasNext?: boolean;
   hasPrev?: boolean;
+  total_pages?: number;
+  has_next?: boolean;
+  has_previous?: boolean;
   nextCursor?: string | null;
   prevCursor?: string | null;
 }
+
+export const normalizePaginationMeta = (
+  pagination?: ApiPaginationMeta,
+): ApiPaginationMeta => {
+  if (!pagination) return {};
+
+  return {
+    ...pagination,
+    totalPages: pagination.totalPages ?? pagination.total_pages,
+    hasNext: pagination.hasNext ?? pagination.has_next,
+    hasPrev: pagination.hasPrev ?? pagination.has_previous,
+  };
+};
 
 export interface ApiEnvelope<TResponse> {
   success?: boolean;
