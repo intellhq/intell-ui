@@ -8,6 +8,7 @@ import { AuthService } from "@/services/auth-service";
 import {
   resetAuthForOAuthCallback,
 } from "@/lib/auth-session";
+import { identifyUser } from "@/lib/analytics";
 
 function cleanOAuthParamsFromUrl() {
   if (typeof window === "undefined") return;
@@ -96,6 +97,7 @@ function GoogleAuthSyncInner() {
               inverterAccess: realUser.inverterAccess ?? [],
               rememberMe: true,
             });
+            identifyUser(realUser.user);
           } else {
             logout();
           }
