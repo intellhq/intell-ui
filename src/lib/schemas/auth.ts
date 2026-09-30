@@ -40,6 +40,7 @@ export const registerSchema = z.object({
     .min(2, "Last name must be at least 2 characters")
     .max(40, "Last name must be at most 40 characters")
     .regex(/^[\p{L}]+(?:[ '-][\p{L}]+){0,2}$/u, "Names can only contain letters, spaces, hyphens, or apostrophes"),
+  role: z.enum(["user", "installer"]).optional(),
 });
 
 export type RegisterFormValues = z.infer<typeof registerSchema>;

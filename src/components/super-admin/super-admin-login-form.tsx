@@ -5,6 +5,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { AuthInput } from "@/components/auth/auth-input";
 import { useSuperAdminAuthStore } from "@/stores/super-admin-auth-store";
+import type { User } from "@/types/auth";
 
 function getSafeSuperAdminRedirect(redirect: string | null) {
   if (
@@ -39,13 +40,26 @@ export function SuperAdminLoginForm() {
       body: JSON.stringify({ email, password }),
     });
 
-    if (!response.ok) {
-      setError("Invalid super admin credentials.");
+    const payload = (await response.json().catch(() => null)) as {
+      data?: {
+        accessToken?: string;
+        sessionId?: string;
+        user?: User;
+      };
+      message?: string;
+    } | null;
+
+    if (!response.ok || !payload?.data?.accessToken) {
+      setError(payload?.message ?? "Invalid super admin credentials.");
       setIsPending(false);
       return;
     }
 
-    login();
+    login({
+      token: payload.data.accessToken,
+      sessionId: payload.data.sessionId,
+      user: payload.data.user,
+    });
     router.replace(getSafeSuperAdminRedirect(searchParams.get("redirect")));
     router.refresh();
   };
