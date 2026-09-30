@@ -139,7 +139,7 @@ export function WaitlistPageContent() {
         interest: data.interest,
         source: data.source,
       });
-      await WaitlistService.joinWaitlist(data);
+      await WaitlistService.submitOnboardingLead(data);
       trackEvent("Waitlist Form Submission Succeeded", {
         state: data.state,
         inverter_type: data.inverterType,
@@ -147,7 +147,7 @@ export function WaitlistPageContent() {
         source: data.source,
       });
       toast.success("Your details have been submitted.", {
-        description: "The INTELL team will contact you with next steps.",
+        description: "The INTELL team will contact you soon.",
       });
       reset();
     } catch (error) {
@@ -322,7 +322,7 @@ function WaitlistSelectField({
   name: "state" | "inverterType" | "interest" | "source";
   label: string;
   control: Control<WaitlistLeadValues>;
-  options: readonly string[];
+  options: readonly (string | { label: string; value: string })[];
   placeholder: string;
   error?: string;
 }) {
@@ -353,11 +353,18 @@ function WaitlistSelectField({
               <SelectValue placeholder={placeholder} />
             </SelectTrigger>
             <SelectContent>
-              {options.map((option) => (
-                <SelectItem key={option} value={option}>
-                  {option}
-                </SelectItem>
-              ))}
+              {options.map((option) => {
+                const item =
+                  typeof option === "string"
+                    ? { label: option, value: option }
+                    : option;
+
+                return (
+                  <SelectItem key={item.value} value={item.value}>
+                    {item.label}
+                  </SelectItem>
+                );
+              })}
             </SelectContent>
           </Select>
         )}

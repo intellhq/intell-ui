@@ -226,3 +226,61 @@ export async function apiFetch<TResponse>(
     );
   }
 }
+
+export interface ApiPaginationMeta {
+  total?: number;
+  page?: number;
+  limit?: number;
+  hasNext?: boolean;
+  hasPrev?: boolean;
+  nextCursor?: string | null;
+  prevCursor?: string | null;
+}
+
+export interface ApiEnvelope<TResponse> {
+  success?: boolean;
+  message?: string;
+  data: TResponse;
+  meta?: {
+    timestamp?: string;
+    version?: string;
+    requestId?: string;
+    pagination?: ApiPaginationMeta;
+  };
+}
+
+export async function apiFetchEnvelope<TResponse>(
+  path: string,
+  config: AxiosRequestConfig = {},
+  proxy?: boolean,
+): Promise<ApiEnvelope<TResponse>> {
+  const headers: Record<string, string> = {
+    ...((config.headers as Record<string, string>) || {}),
+  };
+
+  const isJson =
+    config.data &&
+    !(config.data instanceof FormData) &&
+    !(config.data instanceof Blob);
+
+  if (!headers["Content-Type"] && isJson) {
+    headers["Content-Type"] = "application/json";
+  }
+
+  const res = await axios.request({
+    url: resolveRequestUrl(path, proxy),
+    ...config,
+    withCredentials: true,
+    headers,
+  });
+
+  if (
+    res.data &&
+    typeof res.data === "object" &&
+    "data" in res.data
+  ) {
+    return res.data as ApiEnvelope<TResponse>;
+  }
+
+  return { data: res.data as TResponse };
+}

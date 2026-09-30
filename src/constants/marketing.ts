@@ -98,12 +98,12 @@ export const INVERTER_TYPES = [
 ];
 
 export const ONBOARDING_INTEREST_OPTIONS = [
-  "Use INTELL for my home",
-  "Use INTELL for my business",
-  "Manage multiple sites",
-  "Partner as an installer",
-  "Request a product demo",
-];
+  { label: "Use INTELL for my home", value: "home" },
+  { label: "Use INTELL for my business", value: "business" },
+  { label: "Manage multiple sites", value: "multi-site" },
+  { label: "Partner as an installer", value: "installer partner" },
+  { label: "Request a product demo", value: "demo" },
+] as const;
 
 export const ONBOARDING_SOURCE_OPTIONS = [
   "LinkedIn",
