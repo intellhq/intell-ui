@@ -14,7 +14,10 @@ export const proxy: NextProxy = (request) => {
   const requestHeaders = new Headers(request.headers);
   requestHeaders.set("x-request-id", requestId);
 
-  if (request.nextUrl.pathname.startsWith("/dashboard")) {
+  if (
+    request.nextUrl.pathname.startsWith("/dashboard") ||
+    request.nextUrl.pathname.startsWith("/installer")
+  ) {
     const hasOAuthToken =
       request.nextUrl.searchParams.has("accessToken") ||
       request.nextUrl.searchParams.has("token");

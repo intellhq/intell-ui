@@ -147,7 +147,7 @@ export function WaitlistPageContent() {
         source: data.source,
       });
       toast.success("Your details have been submitted.", {
-        description: "The INTELL team will contact you with next steps.",
+        description: "The INTELL team will contact you soon.",
       });
       reset();
     } catch (error) {
