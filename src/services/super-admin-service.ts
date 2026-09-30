@@ -24,7 +24,7 @@ import type {
 } from "@/types/super-admin-api";
 
 type QueryValue = string | number | boolean | null | undefined;
-type QueryParams = Record<string, QueryValue>;
+type QueryParams = object;
 
 function authHeaders() {
   const token = useSuperAdminAuthStore.getState().token;
@@ -34,7 +34,9 @@ function authHeaders() {
 function toQuery(params: QueryParams = {}) {
   const search = new URLSearchParams();
 
-  for (const [key, value] of Object.entries(params)) {
+  for (const [key, value] of Object.entries(
+    params as Record<string, QueryValue>,
+  )) {
     if (value === undefined || value === null || value === "" || value === "all") {
       continue;
     }

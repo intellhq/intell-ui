@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useState } from "react";
-import { Filter, Plus, Search, Users } from "lucide-react";
+import { Filter, Plus, Search } from "lucide-react";
 import {
   Bar,
   BarChart,
