@@ -166,7 +166,7 @@ export function AuthSignupForm() {
           {...register("password")}
         />
         {!inviteToken ? (
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-4 hidden">
             <Switch
               checked={formValues.role === "installer"}
               onCheckedChange={(checked) => {
