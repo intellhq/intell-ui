@@ -110,7 +110,8 @@ export const useAuthQueries = () => {
           duration: 5000,
         });
         const redirect = searchParams.get("redirect");
-        router.replace(getSafeRedirect(redirect, "/dashboard"));
+        const fallback = data.user.role === "installer" ? "/installer" : "/dashboard";
+        router.replace(getSafeRedirect(redirect, fallback));
       },
       onError: (error: unknown) => {
         const message = getErrorMessage(

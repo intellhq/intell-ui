@@ -1,6 +1,7 @@
 "use client";
 
 import { InstallerLayout } from "@/components/installer/installer-layout";
+import { InstallerAuthGuard } from "@/components/installer/installer-auth-guard";
 
 export default function InstallerDashboardLayout({
   children,
@@ -8,8 +9,8 @@ export default function InstallerDashboardLayout({
   children: React.ReactNode;
 }) {
   return (
-    <InstallerLayout>
-      {children}
-    </InstallerLayout>
+    <InstallerAuthGuard>
+      <InstallerLayout>{children}</InstallerLayout>
+    </InstallerAuthGuard>
   );
 }

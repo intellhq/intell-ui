@@ -12,4 +12,14 @@ export const WaitlistService = {
       false,
     );
   },
+  submitOnboardingLead: async (payload: WaitlistLeadValues) => {
+    return apiFetch<void>(
+      "/onboarding-leads",
+      {
+        method: "POST",
+        data: payload,
+      },
+      true,
+    );
+  },
 };
