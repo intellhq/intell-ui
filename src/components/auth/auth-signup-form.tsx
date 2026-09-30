@@ -2,6 +2,7 @@
 
 import { AuthInput } from "@/components/auth/auth-input";
 import { Button } from "@/components/ui/button";
+import { Switch } from "@/components/ui/switch";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useForm, useWatch } from "react-hook-form";
@@ -28,6 +29,7 @@ export function AuthSignupForm() {
     register,
     handleSubmit,
     control,
+    setValue,
     formState: { errors },
   } = useForm<RegisterFormValues>({
     resolver: zodResolver(registerSchema),
@@ -37,6 +39,7 @@ export function AuthSignupForm() {
       password: "",
       firstName: "",
       lastName: "",
+      role: "user",
     },
   });
 
@@ -69,6 +72,7 @@ export function AuthSignupForm() {
       lastName: "",
       email: "",
       password: "",
+      role: "user",
     },
   });
   const isFormFilled =
@@ -103,6 +107,7 @@ export function AuthSignupForm() {
   const onSubmit = (data: RegisterFormValues) => {
     trackEvent("Signup Submitted", {
       signup_type: inviteToken ? "invite" : "standard",
+      account_type: data.role === "installer" ? "installer" : "user",
     });
 
     if (inviteToken) {
@@ -115,7 +120,10 @@ export function AuthSignupForm() {
       });
       return;
     }
-    registerMutation.mutate(data);
+    registerMutation.mutate({
+      ...data,
+      role: data.role === "installer" ? "installer" : "user",
+    });
   };
 
   return (
@@ -157,6 +165,23 @@ export function AuthSignupForm() {
           helperText={passwordHelperText}
           {...register("password")}
         />
+        {!inviteToken ? (
+          <div className="flex items-center gap-4">
+            <Switch
+              checked={formValues.role === "installer"}
+              onCheckedChange={(checked) => {
+                setValue("role", checked ? "installer" : "user", {
+                  shouldDirty: true,
+                  shouldValidate: true,
+                });
+              }}
+              aria-label="Continue as installer"
+            />
+            <p className="text-sm font-semibold text-dark-text">
+              Continue as installer
+            </p>
+          </div>
+        ) : null}
       </div>
 
       <div className="mt-8 flex flex-col gap-4 md:mt-12">

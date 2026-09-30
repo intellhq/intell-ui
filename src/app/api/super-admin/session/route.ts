@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { SUPER_ADMIN_SESSION_COOKIE } from "@/lib/super-admin-session";
 
 const COOKIE_MAX_AGE_SECONDS = 60 * 60 * 8;
+const ALLOWED_ADMIN_ROLES = new Set(["admin", "super_admin"]);
 
 function getBackendAuthUrl() {
   const base =
@@ -44,9 +45,9 @@ export async function POST(request: Request) {
   } | null;
   const data = payload?.data;
 
-  if (!data?.accessToken || data.user?.role !== "super_admin") {
+  if (!data?.accessToken || !ALLOWED_ADMIN_ROLES.has(data.user?.role ?? "")) {
     return NextResponse.json(
-      { success: false, message: "Super admin access is required." },
+      { success: false, message: "Admin access is required." },
       { status: 403 },
     );
   }
