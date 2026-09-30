@@ -1,10 +1,16 @@
 import { NextResponse } from "next/server";
-import {
-  SUPER_ADMIN_SESSION_COOKIE,
-  isValidSuperAdminCredentials,
-} from "@/lib/super-admin-session";
+import { SUPER_ADMIN_SESSION_COOKIE } from "@/lib/super-admin-session";
 
 const COOKIE_MAX_AGE_SECONDS = 60 * 60 * 8;
+
+function getBackendAuthUrl() {
+  const base =
+    process.env.API_BASE_URL ??
+    process.env.NEXT_PUBLIC_API_BASE_URL ??
+    "http://localhost:3001/api/v1";
+
+  return `${base.replace(/\/+$/, "")}/auth/login`;
+}
 
 export async function POST(request: Request) {
   const body = (await request.json().catch(() => null)) as {
@@ -15,14 +21,44 @@ export async function POST(request: Request) {
   const email = body?.email?.trim() ?? "";
   const password = body?.password ?? "";
 
-  if (!isValidSuperAdminCredentials({ email, password })) {
+  const backendResponse = await fetch(getBackendAuthUrl(), {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ email, password }),
+    cache: "no-store",
+  }).catch(() => null);
+
+  if (!backendResponse?.ok) {
     return NextResponse.json(
       { success: false, message: "Invalid super admin credentials." },
       { status: 401 },
     );
   }
 
-  const response = NextResponse.json({ success: true });
+  const payload = (await backendResponse.json().catch(() => null)) as {
+    data?: {
+      accessToken?: string;
+      sessionId?: string;
+      user?: { role?: string };
+    };
+  } | null;
+  const data = payload?.data;
+
+  if (!data?.accessToken || data.user?.role !== "super_admin") {
+    return NextResponse.json(
+      { success: false, message: "Super admin access is required." },
+      { status: 403 },
+    );
+  }
+
+  const response = NextResponse.json({
+    success: true,
+    data: {
+      accessToken: data.accessToken,
+      sessionId: data.sessionId,
+      user: data.user,
+    },
+  });
   response.cookies.set(SUPER_ADMIN_SESSION_COOKIE, crypto.randomUUID(), {
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",
