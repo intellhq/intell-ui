@@ -19,22 +19,49 @@ import {
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { COMPANY_CONTACT, SOCIAL_LINKS } from "@/constants/marketing";
+import {
+  UserFeedbackService,
+  type UserFeedbackPriority,
+} from "@/services/feedback-service";
 import { useAuthStore } from "@/stores/auth-store";
 
 export function DashboardFeedbackPage() {
   const user = useAuthStore((state) => state.user);
   const [category, setCategory] = useState("Product feedback");
-  const [priority, setPriority] = useState("Medium");
+  const [priority, setPriority] = useState<UserFeedbackPriority>("medium");
   const [message, setMessage] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const displayName = user
     ? `${user.firstName ?? ""} ${user.lastName ?? ""}`.trim()
     : "";
 
-  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    toast.success("Feedback submitted successfully.");
-    setMessage("");
+
+    if (!message.trim()) {
+      toast.error("Please enter your feedback message.");
+      return;
+    }
+
+    setIsSubmitting(true);
+    try {
+      await UserFeedbackService.submit({
+        category,
+        priority,
+        message: message.trim(),
+      });
+      toast.success("Feedback submitted successfully.");
+      setMessage("");
+    } catch (error) {
+      toast.error(
+        error instanceof Error
+          ? error.message
+          : "Unable to submit feedback right now.",
+      );
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -123,14 +150,19 @@ export function DashboardFeedbackPage() {
               <Label className="text-sm font-medium text-dark-text">
                 Priority
               </Label>
-              <Select value={priority} onValueChange={setPriority}>
+              <Select
+                value={priority}
+                onValueChange={(value) =>
+                  setPriority(value as UserFeedbackPriority)
+                }
+              >
                 <SelectTrigger className="h-14 rounded-lg border-input bg-background">
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="Low">Low</SelectItem>
-                  <SelectItem value="Medium">Medium</SelectItem>
-                  <SelectItem value="High">High</SelectItem>
+                  <SelectItem value="low">Low</SelectItem>
+                  <SelectItem value="medium">Medium</SelectItem>
+                  <SelectItem value="high">High</SelectItem>
                 </SelectContent>
               </Select>
             </div>
@@ -156,10 +188,11 @@ export function DashboardFeedbackPage() {
           <div className="mt-6 flex justify-end">
             <Button
               type="submit"
+              disabled={isSubmitting}
               className="flex h-11 w-full items-center justify-center gap-2 rounded-lg bg-secondary px-4 text-sm font-medium text-white transition-colors hover:bg-secondary/90 sm:w-auto"
             >
               <Send className="h-4 w-4" />
-              Submit Feedback
+              {isSubmitting ? "Submitting..." : "Submit Feedback"}
             </Button>
           </div>
         </form>

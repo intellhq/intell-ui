@@ -1,6 +1,7 @@
 import {
   apiFetch,
   apiFetchEnvelope,
+  normalizePaginationMeta,
   type ApiPaginationMeta,
 } from "@/lib/api/client";
 import { useSuperAdminAuthStore } from "@/stores/super-admin-auth-store";
@@ -56,7 +57,9 @@ async function list<T>(path: string, params?: QueryParams): Promise<PaginatedRes
 
   return {
     data: envelope.data ?? [],
-    pagination: envelope.meta?.pagination ?? ({} satisfies ApiPaginationMeta),
+    pagination: normalizePaginationMeta(
+      envelope.meta?.pagination ?? ({} satisfies ApiPaginationMeta),
+    ),
   };
 }
 

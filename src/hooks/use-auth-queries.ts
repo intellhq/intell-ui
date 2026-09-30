@@ -6,6 +6,7 @@ import { AuthService } from "@/services/auth-service";
 import { useAuthStore } from "@/stores/auth-store";
 import { LoginFormValues } from "@/lib/schemas/auth";
 import { ApiError } from "@/lib/api/error";
+import { identifyUser } from "@/lib/analytics";
 
 type ErrorWithMessage = {
   message?: string;
@@ -100,6 +101,7 @@ export const useAuthQueries = () => {
             inverterAccess: data.inverterAccess,
             rememberMe: variables.rememberMe ?? false,
           });
+          identifyUser(data.user);
         } catch {
           storeLogout();
           toast.error("Signed in, but we could not start your session. Please try again.");
@@ -186,6 +188,7 @@ export const useAuthQueries = () => {
             sessionId: data.sessionId,
             inverterAccess: data.inverterAccess ?? [],
           });
+          identifyUser(data.user);
         } catch {
           storeLogout();
           toast.error(
