@@ -1,9 +1,11 @@
-const CACHE_NAME = "intell-v1";
+const CACHE_NAME = "intell-v2";
 const MAX_RUNTIME_CACHE_ITEMS = 40;
 const STATIC_ASSETS = [
   "/offline.html",
   "/manifest.json",
-  "/favicon.svg",
+  "/favicon.ico",
+  "/images/logo.png",
+  "/images/logo-dark-bg.png",
   "/favicon-16x16.png",
   "/favicon-32x32.png",
   "/icons/android-chrome-192x192.png",

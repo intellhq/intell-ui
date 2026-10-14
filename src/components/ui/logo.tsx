@@ -9,6 +9,7 @@ interface LogoProps {
   href?: string;
   showText?: boolean;
   size?: "sm" | "md" | "lg";
+  darkBg?: boolean;
 }
 
 const sizes = {
@@ -21,7 +22,7 @@ const sizes = {
     text: "text-lg",
   },
   lg: {
-    container: "h-10 w-10 md:h-12 md:w-12",
+    container: "h-12 w-12 md:h-14 md:w-14",
     text: "text-xl md:text-2xl",
   },
 };
@@ -33,9 +34,10 @@ export function Logo({
   href = "/",
   showText = true,
   size = "md",
+  darkBg = false,
 }: LogoProps) {
   const content = (
-    <div className={cn("flex items-center gap-2 font-bold", className)}>
+    <div className={cn("flex items-center font-bold", className)}>
       <div
         className={cn(
           "relative overflow-hidden rounded-full",
@@ -44,7 +46,7 @@ export function Logo({
         )}
       >
         <Image
-          src="/images/logo.svg"
+          src={darkBg ? "/images/logo-dark-bg.png" : "/images/logo.png"}
           alt="INTELL Logo"
           fill
           className="object-contain"
