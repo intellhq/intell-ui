@@ -1,4 +1,4 @@
-const CACHE_NAME = "intell-v2";
+const CACHE_NAME = "intell-v3";
 const MAX_RUNTIME_CACHE_ITEMS = 40;
 const STATIC_ASSETS = [
   "/offline.html",
