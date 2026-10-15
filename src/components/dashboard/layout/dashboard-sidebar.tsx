@@ -81,9 +81,9 @@ export function DashboardSidebar() {
         )}
       >
         {/* Header/Logo Section */}
-        <div className="mt-5 mr-0 ml-4 flex h-10 items-center justify-between">
+        <div className="sm:mt-5 mr-0 flex h-10 items-center justify-between">
           <div className="w-47">
-            <Logo size="md" href="/" />
+            <Logo size="lg" href="/" />
           </div>
 
           <button

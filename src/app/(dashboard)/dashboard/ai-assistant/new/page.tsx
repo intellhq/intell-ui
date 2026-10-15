@@ -190,7 +190,7 @@ export default function NewChatPage() {
         <div className="flex w-full max-w-7xl flex-col items-center mt-12 sm:mt-0">
           <div className="mb-6 flex h-16 w-16 items-center justify-center">
             <Image
-              src="/images/logo.svg"
+              src="/images/logo.png"
               alt="INTELL Logo"
               width={64}
               height={64}
