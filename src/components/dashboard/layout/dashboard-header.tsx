@@ -71,7 +71,7 @@ export function DashboardHeader() {
           title="Open navigation menu"
           className="mt-4.5 mb-4.5 ml-6"
         >
-          <Menu className="text-secondary h-7 w-7" />
+          <Menu className="text-secondary size-5 sm:size-7" />
         </button>
       </div>
 
