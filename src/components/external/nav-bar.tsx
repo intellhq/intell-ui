@@ -131,7 +131,7 @@ export function Navbar() {
   return (
     <header className="bg-background sticky top-0 z-50 w-full">
       <nav className="mx-auto flex h-16 max-w-350 items-center justify-between px-4 lg:h-20 lg:px-8">
-        <Logo size="md" />
+        <Logo size="lg" />
 
         <ul className="hidden items-center gap-8 lg:flex">
           {NAV_LINKS.map((l) => {

@@ -101,7 +101,7 @@ export const Footer = () => {
           {/* Left Section */}
           <div className="flex flex-col space-y-8 lg:max-w-md">
             <div className="flex flex-col space-y-6">
-              <Logo textClassName="text-white" />
+              <Logo textClassName="text-white" size="lg" darkBg />
               <p className="text-base leading-relaxed text-[#E6E6E6]">
                 AI-powered energy management & optimization platform for
                 Nigerian SMEs and African businesses. Nigeria has the energy

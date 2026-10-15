@@ -188,7 +188,7 @@ export const organizationJsonLd = {
   "@type": "Organization",
   name: SITE_NAME,
   url: SITE_URL,
-  logo: absoluteUrl("/images/logo.svg"),
+  logo: absoluteUrl("/images/logo.png"),
   description: SITE_DESCRIPTION,
   slogan: SITE_TAGLINE,
   contactPoint: [
